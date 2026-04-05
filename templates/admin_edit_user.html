@@ -1,0 +1,549 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .admin-edit-wrap { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+  .form-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .form-section.medical { border-color: rgba(220,53,69,0.15); }
+
+  .form-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .form-section-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .section-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .si-green  { background: rgba(0,229,160,0.1);  color: var(--accent); }
+  .si-red    { background: rgba(220,53,69,0.1);  color: var(--red); }
+  .si-blue   { background: rgba(55,138,221,0.1); color: var(--blue); }
+  .si-orange { background: rgba(249,115,22,0.1); color: #f97316; }
+  .si-purple { background: rgba(168,85,247,0.1); color: #a855f7; }
+  .si-gray   { background: rgba(139,148,158,0.1); color: var(--muted); }
+
+  .form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+  .form-group.full-width { grid-column: 1 / -1; }
+
+  .form-group label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .form-control {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 9px;
+    color: var(--text);
+    padding: 0.55rem 0.8rem;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    transition: border-color 0.2s;
+  }
+
+  .form-control:focus { outline: none; border-color: rgba(0,229,160,0.4); }
+  .form-control::placeholder { color: var(--muted2); }
+
+  textarea.form-control { resize: vertical; min-height: 80px; }
+
+  select.form-control option { background: var(--surface2); }
+
+  /* Theme picker */
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+
+  .theme-opt {
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 0.7rem 0.5rem;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .theme-opt:hover { border-color: rgba(255,255,255,0.2); }
+  .theme-opt.selected { border-color: var(--accent); }
+
+  /* Custom links */
+  .link-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+    align-items: center;
+  }
+
+  .link-row input { flex: 1; }
+
+  .del-btn {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    background: rgba(220,53,69,0.1);
+    border: 1px solid rgba(220,53,69,0.2);
+    color: var(--red);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  /* Portfolio grid */
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+  }
+
+  .port-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+  }
+
+  .port-item img { width: 100%; height: 100%; object-fit: cover; }
+
+  .port-del {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0,0,0,0.7);
+    border: none;
+    color: var(--red);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid-2 { grid-template-columns: 1fr; }
+    .form-group.full-width { grid-column: 1; }
+    .theme-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+<div class="admin-edit-wrap">
+
+  <!-- Header -->
+  <div class="page-header-row" style="margin-bottom:1.5rem;">
+    <div>
+      <h1 style="font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:0.2rem;">
+        <i class="fa fa-pencil" style="color:var(--accent);"></i> Edit User
+      </h1>
+      <p style="color:var(--muted); font-size:0.85rem;">
+        Editing: <strong style="color:var(--text);">{{ user.name }}</strong>
+        &nbsp;·&nbsp;
+        <span style="color:var(--muted2); font-size:0.8rem;">{{ user.email }}</span>
+      </p>
+    </div>
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <a href="{{ url_for('public_profile', user_id=user.id) }}" target="_blank" class="btn-secondary">
+        <i class="fa fa-eye fa-sm"></i> View Card
+      </a>
+      <a href="{{ url_for('medical_profile', user_id=user.id) }}" target="_blank" class="btn-secondary"
+         style="border-color:rgba(220,53,69,0.3); color:var(--red);">
+        <i class="fa fa-heart-pulse fa-sm"></i> View Medical
+      </a>
+      <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">
+        <i class="fa fa-arrow-left fa-sm"></i> Back
+      </a>
+    </div>
+  </div>
+
+  <form method="POST" id="main-form">
+
+    <!-- ── 1. Personal Info ── -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-icon si-green"><i class="fa fa-user"></i></div>
+        <h3>Personal Info</h3>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="name" value="{{ user.name }}" required class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" value="{{ user.email }}" required class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" name="phone" value="{{ user.phone or '' }}" placeholder="+201012345678" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" name="job_title" value="{{ user.job_title or '' }}" placeholder="e.g. Software Engineer" class="form-control">
+        </div>
+        <div class="form-group full-width">
+          <label>Bio</label>
+          <textarea name="bio" rows="3" class="form-control" placeholder="Short bio...">{{ user.bio or '' }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 2. Account Settings ── -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-icon si-gray"><i class="fa fa-gear"></i></div>
+        <h3>Account Settings</h3>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Product Type</label>
+          <select name="product_type" class="form-control">
+            <option value="card"     {% if user.product_type == 'card' %}selected{% endif %}>🪪 Smart Card</option>
+            <option value="bracelet" {% if user.product_type == 'bracelet' %}selected{% endif %}>⌚ Medical Bracelet</option>
+          </select>
+        </div>
+        {% if current_user.role == 'admin' %}
+        <div class="form-group">
+          <label>Role</label>
+          <select name="role" class="form-control">
+            <option value="user"     {% if user.role == 'user' or not user.role %}selected{% endif %}>👤 User</option>
+            <option value="subadmin" {% if user.role == 'subadmin' %}selected{% endif %}>🛡️ Sub-Admin</option>
+            <option value="admin"    {% if user.role == 'admin' %}selected{% endif %}>👑 Admin</option>
+          </select>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ── 3. Social Links ── -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-icon si-blue"><i class="fa fa-share-nodes"></i></div>
+        <h3>Social Links</h3>
+      </div>
+      <div class="form-grid-2">
+
+        {% for field, label, icon, color, ph in [
+          ('whatsapp',  'WhatsApp',  'fab fa-whatsapp',  '#25d366', '201012345678'),
+          ('instagram', 'Instagram', 'fab fa-instagram', '#e1306c', 'https://instagram.com/...'),
+          ('snapchat',  'Snapchat',  'fab fa-snapchat',  '#f7c600', 'https://snapchat.com/add/...'),
+          ('facebook',  'Facebook',  'fab fa-facebook',  '#1877f2', 'https://facebook.com/...'),
+          ('tiktok',    'TikTok',    'fab fa-tiktok',    '#f0f0f0', 'https://tiktok.com/@...'),
+          ('youtube',   'YouTube',   'fab fa-youtube',   '#ff0000', 'https://youtube.com/@...'),
+          ('twitter',   'Twitter/X', 'fab fa-twitter',   '#1d9bf0', 'https://twitter.com/...'),
+          ('linkedin',  'LinkedIn',  'fab fa-linkedin',  '#0077b5', 'https://linkedin.com/in/...'),
+          ('github',    'GitHub',    'fab fa-github',    '#f0f6fc', 'https://github.com/...'),
+          ('website',   'Website',   'fa fa-globe',      '#00e5a0', 'https://yourwebsite.com'),
+        ] %}
+        <div class="form-group">
+          <label style="color:{{ color }};"><i class="{{ icon }} fa-sm"></i> {{ label }}</label>
+          <input type="text" name="{{ field }}" value="{{ user[field] or '' }}"
+                 placeholder="{{ ph }}" class="form-control">
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+    <!-- ── 4. Location & Payment ── -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-icon si-orange"><i class="fa fa-location-dot"></i></div>
+        <h3>Location & Payment</h3>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group full-width">
+          <label style="color:#34a853;"><i class="fa fa-map-pin fa-sm"></i> Google Maps Link</label>
+          <input type="url" name="location_url" value="{{ user.location_url or '' }}"
+                 placeholder="https://maps.app.goo.gl/..." class="form-control">
+          {% if user.location_url %}
+          <a href="{{ user.location_url }}" target="_blank"
+             style="font-size:0.75rem; color:#34a853; text-decoration:none; margin-top:4px; display:inline-block;">
+            <i class="fa fa-arrow-up-right-from-square fa-xs"></i> Preview on Maps
+          </a>
+          {% endif %}
+        </div>
+        <div class="form-group full-width">
+          <label style="color:#00c896;"><i class="fa fa-money-bill-wave fa-sm"></i> InstaPay Number</label>
+          <input type="text" name="instapay" value="{{ user.instapay or '' }}"
+                 placeholder="01012345678" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 5. Card Theme ── -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-icon si-purple"><i class="fa fa-palette"></i></div>
+        <h3>Card Theme</h3>
+      </div>
+
+      {% set themes = [
+        ('dark',   '#0d1117', '#00e5a0', 'Dark'),
+        ('light',  '#f8fafc', '#0070f3', 'Light'),
+        ('purple', '#0f0a1e', '#a855f7', 'Purple'),
+        ('ocean',  '#0a1628', '#38bdf8', 'Ocean'),
+        ('sunset', '#1a0d08', '#f97316', 'Sunset'),
+        ('pink',   '#1a0812', '#ec4899', 'Pink'),
+      ] %}
+
+      <div class="theme-grid">
+        {% for val, bg, accent, label in themes %}
+        {% set is_active = (user.card_theme or 'dark') == val %}
+        <label style="cursor:pointer;">
+          <input type="radio" name="card_theme" value="{{ val }}"
+                 {% if is_active %}checked{% endif %}
+                 style="display:none;" class="theme-radio-admin">
+          <div class="theme-opt {% if is_active %}selected{% endif %}"
+               style="background:{{ bg }};" data-accent="{{ accent }}">
+            <div style="width:26px; height:26px; border-radius:50%; background:{{ accent }};
+                        margin:0 auto 0.4rem; box-shadow:0 0 10px {{ accent }}55;"></div>
+            <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.78rem;
+                      color:{{ accent }};">{{ label }}</p>
+          </div>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ── 6. Custom Links ── -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-icon si-blue"><i class="fa fa-link"></i></div>
+        <h3>Custom Links</h3>
+        <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">
+          {{ links|length }} link{{ 's' if links|length != 1 }}
+        </span>
+      </div>
+
+      <div id="admin-links-container">
+        {% for lnk in links %}
+        <div class="link-row">
+          <input type="text" name="link_title[]" value="{{ lnk.title }}"
+                 placeholder="Label (e.g. My Blog)" class="form-control">
+          <input type="url" name="link_url[]" value="{{ lnk.url }}"
+                 placeholder="https://..." class="form-control">
+          <button type="button" onclick="this.closest('.link-row').remove()" class="del-btn">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+
+      <button type="button" onclick="addAdminLink()" class="btn-secondary w-100"
+              style="margin-top:0.5rem; font-size:0.82rem;">
+        <i class="fa fa-plus fa-sm"></i> Add Link
+      </button>
+    </div>
+
+    <!-- ── 7. Medical Info ── -->
+    <div class="form-section medical">
+      <div class="form-section-header">
+        <div class="section-icon si-red"><i class="fa fa-notes-medical"></i></div>
+        <h3 style="color:var(--red);">Medical Info</h3>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Blood Type</label>
+          <input type="text" name="blood_type" value="{{ user.blood_type or '' }}"
+                 placeholder="A+, B-, O+..." class="form-control"
+                 style="border-color:rgba(220,53,69,0.2);">
+        </div>
+        <div class="form-group">
+          <label>Emergency Contact Name</label>
+          <input type="text" name="emergency_contact_name"
+                 value="{{ user.emergency_contact_name or '' }}" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Emergency Contact Phone</label>
+          <input type="text" name="emergency_contact_phone"
+                 value="{{ user.emergency_contact_phone or '' }}" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Doctor Name</label>
+          <input type="text" name="doctor_name" value="{{ user.doctor_name or '' }}" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Doctor Phone</label>
+          <input type="text" name="doctor_phone" value="{{ user.doctor_phone or '' }}" class="form-control">
+        </div>
+        <div class="form-group full-width">
+          <label>Allergies</label>
+          <textarea name="allergies" rows="2" class="form-control"
+                    placeholder="List any allergies...">{{ user.allergies or '' }}</textarea>
+        </div>
+        <div class="form-group full-width">
+          <label>Chronic Diseases</label>
+          <textarea name="chronic_diseases" rows="2" class="form-control"
+                    placeholder="List chronic conditions...">{{ user.chronic_diseases or '' }}</textarea>
+        </div>
+        <div class="form-group full-width">
+          <label>Medications</label>
+          <textarea name="medications" rows="2" class="form-control"
+                    placeholder="Current medications...">{{ user.medications or '' }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 8. Bot Context ── -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-icon si-green"><i class="fa fa-robot"></i></div>
+        <h3>Bot Context</h3>
+      </div>
+      <div class="form-group">
+        <textarea name="bot_context" rows="5" class="form-control"
+          placeholder="Everything the AI bot should know about this user...">{{ user.bot_context or '' }}</textarea>
+      </div>
+    </div>
+
+    <!-- Save -->
+    <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+      <button type="submit" class="btn-primary" style="flex:1; min-width:140px; padding:0.85rem;">
+        <i class="fa fa-save fa-sm"></i> Save All Changes
+      </button>
+      <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary"
+         style="flex:1; min-width:140px; padding:0.85rem; text-align:center;">
+        Cancel
+      </a>
+    </div>
+
+  </form>
+
+  <!-- ── 9. Portfolio Management (separate section) ── -->
+  <div class="form-section" id="portfolio" style="margin-top:1.1rem;">
+    <div class="form-section-header">
+      <div class="section-icon si-green"><i class="fa fa-images"></i></div>
+      <h3>Portfolio Gallery</h3>
+      <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">
+        {{ images|length }} / 12 images
+      </span>
+    </div>
+
+    <!-- Upload -->
+    {% if images|length < 12 %}
+    <form method="POST" action="{{ url_for('admin_upload_portfolio', user_id=user.id) }}"
+          enctype="multipart/form-data" style="margin-bottom:1rem;">
+      <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+        <input type="file" name="image" accept="image/*" required class="form-control"
+               style="flex:1; min-width:180px;" onchange="previewAdminPort(this)">
+        <button type="submit" class="btn-primary" style="white-space:nowrap; padding:0.5rem 1rem; font-size:0.85rem;">
+          <i class="fa fa-upload fa-sm"></i> Upload
+        </button>
+      </div>
+      <div id="admin-port-preview" style="display:none; margin-top:0.6rem;">
+        <img id="admin-port-img" style="max-height:120px; border-radius:8px; border:1px solid var(--border);">
+      </div>
+    </form>
+    {% else %}
+    <p style="font-size:0.82rem; color:#f0b429; margin-bottom:0.75rem;">
+      <i class="fa fa-exclamation-triangle"></i> Maximum 12 images reached.
+    </p>
+    {% endif %}
+
+    <!-- Grid -->
+    {% if images %}
+    <div class="portfolio-grid">
+      {% for img in images %}
+      <div class="port-item">
+        <img src="{{ url_for('static', filename='uploads/' + img) }}" alt="Portfolio">
+        <form method="POST" action="{{ url_for('admin_delete_portfolio', user_id=user.id) }}"
+              onsubmit="return confirm('Remove this image?')">
+          <input type="hidden" name="filename" value="{{ img }}">
+          <button type="submit" class="port-del"><i class="fa fa-times"></i></button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:1.5rem; color:var(--muted2); border:2px dashed var(--border); border-radius:10px;">
+      <i class="fa fa-images" style="font-size:1.5rem; margin-bottom:0.5rem; display:block;"></i>
+      No portfolio images yet
+    </div>
+    {% endif %}
+  </div>
+
+</div><!-- /admin-edit-wrap -->
+
+<script>
+  // Theme picker
+  document.querySelectorAll('.theme-radio-admin').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.querySelectorAll('.theme-opt').forEach(opt => {
+        opt.classList.remove('selected');
+        opt.style.borderColor = 'rgba(255,255,255,0.07)';
+      });
+      const opt = radio.nextElementSibling;
+      opt.classList.add('selected');
+      opt.style.borderColor = opt.dataset.accent || 'var(--accent)';
+    });
+  });
+
+  // Custom links
+  function addAdminLink() {
+    const row = document.createElement('div');
+    row.className = 'link-row';
+    row.innerHTML = `
+      <input type="text"  name="link_title[]" placeholder="Label" class="form-control">
+      <input type="url"   name="link_url[]"   placeholder="https://..." class="form-control">
+      <button type="button" onclick="this.closest('.link-row').remove()" class="del-btn">
+        <i class="fa fa-times"></i>
+      </button>`;
+    document.getElementById('admin-links-container').appendChild(row);
+  }
+
+  // Portfolio preview
+  function previewAdminPort(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('admin-port-img').src = e.target.result;
+        document.getElementById('admin-port-preview').style.display = 'block';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>
+
+{% endblock %}

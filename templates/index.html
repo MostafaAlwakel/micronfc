@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-content container">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Smart Identity & Medical Emergency System
+    </div>
+
+    <h1>Your life.<br><span class="accent">One tap</span>.</h1>
+
+    <p class="hero-sub">
+      NFC-powered smart cards and medical bracelets that give instant access
+      to your identity and critical health data — no app needed.
+    </p>
+
+    <div class="hero-actions">
+      <a href="{{ url_for('register') }}" class="btn-primary">
+        Get Started <i class="fa fa-arrow-right fa-sm"></i>
+      </a>
+      <a href="#features" class="btn-secondary">
+        <i class="fa fa-play-circle fa-sm"></i> See Features
+      </a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-number">NFC</div>
+        <div class="stat-label">Tap to Share</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">2-in-1</div>
+        <div class="stat-label">Card & Bracelet</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">AI</div>
+        <div class="stat-label">Smart Assistant</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Emergency Ready</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <p class="section-label"><i class="fa fa-bolt"></i> Features</p>
+    <h2 class="section-title">Everything you need.</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feat-icon">⚡</span>
+        <h3>Instant NFC Access</h3>
+        <p>Tap any NFC-enabled phone to instantly share your contact and medical data — no app required.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">🏥</span>
+        <h3>Medical Emergency Data</h3>
+        <p>Blood type, allergies, medications, and emergency contacts — always available when it matters most.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">🔒</span>
+        <h3>Secure & Private</h3>
+        <p>Your data is encrypted and protected. You control exactly what is visible on your public profile.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">🤖</span>
+        <h3>AI Assistant</h3>
+        <p>A trained chatbot that knows your info and responds on your behalf — 24/7 personal representative.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">☁️</span>
+        <h3>Cloud Synced</h3>
+        <p>Update your information from any device, anywhere. Changes reflect instantly on your NFC profile.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">🪪</span>
+        <h3>Smart Identity</h3>
+        <p>Share your professional profile, social links, and contact info with a single tap of your card.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container" style="max-width: 600px; text-align: center;">
+    <p class="section-label">Get Started</p>
+    <h2 class="section-title" style="margin-bottom: 1rem;">Ready to tap into the future?</h2>
+    <p style="color: var(--muted); margin-bottom: 2rem; font-size: 1rem;">
+      Create your smart profile in minutes. Works with Smart Cards and Medical Bracelets.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('register') }}" class="btn-primary">
+        Create Free Account <i class="fa fa-arrow-right fa-sm"></i>
+      </a>
+      <a href="{{ url_for('login') }}" class="btn-secondary">
+        <i class="fa fa-sign-in-alt fa-sm"></i> Sign In
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

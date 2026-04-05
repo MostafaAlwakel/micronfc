@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-container" style="align-items:flex-start; padding-top:2.5rem;">
+  <div class="auth-card" style="max-width:600px;">
+
+    <div class="auth-header">
+      <span class="logo-dot" style="width:12px; height:12px;"></span>
+      <h2>Social Links</h2>
+      <p>Connect your social media profiles</p>
+    </div>
+
+    <form method="POST">
+
+      <div class="form-group">
+        <label style="color:#25d366;"><i class="fab fa-whatsapp fa-sm"></i> WhatsApp</label>
+        <div class="input-wrapper">
+          <i class="fab fa-whatsapp input-icon" style="color:#25d366;"></i>
+          <input type="text" name="whatsapp" class="form-control"
+                 value="{{ user.whatsapp or '' }}"
+                 placeholder="201012345678 (no + or spaces)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:#e1306c;"><i class="fab fa-instagram fa-sm"></i> Instagram</label>
+        <div class="input-wrapper">
+          <i class="fab fa-instagram input-icon" style="color:#e1306c;"></i>
+          <input type="url" name="instagram" class="form-control"
+                 value="{{ user.instagram or '' }}"
+                 placeholder="https://instagram.com/username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:#FFFC00; text-shadow: 0 0 1px #000;"><i class="fab fa-snapchat fa-sm"></i> Snapchat</label>
+        <div class="input-wrapper">
+          <i class="fab fa-snapchat input-icon" style="color:#FFFC00; filter:drop-shadow(0 0 2px #aaa);"></i>
+          <input type="url" name="snapchat" class="form-control"
+                 value="{{ user.snapchat or '' }}"
+                 placeholder="https://snapchat.com/add/username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:#1877f2;"><i class="fab fa-facebook fa-sm"></i> Facebook</label>
+        <div class="input-wrapper">
+          <i class="fab fa-facebook input-icon" style="color:#1877f2;"></i>
+          <input type="url" name="facebook" class="form-control"
+                 value="{{ user.facebook or '' }}"
+                 placeholder="https://facebook.com/username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:#f0f0f0;"><i class="fab fa-tiktok fa-sm"></i> TikTok</label>
+        <div class="input-wrapper">
+          <i class="fab fa-tiktok input-icon"></i>
+          <input type="url" name="tiktok" class="form-control"
+                 value="{{ user.tiktok or '' }}"
+                 placeholder="https://tiktok.com/@username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:#ff0000;"><i class="fab fa-youtube fa-sm"></i> YouTube</label>
+        <div class="input-wrapper">
+          <i class="fab fa-youtube input-icon" style="color:#ff0000;"></i>
+          <input type="url" name="youtube" class="form-control"
+                 value="{{ user.youtube or '' }}"
+                 placeholder="https://youtube.com/@channel">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:#1d9bf0;"><i class="fab fa-twitter fa-sm"></i> Twitter / X</label>
+        <div class="input-wrapper">
+          <i class="fab fa-twitter input-icon" style="color:#1d9bf0;"></i>
+          <input type="url" name="twitter" class="form-control"
+                 value="{{ user.twitter or '' }}"
+                 placeholder="https://twitter.com/username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:#0077b5;"><i class="fab fa-linkedin fa-sm"></i> LinkedIn</label>
+        <div class="input-wrapper">
+          <i class="fab fa-linkedin input-icon" style="color:#0077b5;"></i>
+          <input type="url" name="linkedin" class="form-control"
+                 value="{{ user.linkedin or '' }}"
+                 placeholder="https://linkedin.com/in/username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fab fa-github fa-sm"></i> GitHub</label>
+        <div class="input-wrapper">
+          <i class="fab fa-github input-icon"></i>
+          <input type="url" name="github" class="form-control"
+                 value="{{ user.github or '' }}"
+                 placeholder="https://github.com/username">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color:var(--accent);"><i class="fa fa-globe fa-sm"></i> Website</label>
+        <div class="input-wrapper">
+          <i class="fa fa-globe input-icon" style="color:var(--accent);"></i>
+          <input type="url" name="website" class="form-control"
+                 value="{{ user.website or '' }}"
+                 placeholder="https://yourwebsite.com">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary w-100">
+        <i class="fa fa-save fa-sm"></i> Save Changes
+      </button>
+    </form>
+
+    <p class="auth-footer" style="margin-top:1.2rem;">
+      <a href="{{ url_for('dashboard') }}"><i class="fa fa-arrow-left fa-sm"></i> Back to Dashboard</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

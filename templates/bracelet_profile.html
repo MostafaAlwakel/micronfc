@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .msg { display: flex; margin-bottom: 0.75rem; }
+  .msg.user { justify-content: flex-end; }
+  .msg.bot { justify-content: flex-start; }
+
+  .msg-bubble {
+    max-width: 75%;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .msg.user .msg-bubble {
+    background: #ff6b7a;
+    color: #000;
+    border-bottom-right-radius: 4px;
+  }
+
+  .msg.bot .msg-bubble {
+    background: #1a1a2e;
+    color: #f0f6fc;
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(220,53,69,0.2);
+  }
+
+  .typing .msg-bubble { color: #8b949e; font-style: italic; }
+
+  .chat-fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #ff6b7a;
+    color: #000;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(220,53,69,0.4);
+    z-index: 999;
+    border: none;
+    transition: transform 0.2s;
+  }
+
+  .chat-fab:hover { transform: scale(1.1); }
+
+  .chat-popup {
+    position: fixed;
+    bottom: 6rem;
+    right: 2rem;
+    width: 360px;
+    height: 500px;
+    background: #0d1117;
+    border: 1px solid rgba(220,53,69,0.2);
+    border-radius: 16px;
+    display: none;
+    flex-direction: column;
+    z-index: 998;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  .chat-popup.open { display: flex; }
+
+  .chat-popup-header {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid rgba(220,53,69,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .chat-popup-header h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    flex: 1;
+    margin: 0;
+    color: #f0f6fc;
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .chat-input-row {
+    padding: 0.75rem;
+    border-top: 1px solid rgba(220,53,69,0.2);
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .chat-input-row input {
+    flex: 1;
+    background: #1a1a2e;
+    border: 1px solid rgba(220,53,69,0.2);
+    color: #f0f6fc;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+
+  .chat-input-row input:focus { outline: none; border-color: rgba(220,53,69,0.5); }
+
+  .chat-send-btn {
+    background: #ff6b7a;
+    color: #000;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+</style>
+
+<div style="min-height:90vh;display:flex;align-items:center;justify-content:center;padding:2rem;">
+<div style="width:100%;max-width:420px;">
+
+  <div style="background:rgba(220,53,69,0.1);border:1px solid rgba(220,53,69,0.3);border-radius:12px;padding:0.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:10px;">
+    <span>🚨</span>
+    <div>
+      <p style="font-size:0.75rem;font-weight:600;color:#ff6b7a;text-transform:uppercase;">Medical Emergency</p>
+      <p style="font-size:0.72rem;color:#8b949e;">Show this to emergency responders</p>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,#0d1117,#1a1a2e);border:1px solid rgba(220,53,69,0.2);border-radius:24px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5);">
+
+    <!-- COVER PHOTO -->
+    <div style="height:80px;position:relative;overflow:hidden;">
+      {% if user.cover_photo %}
+        <img src="{{ url_for('static', filename='uploads/' + user.cover_photo) }}"
+             style="width:100%;height:100%;object-fit:cover;">
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.3);"></div>
+      {% else %}
+        <div style="height:100%;background:linear-gradient(135deg,rgba(220,53,69,0.2),rgba(180,30,30,0.1));display:flex;align-items:center;justify-content:center;">
+        </div>
+      {% endif %}
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:0.85rem;color:rgba(255,255,255,0.6);">🔴 MicroNFC Medical</span>
+      </div>
+    </div>
+
+    <!-- AVATAR -->
+    <div style="display:flex;justify-content:center;margin-top:-35px;position:relative;z-index:1;">
+      {% if user.profile_photo %}
+        <img src="{{ url_for('static', filename='uploads/' + user.profile_photo) }}"
+             style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid #0d1117;">
+      {% else %}
+        <div style="width:70px;height:70px;border-radius:50%;background:rgba(220,53,69,0.15);border:3px solid #0d1117;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:1.6rem;color:#ff6b7a;">
+          {{ user.name[0] | upper }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div style="text-align:center;padding:0.75rem 1.5rem 0;">
+      <h1 style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:0.2rem;">{{ user.name }}</h1>
+      <p style="color:#8b949e;font-size:0.8rem;">{{ user.email }}</p>
+    </div>
+
+    {% if user.blood_type %}
+    <div style="margin:1.2rem 1.5rem;background:rgba(220,53,69,0.08);border:1px solid rgba(220,53,69,0.2);border-radius:14px;padding:1.2rem;text-align:center;">
+      <p style="font-size:0.7rem;color:#8b949e;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;">Blood Type</p>
+      <p style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:#ff6b7a;line-height:1;">{{ user.blood_type }}</p>
+    </div>
+    {% endif %}
+
+    <div style="padding:0 1.5rem;">
+      {% if user.allergies %}
+      <div style="display:flex;gap:12px;margin-bottom:0.75rem;align-items:flex-start;">
+        <div style="width:34px;height:34px;border-radius:8px;background:rgba(220,53,69,0.08);border:1px solid rgba(220,53,69,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">⚠️</div>
+        <div>
+          <p style="font-size:0.7rem;color:#8b949e;margin-bottom:2px;">Allergies</p>
+          <p style="font-size:0.88rem;color:#f0f6fc;">{{ user.allergies }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if user.chronic_diseases %}
+      <div style="display:flex;gap:12px;margin-bottom:0.75rem;align-items:flex-start;">
+        <div style="width:34px;height:34px;border-radius:8px;background:rgba(220,53,69,0.08);border:1px solid rgba(220,53,69,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🏥</div>
+        <div>
+          <p style="font-size:0.7rem;color:#8b949e;margin-bottom:2px;">Chronic Diseases</p>
+          <p style="font-size:0.88rem;color:#f0f6fc;">{{ user.chronic_diseases }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if user.medications %}
+      <div style="display:flex;gap:12px;margin-bottom:0.75rem;align-items:flex-start;">
+        <div style="width:34px;height:34px;border-radius:8px;background:rgba(220,53,69,0.08);border:1px solid rgba(220,53,69,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">💊</div>
+        <div>
+          <p style="font-size:0.7rem;color:#8b949e;margin-bottom:2px;">Medications</p>
+          <p style="font-size:0.88rem;color:#f0f6fc;">{{ user.medications }}</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if user.emergency_contact_name or user.doctor_name %}
+    <div style="margin:1rem 1.5rem;padding:1rem;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05);">
+      <p style="font-size:0.7rem;color:#8b949e;text-transform:uppercase;margin-bottom:0.75rem;">Emergency Contacts</p>
+      {% if user.emergency_contact_name %}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <div>
+          <p style="font-size:0.75rem;color:#8b949e;">Contact</p>
+          <p style="font-size:0.9rem;color:#f0f6fc;">{{ user.emergency_contact_name }}</p>
+        </div>
+        {% if user.emergency_contact_phone %}
+        <a href="tel:{{ user.emergency_contact_phone }}" style="background:rgba(0,229,160,0.1);border:1px solid rgba(0,229,160,0.2);color:#00e5a0;padding:0.4rem 0.8rem;border-radius:8px;font-size:0.8rem;text-decoration:none;">📞 Call</a>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if user.doctor_name %}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05);">
+        <div>
+          <p style="font-size:0.75rem;color:#8b949e;">Doctor</p>
+          <p style="font-size:0.9rem;color:#f0f6fc;">{{ user.doctor_name }}</p>
+        </div>
+        {% if user.doctor_phone %}
+        <a href="tel:{{ user.doctor_phone }}" style="background:rgba(220,53,69,0.1);border:1px solid rgba(220,53,69,0.2);color:#ff6b7a;padding:0.4rem 0.8rem;border-radius:8px;font-size:0.8rem;text-decoration:none;">📞 Call</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- CHAT BUTTON -->
+    <div style="padding:0 1.5rem;margin-bottom:1rem;">
+      <button onclick="toggleChat()"
+        style="width:100%;padding:0.75rem;background:rgba(220,53,69,0.1);border:1px solid rgba(220,53,69,0.3);border-radius:12px;color:#ff6b7a;font-family:'Syne',sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;">
+        🤖 Chat with {{ user.name }}'s AI
+      </button>
+    </div>
+
+    <div style="padding:1rem 1.5rem;text-align:center;border-top:1px solid rgba(255,255,255,0.05);">
+      <p style="font-size:0.72rem;color:#8b949e;">Powered by <span style="color:#ff6b7a;">MicroNFC</span></p>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- Floating Bot Button -->
+<button class="chat-fab" onclick="toggleChat()">🤖</button>
+
+<!-- Chat Popup -->
+<div class="chat-popup" id="chat-popup">
+  <div class="chat-popup-header">
+    <span>🤖</span>
+    <h4>{{ user.name }}'s Assistant</h4>
+    <span style="font-size:0.75rem;color:#ff6b7a;">● Online</span>
+    <button onclick="clearChat()" title="New Chat" style="background:none;border:none;color:#8b949e;cursor:pointer;font-size:1rem;">🗑️</button>
+    <button onclick="toggleChat()" style="background:none;border:none;color:#8b949e;cursor:pointer;font-size:1.2rem;">×</button>
+  </div>
+
+  <div class="chat-messages" id="chat-box">
+    <div class="msg bot">
+      <div class="msg-bubble">👋 Hi! I'm {{ user.name }}'s AI assistant. Ask me anything about them!</div>
+    </div>
+  </div>
+
+  <div class="chat-input-row">
+    <input type="text" id="user-input" placeholder="Ask about {{ user.name }}...">
+    <button class="chat-send-btn" onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  const chatBox = document.getElementById('chat-box');
+  const input = document.getElementById('user-input');
+  const userId = {{ user.id }};
+
+  function toggleChat() {
+    document.getElementById('chat-popup').classList.toggle('open');
+    input.focus();
+  }
+
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  function addMessage(text, sender) {
+    const div = document.createElement('div');
+    div.className = `msg ${sender}`;
+    div.innerHTML = `<div class="msg-bubble">${text}</div>`;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    return div;
+  }
+
+  async function clearChat() {
+    await fetch(`/api/public_chat/clear/${userId}`, { method: 'POST' });
+    chatBox.innerHTML = '';
+    addMessage('👋 Fresh start! Ask me anything about {{ user.name }}.', 'bot');
+  }
+
+  async function sendMessage() {
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessage(message, 'user');
+    input.value = '';
+
+    const typing = addMessage('Thinking...', 'bot typing');
+
+    try {
+      const res = await fetch(`/api/public_chat/${userId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await res.json();
+      typing.remove();
+      addMessage(data.response, 'bot');
+    } catch (err) {
+      typing.remove();
+      addMessage('Sorry, something went wrong!', 'bot');
+    }
+  }
+</script>
+
+{% endblock %}
