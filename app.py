@@ -16,11 +16,23 @@ load_dotenv()
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-# ==================== FILE UPLOAD SETUP ====================
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'mov'}
+# ==================== CLOUDINARY SETUP ====================
+import cloudinary
+import cloudinary.uploader
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET')
+)
+
+def upload_image(file):
+    try:
+        result = cloudinary.uploader.upload(file)
+        return result['secure_url']
+    except Exception as e:
+        print("Cloudinary Error:", e)
+        return None
 
 # ==================== APP SETUP ====================
 app = Flask(__name__)
