@@ -9,6 +9,8 @@ from functools import wraps
 import os
 import json
 import requests
+import cloudinary
+import cloudinary.uploader
 
 load_dotenv()
 
@@ -17,9 +19,6 @@ OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 # ==================== CLOUDINARY SETUP ====================
-import cloudinary
-import cloudinary.uploader
-
 cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
     api_key=os.getenv('CLOUDINARY_API_KEY'),
@@ -139,19 +138,21 @@ def edit_personal():
         current_user.job_title = request.form['job_title']
         current_user.bio = request.form['bio']
 
+        # رفع صورة البروفايل على Cloudinary
         if 'profile_photo' in request.files:
             file = request.files['profile_photo']
-            if file and file.filename and allowed_file(file.filename):
-                filename = secure_filename(f"profile_{current_user.id}_{file.filename}")
-                file.save(os.path.join('static/uploads', filename))
-                current_user.profile_photo = filename
+            if file and file.filename:
+                url = upload_image(file)
+                if url:
+                    current_user.profile_photo = url
 
+        # رفع صورة الخلفية على Cloudinary
         if 'cover_photo' in request.files:
             file = request.files['cover_photo']
-            if file and file.filename and allowed_file(file.filename):
-                filename = secure_filename(f"cover_{current_user.id}_{file.filename}")
-                file.save(os.path.join('static/uploads', filename))
-                current_user.cover_photo = filename
+            if file and file.filename:
+                url = upload_image(file)
+                if url:
+                    current_user.cover_photo = url
 
         db.session.commit()
         flash('Personal info updated!', 'success')
@@ -205,13 +206,13 @@ def edit_portfolio():
         images = json.loads(current_user.portfolio_images or '[]')
         if 'image' in request.files:
             file = request.files['image']
-            if file and file.filename and allowed_file(file.filename):
-                filename = secure_filename(f"portfolio_{current_user.id}_{len(images)}_{file.filename}")
-                file.save(os.path.join('static/uploads', filename))
-                images.append(filename)
-                current_user.portfolio_images = json.dumps(images)
-                db.session.commit()
-                flash('Image added!', 'success')
+            if file and file.filename:
+                url = upload_image(file)
+                if url:
+                    images.append(url)
+                    current_user.portfolio_images = json.dumps(images)
+                    db.session.commit()
+                    flash('Image added!', 'success')
         return redirect(url_for('edit_portfolio'))
     images = json.loads(current_user.portfolio_images or '[]')
     return render_template('edit_portfolio.html', user=current_user, images=images)
@@ -219,15 +220,12 @@ def edit_portfolio():
 @app.route('/edit/portfolio/delete', methods=['POST'])
 @login_required
 def delete_portfolio_image():
-    filename = request.form.get('filename')
+    url = request.form.get('filename')
     images = json.loads(current_user.portfolio_images or '[]')
-    if filename in images:
-        images.remove(filename)
+    if url in images:
+        images.remove(url)
         current_user.portfolio_images = json.dumps(images)
         db.session.commit()
-        filepath = os.path.join('static/uploads', filename)
-        if os.path.exists(filepath):
-            os.remove(filepath)
     flash('Image removed!', 'success')
     return redirect(url_for('edit_portfolio'))
 
@@ -461,13 +459,11 @@ def admin_add_user():
 def admin_edit_user(user_id):
     user = User.query.get_or_404(user_id)
     if request.method == 'POST':
-        # Personal
         user.name = request.form['name']
         user.email = request.form['email']
         user.phone = request.form['phone']
         user.job_title = request.form['job_title']
         user.bio = request.form['bio']
-        # Social
         user.whatsapp = request.form['whatsapp']
         user.instagram = request.form['instagram']
         user.snapchat = request.form['snapchat']
@@ -478,17 +474,13 @@ def admin_edit_user(user_id):
         user.linkedin = request.form['linkedin']
         user.github = request.form['github']
         user.website = request.form['website']
-        # Location & Payment
         user.location_url = request.form['location_url']
         user.instapay = request.form['instapay']
-        # Card Theme
         user.card_theme = request.form.get('card_theme', 'dark')
-        # Custom Links
         titles = request.form.getlist('link_title[]')
         urls = request.form.getlist('link_url[]')
         links = [{'title': t.strip(), 'url': u.strip()} for t, u in zip(titles, urls) if t.strip() and u.strip()]
         user.extra_links = json.dumps(links)
-        # Medical
         user.blood_type = request.form['blood_type']
         user.allergies = request.form['allergies']
         user.chronic_diseases = request.form['chronic_diseases']
@@ -497,7 +489,6 @@ def admin_edit_user(user_id):
         user.emergency_contact_phone = request.form['emergency_contact_phone']
         user.doctor_name = request.form['doctor_name']
         user.doctor_phone = request.form['doctor_phone']
-        # Bot & Account
         user.bot_context = request.form['bot_context']
         user.product_type = request.form['product_type']
         if current_user.is_admin and current_user.role == 'admin':
@@ -518,13 +509,13 @@ def admin_upload_portfolio(user_id):
     images = json.loads(user.portfolio_images or '[]')
     if 'image' in request.files:
         file = request.files['image']
-        if file and file.filename and allowed_file(file.filename):
-            filename = secure_filename(f"portfolio_{user_id}_{len(images)}_{file.filename}")
-            file.save(os.path.join('static/uploads', filename))
-            images.append(filename)
-            user.portfolio_images = json.dumps(images)
-            db.session.commit()
-            flash('Image added!', 'success')
+        if file and file.filename:
+            url = upload_image(file)
+            if url:
+                images.append(url)
+                user.portfolio_images = json.dumps(images)
+                db.session.commit()
+                flash('Image added!', 'success')
     return redirect(url_for('admin_edit_user', user_id=user_id) + '#portfolio')
 
 @app.route('/admin/portfolio/delete/<int:user_id>', methods=['POST'])
@@ -532,15 +523,12 @@ def admin_upload_portfolio(user_id):
 @admin_required
 def admin_delete_portfolio(user_id):
     user = User.query.get_or_404(user_id)
-    filename = request.form.get('filename')
+    url = request.form.get('filename')
     images = json.loads(user.portfolio_images or '[]')
-    if filename in images:
-        images.remove(filename)
+    if url in images:
+        images.remove(url)
         user.portfolio_images = json.dumps(images)
         db.session.commit()
-        filepath = os.path.join('static/uploads', filename)
-        if os.path.exists(filepath):
-            os.remove(filepath)
     flash('Image removed!', 'success')
     return redirect(url_for('admin_edit_user', user_id=user_id) + '#portfolio')
 
@@ -595,7 +583,6 @@ def admin_set_product(user_id, ptype):
 # ==================== DB MIGRATION & STARTUP ====================
 
 def migrate_db():
-    """Add new columns to existing SQLite database."""
     from sqlalchemy import text
     new_cols = [
         ("snapchat", "VARCHAR(200)"),
@@ -614,7 +601,7 @@ def migrate_db():
                 conn.execute(text(f"ALTER TABLE user ADD COLUMN {col_name} {col_type}"))
                 conn.commit()
             except Exception:
-                pass  # column already exists
+                pass
 
 with app.app_context():
     db.create_all()
