@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MicroNFC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <style>
+    .chat-fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #000;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 30px var(--accent-glow);
+      z-index: 999;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .chat-fab:hover { transform: scale(1.1); box-shadow: 0 0 40px var(--accent-glow); }
+
+    .chat-popup {
+      position: fixed;
+      bottom: 6.5rem;
+      right: 2rem;
+      width: 370px;
+      height: 510px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      display: none;
+      flex-direction: column;
+      z-index: 998;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+      overflow: hidden;
+    }
+    .chat-popup.open { display: flex; animation: fadeInUp 0.25s ease; }
+
+    .chat-popup-header {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface2);
+    }
+
+    .chat-popup-header h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      flex: 1;
+      margin: 0;
+    }
+
+    .chat-status {
+      font-size: 0.72rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .chat-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.2rem 1rem;
+    }
+
+    .chat-input-row {
+      padding: 0.85rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-input-row input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      padding: 0.6rem 0.85rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input-row input:focus { outline: none; border-color: rgba(0,229,160,0.4); }
+    .chat-input-row input::placeholder { color: var(--muted2); }
+
+    .chat-send-btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: transform 0.15s;
+    }
+
+    .chat-send-btn:hover { transform: scale(1.05); }
+
+    @media (max-width: 480px) {
+      .chat-popup { width: calc(100vw - 1rem); right: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <span class="logo-dot"></span> MicroNFC
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        style="border: 1px solid var(--border); padding: 0.4rem 0.6rem;">
+        <i class="fa fa-bars" style="color: var(--muted); font-size: 0.9rem;"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav ms-auto align-items-center gap-1">
+          {% if current_user.is_authenticated %}
+            {% if current_user.is_admin %}
+              <a class="nav-link" href="{{ url_for('admin_dashboard') }}" style="color: var(--yellow) !important; font-weight: 600;">
+                <i class="fa fa-crown fa-sm"></i> Admin
+              </a>
+              <a class="nav-link" href="{{ url_for('admin_cards') }}" style="color:#ffc107;">💳 Cards</a>
+            {% endif %}
+            <a class="nav-link" href="{{ url_for('dashboard') }}">
+              <i class="fa fa-th-large fa-sm"></i> Dashboard
+            </a>
+            <a class="nav-link" href="{{ url_for('logout') }}">
+              <i class="fa fa-sign-out-alt fa-sm"></i> Logout
+            </a>
+          {% else %}
+            <a class="nav-link" href="{{ url_for('login') }}">
+              <i class="fa fa-sign-in-alt fa-sm"></i> Login
+            </a>
+            <a class="nav-link btn-nav" href="{{ url_for('register') }}">Get Started</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {% if category == 'success' %}<i class="fa fa-check-circle"></i>
+            {% elif category == 'danger' %}<i class="fa fa-exclamation-circle"></i>
+            {% elif category == 'warning' %}<i class="fa fa-exclamation-triangle"></i>
+            {% else %}<i class="fa fa-info-circle"></i>{% endif %}
+            <span>{{ message }}</span>
+            <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  {% block content %}{% endblock %}
+
+  {% if current_user.is_authenticated %}
+
+  <button class="chat-fab" onclick="toggleChat()" title="AI Assistant">
+    <i class="fa fa-robot"></i>
+  </button>
+
+  <div class="chat-popup" id="chat-popup">
+    <div class="chat-popup-header">
+      <i class="fa fa-robot" style="color: var(--accent);"></i>
+      <h4>{{ current_user.name }}'s Assistant</h4>
+      <span class="chat-status">Online</span>
+      <button onclick="clearChat()" title="Clear chat" style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.85rem; margin-left:4px;">
+        <i class="fa fa-trash"></i>
+      </button>
+      <button onclick="toggleChat()" style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem;">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+    <div class="chat-messages" id="chat-box">
+      <div class="msg bot">
+        <div class="msg-bubble">👋 Hi {{ current_user.name }}! I know your personal, medical, and professional info. Ask me anything!</div>
+      </div>
+    </div>
+
+    <div class="chat-input-row">
+      <input type="text" id="user-input" placeholder="Ask me anything...">
+      <button class="chat-send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const input = document.getElementById('user-input');
+
+    function toggleChat() {
+      document.getElementById('chat-popup').classList.toggle('open');
+      if (document.getElementById('chat-popup').classList.contains('open')) input.focus();
+    }
+
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    function addMessage(text, sender) {
+      const div = document.createElement('div');
+      div.className = `msg ${sender}`;
+      div.innerHTML = `<div class="msg-bubble">${text}</div>`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      return div;
+    }
+
+    async function clearChat() {
+      await fetch('/api/chat/clear', { method: 'POST' });
+      chatBox.innerHTML = '';
+      addMessage('👋 Fresh start! Ask me anything about {{ current_user.name }}.', 'bot');
+    }
+
+    async function sendMessage() {
+      const message = input.value.trim();
+      if (!message) return;
+
+      addMessage(message, 'user');
+      input.value = '';
+
+      const typing = addMessage('Thinking...', 'bot typing');
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
+
+        const data = await res.json();
+        typing.remove();
+        addMessage(data.response, 'bot');
+      } catch (err) {
+        typing.remove();
+        addMessage('Sorry, something went wrong!', 'bot');
+      }
+    }
+  </script>
+
+  {% endif %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

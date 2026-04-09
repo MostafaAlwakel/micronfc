@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="auth-container" style="align-items:flex-start; padding-top:2.5rem;">
+  <div class="auth-card" style="max-width:700px;">
+
+    <div class="auth-header">
+      <span style="font-size:1.5rem;">🤖</span>
+      <h2>Train Your Bot</h2>
+      <p>اكتب كل حاجة عايز البوت يعرفها عنك</p>
+    </div>
+
+    <div class="bot-tips">
+      <h4><i class="fa fa-lightbulb fa-sm"></i> Tips for a better bot</h4>
+      <ul>
+        <li>اكتب عن شغلك ومهاراتك بالتفصيل</li>
+        <li>وضح إزاي تحب الناس يتواصلوا معاك</li>
+        <li>اذكر مشاريعك والخدمات اللي بتقدمها</li>
+        <li>حدد إيه الأسئلة اللي تقبلها وإيه اللي لأ</li>
+        <li>كلما كتبت أكتر، كلما رد البوت أحسن</li>
+      </ul>
+    </div>
+
+    <form method="POST">
+      <div class="form-group">
+        <label><i class="fa fa-pen-to-square fa-sm"></i> معلوماتك — اكتب بحرية كاملة</label>
+        <textarea
+          name="bot_context"
+          class="form-control"
+          rows="14"
+          placeholder="مثال:
+اسمي أحمد، بشتغل مطور Python و Flask.
+عندي مشروع MicroNFC للبطاقات الذكية.
+بقبل شغل فريلانس وتعاون في مشاريع.
+لو حد سأل عن السعر، قوله هتواصل معاه شخصياً.
+بتكلم عربي وانجليزي بطلاقة.
+اهتماماتي: برمجة، AI، ريادة أعمال..."
+        >{{ user.bot_context or '' }}</textarea>
+      </div>
+
+      <div style="display:flex; gap:0.75rem;">
+        <button type="submit" class="btn-primary" style="flex:1;">
+          <i class="fa fa-save fa-sm"></i> حفظ
+        </button>
+        <a href="{{ url_for('chat') }}" class="btn-secondary" style="flex:1; text-align:center;">
+          <i class="fa fa-robot fa-sm"></i> اختبر البوت
+        </a>
+      </div>
+    </form>
+
+    <p class="auth-footer" style="margin-top:1.2rem;">
+      <a href="{{ url_for('dashboard') }}"><i class="fa fa-arrow-left fa-sm"></i> Back to Dashboard</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

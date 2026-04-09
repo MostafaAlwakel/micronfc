@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="min-height:80vh; display:flex; align-items:center; justify-content:center; padding:2rem;">
+  <div style="text-align:center; max-width:400px;">
+    <div style="font-size:4rem; margin-bottom:1rem;">⚠️</div>
+    <h2 style="font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:800; margin-bottom:0.5rem;">Card Not Activated</h2>
+    <p style="color:var(--muted); margin-bottom:2rem;">This card hasn't been activated yet. If this is your card, please login and activate it.</p>
+    <a href="/login" class="btn-primary">Login to Activate</a>
+  </div>
+</div>
+{% endblock %}

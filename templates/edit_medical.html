@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-container" style="align-items:flex-start; padding-top:2.5rem;">
+  <div class="auth-card" style="max-width:600px;">
+
+    <div class="auth-header">
+      <span style="font-size:1.5rem;">🏥</span>
+      <h2>Medical Info</h2>
+      <p>Keep your emergency medical data up to date</p>
+    </div>
+
+    <!-- Emergency warning banner -->
+    <div style="background:rgba(220,53,69,0.08); border:1px solid rgba(220,53,69,0.2); border-radius:var(--radius); padding:0.85rem 1rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:10px;">
+      <i class="fa fa-triangle-exclamation" style="color:var(--red);"></i>
+      <p style="font-size:0.82rem; color:var(--muted); margin:0;">This info is shown to emergency responders when they scan your NFC device.</p>
+    </div>
+
+    <form method="POST">
+
+      <!-- Blood Type -->
+      <div class="form-group">
+        <label><i class="fa fa-droplet fa-sm" style="color:var(--red);"></i> Blood Type</label>
+        <select name="blood_type" class="form-control">
+          <option value="">Select blood type...</option>
+          {% for bt in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+            <option value="{{ bt }}" {% if user.blood_type == bt %}selected{% endif %}>{{ bt }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Allergies -->
+      <div class="form-group">
+        <label><i class="fa fa-triangle-exclamation fa-sm" style="color:#ffc107;"></i> Allergies</label>
+        <textarea name="allergies" class="form-control" rows="2"
+          placeholder="e.g. Penicillin, Peanuts, Latex...">{{ user.allergies or '' }}</textarea>
+      </div>
+
+      <!-- Chronic Diseases -->
+      <div class="form-group">
+        <label><i class="fa fa-heart-pulse fa-sm" style="color:var(--red);"></i> Chronic Diseases</label>
+        <textarea name="chronic_diseases" class="form-control" rows="2"
+          placeholder="e.g. Diabetes Type 2, Hypertension...">{{ user.chronic_diseases or '' }}</textarea>
+      </div>
+
+      <!-- Medications -->
+      <div class="form-group">
+        <label><i class="fa fa-pills fa-sm" style="color:var(--accent);"></i> Current Medications</label>
+        <textarea name="medications" class="form-control" rows="2"
+          placeholder="e.g. Metformin 500mg, Aspirin 100mg...">{{ user.medications or '' }}</textarea>
+      </div>
+
+      <div style="height:1px; background:var(--border); margin:1.5rem 0;"></div>
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:1rem; display:flex; align-items:center; gap:6px;">
+        <i class="fa fa-phone-volume" style="color:var(--red);"></i> Emergency Contacts
+      </p>
+
+      <!-- Emergency Contact -->
+      <div class="form-group">
+        <label>Contact Name</label>
+        <div class="input-wrapper">
+          <i class="fa fa-user input-icon"></i>
+          <input type="text" name="emergency_contact_name" class="form-control"
+                 value="{{ user.emergency_contact_name or '' }}" placeholder="Full name">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Contact Phone</label>
+        <div class="input-wrapper">
+          <i class="fa fa-phone input-icon"></i>
+          <input type="text" name="emergency_contact_phone" class="form-control"
+                 value="{{ user.emergency_contact_phone or '' }}" placeholder="+201012345678">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Doctor Name</label>
+        <div class="input-wrapper">
+          <i class="fa fa-user-doctor input-icon"></i>
+          <input type="text" name="doctor_name" class="form-control"
+                 value="{{ user.doctor_name or '' }}" placeholder="Dr. Ahmed Mohamed">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Doctor Phone</label>
+        <div class="input-wrapper">
+          <i class="fa fa-phone input-icon"></i>
+          <input type="text" name="doctor_phone" class="form-control"
+                 value="{{ user.doctor_phone or '' }}" placeholder="+201012345678">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary w-100">
+        <i class="fa fa-save fa-sm"></i> Save Changes
+      </button>
+    </form>
+
+    <p class="auth-footer" style="margin-top:1.2rem;">
+      <a href="{{ url_for('dashboard') }}"><i class="fa fa-arrow-left fa-sm"></i> Back to Dashboard</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

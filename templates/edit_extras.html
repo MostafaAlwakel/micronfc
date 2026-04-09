@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="auth-container" style="align-items:flex-start; padding-top:2.5rem;">
+  <div class="auth-card" style="max-width:600px;">
+
+    <div class="auth-header">
+      <span class="logo-dot" style="width:12px; height:12px; background:#f97316;"></span>
+      <h2>Location & Payment</h2>
+      <p>Add your location and payment info to your Smart Card</p>
+    </div>
+
+    <form method="POST">
+
+      <!-- Location -->
+      <div class="form-group">
+        <label style="color:#34a853;">
+          <i class="fa fa-location-dot fa-sm"></i> Google Maps Link
+        </label>
+        <p style="font-size:0.78rem; color:var(--muted); margin-bottom:0.5rem; line-height:1.5;">
+          افتح Google Maps ← دوس على المكان ← <strong>Share</strong> ← <strong>Copy link</strong>
+        </p>
+        <div class="input-wrapper">
+          <i class="fa fa-map-pin input-icon" style="color:#34a853;"></i>
+          <input type="url" name="location_url" class="form-control"
+                 value="{{ user.location_url or '' }}"
+                 placeholder="https://maps.app.goo.gl/...">
+        </div>
+        {% if user.location_url %}
+        <a href="{{ user.location_url }}" target="_blank"
+           style="font-size:0.78rem; color:#34a853; text-decoration:none; margin-top:0.4rem; display:inline-block;">
+          <i class="fa fa-arrow-up-right-from-square fa-xs"></i> Preview on Maps
+        </a>
+        {% endif %}
+      </div>
+
+      <!-- InstaPay -->
+      <div class="form-group">
+        <label style="color:#00c896;">
+          <i class="fa fa-money-bill-wave fa-sm"></i> InstaPay Number
+        </label>
+        <p style="font-size:0.78rem; color:var(--muted); margin-bottom:0.5rem; line-height:1.5;">
+          رقم التليفون المرتبط بحساب InstaPay الخاص بك
+        </p>
+        <div class="input-wrapper">
+          <i class="fa fa-mobile-screen input-icon" style="color:#00c896;"></i>
+          <input type="text" name="instapay" class="form-control"
+                 value="{{ user.instapay or '' }}"
+                 placeholder="01012345678">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary w-100">
+        <i class="fa fa-save fa-sm"></i> Save Changes
+      </button>
+    </form>
+
+    <p class="auth-footer" style="margin-top:1.2rem;">
+      <a href="{{ url_for('dashboard') }}"><i class="fa fa-arrow-left fa-sm"></i> Back to Dashboard</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

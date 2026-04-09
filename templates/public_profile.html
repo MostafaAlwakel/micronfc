@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="dashboard container" style="max-width:700px;">
+
+  <!-- Profile Header -->
+  <div class="dash-card" style="text-align:center; padding:2.5rem 2rem; margin-bottom:1.5rem; position:relative; overflow:hidden;">
+    {% if user.cover_photo %}
+      <div style="position:absolute; inset:0; z-index:0;">
+        <img src="{{ user.cover_photo }}"
+             style="width:100%; height:100%; object-fit:cover; opacity:0.12;">
+      </div>
+    {% endif %}
+    <div style="position:relative; z-index:1;">
+      {% if user.profile_photo %}
+        <img src="{{ user.profile_photo }}"
+             style="width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid var(--accent); margin-bottom:1rem;">
+      {% else %}
+        <div style="width:90px; height:90px; border-radius:50%; background:var(--accent-dim); border:3px solid rgba(0,229,160,0.3); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-family:'Syne',sans-serif; font-weight:700; font-size:2.2rem; color:var(--accent);">
+          {{ user.name[0].upper() }}
+        </div>
+      {% endif %}
+      <h1 style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:0.3rem;">{{ user.name }}</h1>
+      <p style="color:var(--accent); font-size:0.9rem; font-weight:500;">{{ user.job_title or 'MicroNFC User' }}</p>
+      {% if user.bio %}
+        <p style="color:var(--muted); font-size:0.88rem; margin-top:0.75rem; max-width:420px; margin-left:auto; margin-right:auto; line-height:1.6;">{{ user.bio }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="dash-card" style="margin-bottom:1.5rem;">
+    <div class="dash-card-header">
+      <i class="fa fa-address-book" style="color:var(--accent);"></i>
+      <h3>Contact</h3>
+    </div>
+    <div class="dash-card-body">
+      {% if user.phone %}
+        <p><span class="label"><i class="fa fa-phone fa-sm"></i> Phone</span>
+          <a href="tel:{{ user.phone }}" style="color:var(--accent); text-decoration:none;">{{ user.phone }}</a>
+        </p>
+      {% endif %}
+      <p><span class="label"><i class="fa fa-envelope fa-sm"></i> Email</span>
+        <a href="mailto:{{ user.email }}" style="color:var(--text); text-decoration:none;">{{ user.email }}</a>
+      </p>
+      {% if user.whatsapp %}
+        <p><span class="label"><i class="fab fa-whatsapp fa-sm" style="color:#25d366;"></i> WhatsApp</span>
+          <a href="https://wa.me/{{ user.whatsapp }}" target="_blank" style="color:#25d366; text-decoration:none;">Chat on WhatsApp</a>
+        </p>
+      {% endif %}
+      {% if user.website %}
+        <p><span class="label"><i class="fa fa-globe fa-sm"></i> Website</span>
+          <a href="{{ user.website }}" target="_blank" style="color:var(--accent); text-decoration:none;">{{ user.website }}</a>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Social Links -->
+  {% if user.linkedin or user.github or user.twitter or user.instagram %}
+  <div class="dash-card" style="margin-bottom:1.5rem;">
+    <div class="dash-card-header">
+      <i class="fa fa-share-nodes" style="color:var(--accent);"></i>
+      <h3>Social Links</h3>
+    </div>
+    <div style="display:flex; gap:0.75rem; flex-wrap:wrap; padding:0.5rem 0;">
+      {% if user.instagram %}
+        <a href="{{ user.instagram }}" target="_blank" class="social-btn social-instagram">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+      {% endif %}
+      {% if user.linkedin %}
+        <a href="{{ user.linkedin }}" target="_blank" class="social-btn social-linkedin">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      {% endif %}
+      {% if user.github %}
+        <a href="{{ user.github }}" target="_blank" class="social-btn social-github">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+      {% endif %}
+      {% if user.twitter %}
+        <a href="{{ user.twitter }}" target="_blank" class="social-btn social-twitter">
+          <i class="fab fa-twitter"></i> Twitter
+        </a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Medical Info -->
+  <div class="dash-card" style="margin-bottom:1.5rem; border-color:rgba(220,53,69,0.2);">
+    <div class="dash-card-header">
+      <i class="fa fa-heart-pulse" style="color:var(--red);"></i>
+      <h3 style="color:var(--red);">Medical Emergency Info</h3>
+    </div>
+    <div class="dash-card-body">
+      {% if user.blood_type %}
+        <p><span class="label"><i class="fa fa-droplet fa-sm"></i> Blood Type</span>
+          <strong style="color:var(--red); font-size:1.1rem;">{{ user.blood_type }}</strong>
+        </p>
+      {% endif %}
+      {% if user.allergies %}
+        <p><span class="label"><i class="fa fa-triangle-exclamation fa-sm"></i> Allergies</span> {{ user.allergies }}</p>
+      {% endif %}
+      {% if user.chronic_diseases %}
+        <p><span class="label"><i class="fa fa-heart-pulse fa-sm"></i> Diseases</span> {{ user.chronic_diseases }}</p>
+      {% endif %}
+      {% if user.medications %}
+        <p><span class="label"><i class="fa fa-pills fa-sm"></i> Medications</span> {{ user.medications }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Emergency Contacts -->
+  {% if user.emergency_contact_name or user.doctor_name %}
+  <div class="dash-card" style="margin-bottom:1.5rem;">
+    <div class="dash-card-header">
+      <i class="fa fa-phone-volume" style="color:var(--red);"></i>
+      <h3>Emergency Contacts</h3>
+    </div>
+    <div class="dash-card-body">
+      {% if user.emergency_contact_name %}
+        <p><span class="label">Contact</span> {{ user.emergency_contact_name }}</p>
+        {% if user.emergency_contact_phone %}
+          <p><span class="label">Phone</span>
+            <a href="tel:{{ user.emergency_contact_phone }}" style="color:var(--accent); text-decoration:none;">
+              {{ user.emergency_contact_phone }}
+            </a>
+          </p>
+        {% endif %}
+      {% endif %}
+      {% if user.doctor_name %}
+        <p style="margin-top:0.5rem;"><span class="label">Doctor</span> {{ user.doctor_name }}</p>
+        {% if user.doctor_phone %}
+          <p><span class="label">Doctor Tel</span>
+            <a href="tel:{{ user.doctor_phone }}" style="color:var(--red); text-decoration:none;">
+              {{ user.doctor_phone }}
+            </a>
+          </p>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

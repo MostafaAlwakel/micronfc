@@ -1,0 +1,781 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% set portfolio_count = (user.portfolio_images | default('[]') | from_json) | length %}
+{% set links_count    = (user.extra_links | default('[]') | from_json) | length %}
+{% set social_count   = [user.instagram, user.snapchat, user.facebook, user.tiktok,
+                          user.youtube, user.twitter, user.linkedin, user.github,
+                          user.whatsapp, user.website] | select | list | length %}
+{% set filled = [user.phone, user.job_title, user.bio, user.profile_photo,
+                  user.linkedin, user.blood_type, user.emergency_contact_name,
+                  user.bot_context] | select | list | length %}
+
+<style>
+  /* ── Dashboard Layout ── */
+  .dash-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 5rem;
+  }
+
+  /* ── Header ── */
+  .dash-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .dash-header-actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  /* ── Share bars ── */
+  .share-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .share-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.85rem;
+    overflow: hidden;
+  }
+
+  .share-link {
+    flex: 1;
+    font-size: 0.78rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: monospace;
+  }
+
+  .copy-btn {
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    border-radius: 7px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── Completion bar ── */
+  .completion-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress-bar-wrap {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+    margin: 0.5rem 0 0.4rem;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #00b37e);
+    border-radius: 99px;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── Section headers ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .section-icon.green  { background: rgba(0,229,160,0.1);  color: var(--accent); border: 1px solid rgba(0,229,160,0.2); }
+  .section-icon.red    { background: rgba(220,53,69,0.1);  color: var(--red);    border: 1px solid rgba(220,53,69,0.2); }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-badge {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .section-badge.green { background: rgba(0,229,160,0.1); color: var(--accent); }
+  .section-badge.red   { background: rgba(220,53,69,0.1); color: var(--red); }
+
+  /* ── Cards grid ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .dash-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .dash-card:hover {
+    border-color: rgba(0,229,160,0.2);
+    transform: translateY(-1px);
+  }
+
+  .dash-card.medical { border-color: rgba(220,53,69,0.12); }
+  .dash-card.medical:hover { border-color: rgba(220,53,69,0.3); }
+
+  .dash-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .dash-card-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .card-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .card-icon.green { background: rgba(0,229,160,0.1);  color: var(--accent); }
+  .card-icon.red   { background: rgba(220,53,69,0.1);  color: var(--red); }
+  .card-icon.blue  { background: rgba(55,138,221,0.1); color: var(--blue); }
+  .card-icon.purple{ background: rgba(168,85,247,0.1); color: #a855f7; }
+  .card-icon.orange{ background: rgba(249,115,22,0.1); color: #f97316; }
+
+  .dash-card-body {
+    flex: 1;
+    margin-bottom: 0.85rem;
+  }
+
+  .dash-card-body p {
+    font-size: 0.83rem;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .label {
+    font-size: 0.72rem;
+    color: var(--muted2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .val-set  { color: var(--accent); font-weight: 500; font-size: 0.83rem; }
+  .val-none { color: var(--muted2); font-size: 0.83rem; }
+  .val-red  { color: var(--red);   font-weight: 600; font-size: 0.83rem; }
+
+  /* ── Product selector ── */
+  .product-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.85rem;
+  }
+
+  .product-option {
+    border: 2px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: block;
+  }
+
+  .product-option:hover { border-color: rgba(0,229,160,0.3); }
+  .product-option.active-card    { border-color: var(--accent);  background: rgba(0,229,160,0.05); }
+  .product-option.active-bracelet{ border-color: var(--red);     background: rgba(220,53,69,0.05); }
+
+  /* ── Mobile responsive ── */
+  @media (max-width: 600px) {
+    .dash-header { flex-direction: column; }
+    .dash-header-actions { width: 100%; }
+    .dash-header-actions .btn-primary,
+    .dash-header-actions .btn-secondary { flex: 1; text-align: center; justify-content: center; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (min-width: 601px) and (max-width: 768px) {
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+
+<div class="dash-wrap">
+
+  <!-- ── Card Activation ── -->
+  {% set smart_card = current_user.cards | selectattr('card_type', 'equalto', 'smart') | list %}
+  {% set medical_card = current_user.cards | selectattr('card_type', 'equalto', 'medical') | list %}
+
+  <!-- Smart Card Status -->
+  <div style="background:{% if smart_card %}rgba(0,229,160,0.05){% else %}rgba(255,193,7,0.05){% endif %}; border:1px solid {% if smart_card %}rgba(0,229,160,0.2){% else %}rgba(255,193,7,0.2){% endif %}; border-radius:16px; padding:1.1rem 1.25rem; margin-bottom:0.75rem;">
+    {% if smart_card %}
+    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+      <i class="fa fa-credit-card" style="color:var(--accent); font-size:1.2rem;"></i>
+      <div style="flex:1;">
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+          🪪 Smart Card Active ✅
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">
+          Code: <code style="color:var(--accent);">{{ smart_card[0].code }}</code>
+          &nbsp;·&nbsp;
+          <code style="color:var(--muted); font-size:0.75rem;">{{ request.host_url }}c/{{ smart_card[0].code }}</code>
+          <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ smart_card[0].code }}')"
+            style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">📋</button>
+        </p>
+      </div>
+    </div>
+    {% else %}
+    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem; flex-wrap:wrap;">
+      <i class="fa fa-credit-card" style="color:#ffc107; font-size:1.2rem;"></i>
+      <div>
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+          Activate Your 🪪 Smart Card
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">Enter the code on the back of your Smart Card</p>
+      </div>
+    </div>
+    <form method="POST" action="{{ url_for('activate_card') }}"
+          style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <input type="text" name="code" placeholder="e.g. A1B2C3D4"
+        style="flex:1; min-width:160px; background:var(--surface2); border:1px solid rgba(255,193,7,0.3);
+               color:var(--text); padding:0.6rem 0.85rem; border-radius:8px; font-size:0.9rem;
+               text-transform:uppercase; letter-spacing:2px; font-family:monospace;"
+        required maxlength="8">
+      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem; background:#ffc107; color:#000;">
+        <i class="fa fa-bolt fa-sm"></i> Activate
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  <!-- Medical Card Status -->
+  <div style="background:{% if medical_card %}rgba(220,53,69,0.05){% else %}rgba(255,193,7,0.05){% endif %}; border:1px solid {% if medical_card %}rgba(220,53,69,0.2){% else %}rgba(255,193,7,0.2){% endif %}; border-radius:16px; padding:1.1rem 1.25rem; margin-bottom:1.25rem;">
+    {% if medical_card %}
+    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+      <i class="fa fa-heart-pulse" style="color:#ff6b7a; font-size:1.2rem;"></i>
+      <div style="flex:1;">
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+          ⌚ Medical Bracelet Active ✅
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">
+          Code: <code style="color:#ff6b7a;">{{ medical_card[0].code }}</code>
+          &nbsp;·&nbsp;
+          <code style="color:var(--muted); font-size:0.75rem;">{{ request.host_url }}c/{{ medical_card[0].code }}</code>
+          <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ medical_card[0].code }}')"
+            style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">📋</button>
+        </p>
+      </div>
+    </div>
+    {% else %}
+    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem; flex-wrap:wrap;">
+      <i class="fa fa-heart-pulse" style="color:#ffc107; font-size:1.2rem;"></i>
+      <div>
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+          Activate Your ⌚ Medical Bracelet
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">Enter the code on the back of your Medical Bracelet</p>
+      </div>
+    </div>
+    <form method="POST" action="{{ url_for('activate_card') }}"
+          style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <input type="text" name="code" placeholder="e.g. B3C4D5E6"
+        style="flex:1; min-width:160px; background:var(--surface2); border:1px solid rgba(255,193,7,0.3);
+               color:var(--text); padding:0.6rem 0.85rem; border-radius:8px; font-size:0.9rem;
+               text-transform:uppercase; letter-spacing:2px; font-family:monospace;"
+        required maxlength="8">
+      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem; background:#ff6b7a; color:#000;">
+        <i class="fa fa-bolt fa-sm"></i> Activate
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  <!-- ── Header ── -->
+  <div class="dash-header">
+    <div>
+      <h1 style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:0.2rem;">
+        Welcome, {{ user.name }} 👋
+      </h1>
+      <p style="color:var(--muted); font-size:0.875rem;">Manage your smart profile</p>
+    </div>
+    <div class="dash-header-actions">
+      <a href="{{ url_for('edit_bot') }}" class="btn-secondary">
+        <i class="fa fa-brain fa-sm"></i> Train Bot
+      </a>
+      <a href="{{ url_for('chat') }}" class="btn-secondary">
+        <i class="fa fa-robot fa-sm"></i> AI Chat
+      </a>
+      <button onclick="document.getElementById('preview-modal').classList.add('open')" class="btn-primary">
+        <i class="fa fa-eye fa-sm"></i> Preview Card
+      </button>
+      <button onclick="document.getElementById('preview-medical-modal').classList.add('open')"
+         class="btn-secondary" style="border-color:rgba(220,53,69,0.4); color:#ff6b7a;">
+        <i class="fa fa-heart-pulse fa-sm"></i> Medical
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Share Links ── -->
+  <div class="share-bars">
+    <div class="share-bar" style="border-color:rgba(0,229,160,0.15);">
+      <i class="fa fa-id-card" style="color:var(--accent); font-size:0.82rem; flex-shrink:0;"></i>
+      <span style="font-size:0.78rem; color:var(--muted); white-space:nowrap; flex-shrink:0;">Smart Card:</span>
+      <span id="share-link" class="share-link">{{ request.host_url }}profile/{{ user.id }}</span>
+      <button onclick="copyLink('share-link','copy-btn-1')" id="copy-btn-1" class="copy-btn">
+        <i class="fa fa-copy fa-sm"></i> Copy
+      </button>
+    </div>
+    <div class="share-bar" style="border-color:rgba(220,53,69,0.15);">
+      <i class="fa fa-heart-pulse" style="color:#ff6b7a; font-size:0.82rem; flex-shrink:0;"></i>
+      <span style="font-size:0.78rem; color:var(--muted); white-space:nowrap; flex-shrink:0;">Medical:</span>
+      <span id="medical-link" class="share-link">{{ request.host_url }}medical/{{ user.id }}</span>
+      <button onclick="copyLink('medical-link','copy-btn-2')" id="copy-btn-2" class="copy-btn">
+        <i class="fa fa-copy fa-sm"></i> Copy
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Profile Completion ── -->
+  <div class="completion-card">
+    <div style="display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <i class="fa fa-chart-line" style="color:var(--accent); font-size:0.9rem;"></i>
+        <span style="font-family:'Syne',sans-serif; font-weight:600; font-size:0.9rem;">Profile Completion</span>
+      </div>
+      <span id="pct-label" style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:800; color:var(--accent);"></span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pct-bar"></div></div>
+    <p id="pct-msg" style="font-size:0.76rem; color:var(--muted);"></p>
+  </div>
+
+  <!-- ════════════════════════════════
+       🪪 SMART CARD SECTION
+       ════════════════════════════════ -->
+  <div class="section-header">
+    <div class="section-icon green"><i class="fa fa-id-card"></i></div>
+    <span class="section-title" style="color:var(--accent);">Smart Card</span>
+    <div class="section-line"></div>
+    <span class="section-badge green">🪪 Personal & Professional</span>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- Personal Info -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="card-icon green"><i class="fa fa-user"></i></div>
+        <h3>Personal Info</h3>
+      </div>
+      <div class="dash-card-body">
+        <p><span class="label">Phone</span>
+           <span class="{{ 'val-set' if user.phone else 'val-none' }}">{{ user.phone or '—' }}</span></p>
+        <p><span class="label">Job Title</span>
+           <span class="{{ 'val-set' if user.job_title else 'val-none' }}">{{ user.job_title or '—' }}</span></p>
+        <p><span class="label">Bio</span>
+           <span class="{{ 'val-set' if user.bio else 'val-none' }}">
+             {{ (user.bio[:35]+'…') if user.bio and user.bio|length>35 else (user.bio or '—') }}
+           </span></p>
+        <p><span class="label">Photo</span>
+           <span class="{{ 'val-set' if user.profile_photo else 'val-none' }}">
+             {{ '✓ Uploaded' if user.profile_photo else '—' }}
+           </span></p>
+      </div>
+      <a href="{{ url_for('edit_personal') }}" class="btn-secondary" style="font-size:0.82rem;">
+        <i class="fa fa-pencil fa-sm"></i> Edit
+      </a>
+    </div>
+
+    <!-- Social Links -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="card-icon blue"><i class="fa fa-share-nodes"></i></div>
+        <h3>Social Links</h3>
+      </div>
+      <div class="dash-card-body">
+        <p><span class="label">Active</span>
+           <span class="val-set">{{ social_count }} / 10 platforms</span></p>
+        <p>
+          {% for name, val in [('Instagram', user.instagram), ('Snapchat', user.snapchat),
+                                ('Facebook', user.facebook), ('TikTok', user.tiktok),
+                                ('YouTube', user.youtube), ('Twitter', user.twitter),
+                                ('LinkedIn', user.linkedin), ('GitHub', user.github),
+                                ('WhatsApp', user.whatsapp), ('Website', user.website)] %}
+            {% if val %}
+            <span style="display:inline-block; background:rgba(0,229,160,0.08); border:1px solid rgba(0,229,160,0.15);
+                         border-radius:5px; padding:1px 6px; font-size:0.7rem; color:var(--accent); margin:2px 2px 2px 0;">
+              {{ name }}
+            </span>
+            {% endif %}
+          {% endfor %}
+          {% if social_count == 0 %}<span class="val-none">No links added yet</span>{% endif %}
+        </p>
+      </div>
+      <a href="{{ url_for('edit_social') }}" class="btn-secondary" style="font-size:0.82rem;">
+        <i class="fa fa-pencil fa-sm"></i> Edit
+      </a>
+    </div>
+
+    <!-- Location & Payment -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="card-icon orange"><i class="fa fa-location-dot"></i></div>
+        <h3>Location & Payment</h3>
+      </div>
+      <div class="dash-card-body">
+        <p><span class="label">Google Maps</span>
+           <span class="{{ 'val-set' if user.location_url else 'val-none' }}">
+             {{ '✓ Linked' if user.location_url else '—' }}
+           </span></p>
+        <p><span class="label">InstaPay</span>
+           <span class="{{ 'val-set' if user.instapay else 'val-none' }}">
+             {{ user.instapay or '—' }}
+           </span></p>
+      </div>
+      <a href="{{ url_for('edit_extras') }}" class="btn-secondary" style="font-size:0.82rem;">
+        <i class="fa fa-pencil fa-sm"></i> Edit
+      </a>
+    </div>
+
+    <!-- Card Theme -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="card-icon purple"><i class="fa fa-palette"></i></div>
+        <h3>Card Theme</h3>
+      </div>
+      <div class="dash-card-body">
+        {% set theme_colors = {
+          'dark':   '#00e5a0',
+          'light':  '#0070f3',
+          'purple': '#a855f7',
+          'ocean':  '#38bdf8',
+          'sunset': '#f97316',
+          'pink':   '#ec4899',
+        } %}
+        {% set current_theme = user.card_theme or 'dark' %}
+        {% set theme_color = theme_colors.get(current_theme, '#00e5a0') %}
+        <p style="display:flex; align-items:center; gap:8px;">
+          <span style="width:14px; height:14px; border-radius:50%; background:{{ theme_color }};
+                       box-shadow:0 0 8px {{ theme_color }}55; display:inline-block; flex-shrink:0;"></span>
+          <span class="val-set" style="color:{{ theme_color }}; text-transform:capitalize;">{{ current_theme }}</span>
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted); margin-top:0.25rem;">
+          Choose how your digital card looks to visitors
+        </p>
+      </div>
+      <a href="{{ url_for('edit_theme') }}" class="btn-secondary" style="font-size:0.82rem;">
+        <i class="fa fa-palette fa-sm"></i> Change Theme
+      </a>
+    </div>
+
+    <!-- Portfolio -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="card-icon green"><i class="fa fa-images"></i></div>
+        <h3>Portfolio Gallery</h3>
+      </div>
+      <div class="dash-card-body">
+        <p><span class="label">Images</span>
+           <span class="val-set">{{ portfolio_count }} / 12</span></p>
+
+        {% if portfolio_count > 0 %}
+        <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:0.4rem;">
+          {% for img in (user.portfolio_images | from_json)[:5] %}
+          <img src="{{ img }}"
+               style="width:36px; height:36px; border-radius:6px; object-fit:cover; border:1px solid var(--border);">
+          {% endfor %}
+          {% if portfolio_count > 5 %}
+          <div style="width:36px; height:36px; border-radius:6px; background:var(--surface2); border:1px solid var(--border);
+                      display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:var(--muted);">
+            +{{ portfolio_count - 5 }}
+          </div>
+          {% endif %}
+        </div>
+        {% else %}
+        <p style="font-size:0.78rem; color:var(--muted2); margin-top:0.25rem;">
+          Showcase your work with photos
+        </p>
+        {% endif %}
+      </div>
+      <a href="{{ url_for('edit_portfolio') }}" class="btn-secondary" style="font-size:0.82rem;">
+        <i class="fa fa-upload fa-sm"></i> Manage
+      </a>
+    </div>
+
+    <!-- Custom Links -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="card-icon blue"><i class="fa fa-link"></i></div>
+        <h3>Custom Links</h3>
+      </div>
+      <div class="dash-card-body">
+        <p><span class="label">Added</span>
+           <span class="{{ 'val-set' if links_count > 0 else 'val-none' }}">{{ links_count }} link{{ 's' if links_count != 1 }}</span></p>
+        {% if links_count > 0 %}
+        {% for lnk in (user.extra_links | from_json)[:3] %}
+        <p style="font-size:0.78rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+          <i class="fa fa-link fa-xs" style="color:var(--accent);"></i> {{ lnk.title }}
+        </p>
+        {% endfor %}
+        {% else %}
+        <p style="font-size:0.78rem; color:var(--muted2);">Add any extra links to your card</p>
+        {% endif %}
+      </div>
+      <a href="{{ url_for('edit_links') }}" class="btn-secondary" style="font-size:0.82rem;">
+        <i class="fa fa-pencil fa-sm"></i> Manage
+      </a>
+    </div>
+
+  </div><!-- /cards-grid smart card -->
+
+  <!-- ════════════════════════════════
+       ⌚ MEDICAL BRACELET SECTION
+       ════════════════════════════════ -->
+  <div class="section-header">
+    <div class="section-icon red"><i class="fa fa-heart-pulse"></i></div>
+    <span class="section-title" style="color:var(--red);">Medical Bracelet</span>
+    <div class="section-line" style="background:rgba(220,53,69,0.2);"></div>
+    <span class="section-badge red">⌚ Emergency Info</span>
+  </div>
+
+  <div class="cards-grid" style="margin-bottom:2rem;">
+
+    <!-- Medical Info -->
+    <div class="dash-card medical">
+      <div class="dash-card-header">
+        <div class="card-icon red"><i class="fa fa-notes-medical"></i></div>
+        <h3>Medical Info</h3>
+      </div>
+      <div class="dash-card-body">
+        <p><span class="label">Blood Type</span>
+           {% if user.blood_type %}
+             <strong class="val-red">{{ user.blood_type }}</strong>
+           {% else %}<span class="val-none">—</span>{% endif %}
+        </p>
+        <p><span class="label">Allergies</span>
+           <span class="{{ 'val-set' if user.allergies else 'val-none' }}">
+             {{ (user.allergies[:30]+'…') if user.allergies and user.allergies|length>30 else (user.allergies or '—') }}
+           </span></p>
+        <p><span class="label">Medications</span>
+           <span class="{{ 'val-set' if user.medications else 'val-none' }}">
+             {{ (user.medications[:30]+'…') if user.medications and user.medications|length>30 else (user.medications or '—') }}
+           </span></p>
+        <p><span class="label">Doctor</span>
+           <span class="{{ 'val-set' if user.doctor_name else 'val-none' }}">{{ user.doctor_name or '—' }}</span></p>
+      </div>
+      <a href="{{ url_for('edit_medical') }}" class="btn-secondary" style="font-size:0.82rem; border-color:rgba(220,53,69,0.3); color:var(--red);">
+        <i class="fa fa-pencil fa-sm"></i> Edit
+      </a>
+    </div>
+
+    <!-- Emergency Contact -->
+    <div class="dash-card medical">
+      <div class="dash-card-header">
+        <div class="card-icon red"><i class="fa fa-phone-volume"></i></div>
+        <h3>Emergency Contact</h3>
+      </div>
+      <div class="dash-card-body">
+        <p><span class="label">Contact</span>
+           <span class="{{ 'val-set' if user.emergency_contact_name else 'val-none' }}">
+             {{ user.emergency_contact_name or '—' }}
+           </span></p>
+        <p><span class="label">Phone</span>
+           <span class="{{ 'val-set' if user.emergency_contact_phone else 'val-none' }}">
+             {{ user.emergency_contact_phone or '—' }}
+           </span></p>
+        <p><span class="label">Doctor</span>
+           <span class="{{ 'val-set' if user.doctor_name else 'val-none' }}">{{ user.doctor_name or '—' }}</span></p>
+        <p><span class="label">Dr. Phone</span>
+           <span class="{{ 'val-set' if user.doctor_phone else 'val-none' }}">{{ user.doctor_phone or '—' }}</span></p>
+      </div>
+      <a href="{{ url_for('edit_medical') }}" class="btn-secondary" style="font-size:0.82rem; border-color:rgba(220,53,69,0.3); color:var(--red);">
+        <i class="fa fa-pencil fa-sm"></i> Edit
+      </a>
+    </div>
+
+  </div><!-- /cards-grid medical -->
+
+  <!-- ════════════════════════════════
+       📦 MY PRODUCT
+       ════════════════════════════════ -->
+  <div class="product-section">
+    <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.25rem;">
+      <i class="fa fa-box" style="color:var(--accent); font-size:0.9rem;"></i>
+      <span style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;">My NFC Product</span>
+      <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">Active profile shown on tap</span>
+    </div>
+    <p style="font-size:0.78rem; color:var(--muted2); margin-bottom:0;">
+      Both profiles are always accessible. This sets which one opens first when someone taps your NFC device.
+    </p>
+
+    <div class="product-grid">
+
+      <a href="{{ url_for('set_product', ptype='card') }}"
+         class="product-option{% if user.product_type == 'card' %} active-card{% endif %}">
+        <div style="font-size:1.8rem; margin-bottom:0.4rem;">🪪</div>
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem;
+           color:{% if user.product_type == 'card' %}var(--accent){% else %}var(--muted){% endif %};">
+          Smart Card
+        </p>
+        <p style="font-size:0.72rem; color:var(--muted2); margin-top:2px;">Personal & Professional</p>
+        {% if user.product_type == 'card' %}
+          <span style="font-size:0.7rem; color:var(--accent); margin-top:5px; display:block; font-weight:600;">
+            <i class="fa fa-check-circle"></i> Active
+          </span>
+        {% endif %}
+      </a>
+
+      <a href="{{ url_for('set_product', ptype='bracelet') }}"
+         class="product-option{% if user.product_type == 'bracelet' %} active-bracelet{% endif %}">
+        <div style="font-size:1.8rem; margin-bottom:0.4rem;">⌚</div>
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem;
+           color:{% if user.product_type == 'bracelet' %}var(--red){% else %}var(--muted){% endif %};">
+          Medical Bracelet
+        </p>
+        <p style="font-size:0.72rem; color:var(--muted2); margin-top:2px;">Emergency Medical Info</p>
+        {% if user.product_type == 'bracelet' %}
+          <span style="font-size:0.7rem; color:var(--red); margin-top:5px; display:block; font-weight:600;">
+            <i class="fa fa-check-circle"></i> Active
+          </span>
+        {% endif %}
+      </a>
+
+    </div>
+  </div>
+
+</div><!-- /dash-wrap -->
+
+<script>
+  // Completion bar
+  const filled = {{ filled }};
+  const pct = Math.round(filled / 8 * 100);
+  document.getElementById('pct-bar').style.width = pct + '%';
+  document.getElementById('pct-label').textContent = pct + '%';
+  const msg = document.getElementById('pct-msg');
+  if (pct === 100) { msg.textContent = '✅ Profile complete!'; msg.style.color = 'var(--accent)'; }
+  else { msg.textContent = 'Fill in more info to get the most out of MicroNFC'; }
+
+  // Copy link
+  function copyLink(linkId, btnId) {
+    const link = document.getElementById(linkId).innerText.trim();
+    navigator.clipboard.writeText(link).then(() => {
+      const btn = document.getElementById(btnId);
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fa fa-check fa-sm"></i> Copied!';
+      btn.style.color = 'var(--accent)';
+      btn.style.borderColor = 'var(--accent)';
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 2000);
+    });
+  }
+</script>
+
+<!-- Preview Modal -->
+<div class="modal-overlay" id="preview-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div style="width:100%; max-width:450px; height:85vh; border-radius:20px; overflow:hidden; position:relative;">
+    <button onclick="document.getElementById('preview-modal').classList.remove('open')"
+      style="position:absolute; top:1rem; right:1rem; z-index:10; background:rgba(0,0,0,0.5); border:none; color:white; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:1rem;">
+      ×
+    </button>
+    <iframe src="{{ url_for('preview_profile', user_id=user.id) }}"
+      style="width:100%; height:100%; border:none; border-radius:20px;">
+    </iframe>
+  </div>
+</div>
+
+<!-- Medical Preview Modal -->
+<div class="modal-overlay" id="preview-medical-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div style="width:100%; max-width:450px; height:85vh; border-radius:20px; overflow:hidden; position:relative;">
+    <button onclick="document.getElementById('preview-medical-modal').classList.remove('open')"
+      style="position:absolute; top:1rem; right:1rem; z-index:10; background:rgba(0,0,0,0.5); border:none; color:white; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:1rem;">
+      ×
+    </button>
+    <iframe src="{{ url_for('preview_medical', user_id=user.id) }}"
+      style="width:100%; height:100%; border:none; border-radius:20px;">
+    </iframe>
+  </div>
+</div>
+
+{% endblock %}
