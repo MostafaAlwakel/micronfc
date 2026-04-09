@@ -655,53 +655,6 @@
 
   </div><!-- /cards-grid medical -->
 
-  <!-- ════════════════════════════════
-       📦 MY PRODUCT
-       ════════════════════════════════ -->
-  <div class="product-section">
-    <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.25rem;">
-      <i class="fa fa-box" style="color:var(--accent); font-size:0.9rem;"></i>
-      <span style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;">My NFC Product</span>
-      <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">Active profile shown on tap</span>
-    </div>
-    <p style="font-size:0.78rem; color:var(--muted2); margin-bottom:0;">
-      Both profiles are always accessible. This sets which one opens first when someone taps your NFC device.
-    </p>
-
-    <div class="product-grid">
-
-      <a href="{{ url_for('set_product', ptype='card') }}"
-         class="product-option{% if user.product_type == 'card' %} active-card{% endif %}">
-        <div style="font-size:1.8rem; margin-bottom:0.4rem;">🪪</div>
-        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem;
-           color:{% if user.product_type == 'card' %}var(--accent){% else %}var(--muted){% endif %};">
-          Smart Card
-        </p>
-        <p style="font-size:0.72rem; color:var(--muted2); margin-top:2px;">Personal & Professional</p>
-        {% if user.product_type == 'card' %}
-          <span style="font-size:0.7rem; color:var(--accent); margin-top:5px; display:block; font-weight:600;">
-            <i class="fa fa-check-circle"></i> Active
-          </span>
-        {% endif %}
-      </a>
-
-      <a href="{{ url_for('set_product', ptype='bracelet') }}"
-         class="product-option{% if user.product_type == 'bracelet' %} active-bracelet{% endif %}">
-        <div style="font-size:1.8rem; margin-bottom:0.4rem;">⌚</div>
-        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem;
-           color:{% if user.product_type == 'bracelet' %}var(--red){% else %}var(--muted){% endif %};">
-          Medical Bracelet
-        </p>
-        <p style="font-size:0.72rem; color:var(--muted2); margin-top:2px;">Emergency Medical Info</p>
-        {% if user.product_type == 'bracelet' %}
-          <span style="font-size:0.7rem; color:var(--red); margin-top:5px; display:block; font-weight:600;">
-            <i class="fa fa-check-circle"></i> Active
-          </span>
-        {% endif %}
-      </a>
-
-    </div>
-  </div>
 
 </div><!-- /dash-wrap -->
 
