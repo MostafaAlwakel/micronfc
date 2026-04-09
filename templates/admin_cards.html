@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="max-width:1100px; margin:2rem auto; padding:0 1rem;">
+
+  <!-- Header -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <h1 style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:0.2rem;">
+        💳 NFC Cards
+      </h1>
+      <p style="color:var(--muted); font-size:0.85rem;">Manage and generate NFC card codes</p>
+    </div>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary">← Admin</a>
+  </div>
+
+  <!-- Stats -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin-bottom:2rem;">
+    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:16px; padding:1.25rem; text-align:center;">
+      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent);">{{ total }}</div>
+      <div style="font-size:0.8rem; color:var(--muted);">Total Cards</div>
+    </div>
+    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:16px; padding:1.25rem; text-align:center;">
+      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:#00e5a0;">{{ activated }}</div>
+      <div style="font-size:0.8rem; color:var(--muted);">Activated</div>
+    </div>
+    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:16px; padding:1.25rem; text-align:center;">
+      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:#ffc107;">{{ total - activated }}</div>
+      <div style="font-size:0.8rem; color:var(--muted);">Not Activated</div>
+    </div>
+  </div>
+
+  <!-- Generate Cards -->
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.25rem; margin-bottom:2rem;">
+    <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:1rem;">➕ Generate New Cards</h3>
+    <form method="POST" action="{{ url_for('admin_generate_cards') }}" style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+      <input type="number" name="count" value="1" min="1" max="100"
+        style="width:80px; background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.6rem 0.8rem; border-radius:8px; font-size:0.85rem;">
+      <select name="card_type"
+        style="background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.6rem 0.8rem; border-radius:8px; font-size:0.85rem;">
+        <option value="smart">🪪 Smart Card</option>
+        <option value="medical">⌚ Medical Bracelet</option>
+      </select>
+      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem;">
+        🎲 Generate
+      </button>
+    </form>
+  </div>
+
+  <!-- Cards Table -->
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden;">
+    <div style="padding:1.2rem 1.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+      <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700;">All Cards</h3>
+      <input type="text" placeholder="🔍 Search..." onkeyup="searchCards(this.value)"
+        style="background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.5rem 0.85rem; border-radius:8px; font-size:0.85rem; width:200px;">
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.85rem;" id="cards-table">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Code</th>
+            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Status</th>
+            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">User</th>
+            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">NFC Link</th>
+            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Created</th>
+            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for card in cards %}
+          <tr>
+            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">
+              <code style="background:var(--surface2); padding:0.2rem 0.6rem; border-radius:6px; font-size:0.85rem; color:var(--accent); font-weight:700; letter-spacing:1px;">
+                {{ card.code }}
+              </code>
+            </td>
+            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">
+              {% if not card.is_active %}
+                <span style="background:rgba(220,53,69,0.1); color:#ff6b7a; border:1px solid rgba(220,53,69,0.2); padding:0.2rem 0.6rem; border-radius:20px; font-size:0.72rem; font-weight:600;">🚫 Disabled</span>
+              {% elif card.user_id %}
+                <span style="background:rgba(0,229,160,0.1); color:#00e5a0; border:1px solid rgba(0,229,160,0.2); padding:0.2rem 0.6rem; border-radius:20px; font-size:0.72rem; font-weight:600;">✅ Activated</span>
+              {% else %}
+                <span style="background:rgba(255,193,7,0.1); color:#ffc107; border:1px solid rgba(255,193,7,0.2); padding:0.2rem 0.6rem; border-radius:20px; font-size:0.72rem; font-weight:600;">⏳ Pending</span>
+              {% endif %}
+            </td>
+            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border); color:var(--muted);">
+              {% if card.user %}
+                <span style="color:var(--text);">{{ card.user.name }}</span>
+                <span style="font-size:0.75rem; color:var(--muted); display:block;">{{ card.user.email }}</span>
+              {% else %}
+                <span style="color:var(--muted2);">—</span>
+              {% endif %}
+            </td>
+            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">
+              <code style="font-size:0.75rem; color:var(--muted);">
+                {{ request.host_url }}c/{{ card.code }}
+              </code>
+              <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ card.code }}')"
+                style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem; margin-left:4px;">
+                📋
+              </button>
+            </td>
+            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.8rem;">
+              {{ card.created_at.strftime('%d %b %Y') }}
+            </td>
+            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">
+              <form method="POST" action="{{ url_for('admin_toggle_card', card_id=card.id) }}" style="display:inline;">
+                <button type="submit" class="act-btn {{ 'act-toggle-off' if card.is_active else 'act-toggle' }}">
+                  {{ '🚫 Disable' if card.is_active else '✅ Enable' }}
+                </button>
+              </form>
+              <form method="POST" action="{{ url_for('admin_delete_card', card_id=card.id) }}" style="display:inline;"
+                    onsubmit="return confirm('Delete card {{ card.code }}?')">
+                <button type="submit" class="act-btn act-delete">🗑️</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  function searchCards(query) {
+    const rows = document.querySelectorAll('#cards-table tbody tr');
+    query = query.toLowerCase();
+    rows.forEach(row => {
+      row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
+    });
+  }
+</script>
+
+{% endblock %}
