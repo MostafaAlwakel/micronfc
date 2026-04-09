@@ -719,14 +719,29 @@ def migrate_db():
         ("portfolio_images", "TEXT"),
         ("card_theme", "VARCHAR(20) DEFAULT 'dark'"),
         ("extra_links", "TEXT"),
+        ("role", "VARCHAR(20) DEFAULT 'user'"),
+        ("is_active", "BOOLEAN DEFAULT TRUE"),
+        ("profile_photo", "TEXT"),
+        ("cover_photo", "TEXT"),
+        ("instagram", "VARCHAR(200)"),
+        ("whatsapp", "VARCHAR(20)"),
+        ("bot_context", "TEXT"),
+        ("is_admin", "BOOLEAN DEFAULT FALSE"),
     ]
     with db.engine.connect() as conn:
         for col_name, col_type in new_cols:
             try:
-                conn.execute(text(f"ALTER TABLE user ADD COLUMN {col_name} {col_type}"))
+                conn.execute(text(f'ALTER TABLE "user" ADD COLUMN {col_name} {col_type}'))
                 conn.commit()
             except Exception:
                 pass
+
+        # migrate card table
+        try:
+            conn.execute(text('ALTER TABLE card ADD COLUMN card_type VARCHAR(20) DEFAULT \'smart\''))
+            conn.commit()
+        except Exception:
+            pass
 
 with app.app_context():
     db.create_all()
