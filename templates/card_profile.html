@@ -329,7 +329,7 @@
   <!-- COVER -->
   <div style="height:120px; position:relative; overflow:hidden;">
     {% if user.cover_photo %}
-      <img src="{{ url_for('static', filename='uploads/' + user.cover_photo) }}"
+      <img src="{{ user.cover_photo }}"
            style="width:100%; height:100%; object-fit:cover;">
       <div style="position:absolute; inset:0; background:rgba(0,0,0,0.2);"></div>
     {% else %}
@@ -344,7 +344,7 @@
   <!-- AVATAR -->
   <div style="display:flex; justify-content:center; margin-top:-42px; position:relative; z-index:1;">
     {% if user.profile_photo %}
-      <img src="{{ url_for('static', filename='uploads/' + user.profile_photo) }}"
+      <img src="{{ user.profile_photo }}"
            style="width:84px; height:84px; border-radius:50%; object-fit:cover; border:4px solid {{ t.card }};">
     {% else %}
       <div style="width:84px; height:84px; border-radius:50%; background:rgba({{ t.accentRgb }},0.15); border:4px solid {{ t.card }}; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:700; font-size:2rem; color:{{ t.accent }};">
