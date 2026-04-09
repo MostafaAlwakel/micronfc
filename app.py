@@ -786,6 +786,18 @@ def migrate_db():
         except Exception:
             pass
 
+        # migrate verification columns
+        try:
+            conn.execute(text('ALTER TABLE "user" ADD COLUMN is_verified BOOLEAN DEFAULT FALSE'))
+            conn.commit()
+        except Exception:
+            pass
+        try:
+            conn.execute(text('ALTER TABLE "user" ADD COLUMN verification_token TEXT'))
+            conn.commit()
+        except Exception:
+            pass
+
 with app.app_context():
     db.create_all()
     migrate_db()
