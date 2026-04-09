@@ -282,6 +282,94 @@
 
 <div class="dash-wrap">
 
+  <!-- ── Card Activation ── -->
+  {% set smart_card = current_user.cards | selectattr('card_type', 'equalto', 'smart') | list %}
+  {% set medical_card = current_user.cards | selectattr('card_type', 'equalto', 'medical') | list %}
+
+  <!-- Smart Card Status -->
+  <div style="background:{% if smart_card %}rgba(0,229,160,0.05){% else %}rgba(255,193,7,0.05){% endif %}; border:1px solid {% if smart_card %}rgba(0,229,160,0.2){% else %}rgba(255,193,7,0.2){% endif %}; border-radius:16px; padding:1.1rem 1.25rem; margin-bottom:0.75rem;">
+    {% if smart_card %}
+    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+      <i class="fa fa-credit-card" style="color:var(--accent); font-size:1.2rem;"></i>
+      <div style="flex:1;">
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+          🪪 Smart Card Active ✅
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">
+          Code: <code style="color:var(--accent);">{{ smart_card[0].code }}</code>
+          &nbsp;·&nbsp;
+          <code style="color:var(--muted); font-size:0.75rem;">{{ request.host_url }}c/{{ smart_card[0].code }}</code>
+          <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ smart_card[0].code }}')"
+            style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">📋</button>
+        </p>
+      </div>
+    </div>
+    {% else %}
+    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem; flex-wrap:wrap;">
+      <i class="fa fa-credit-card" style="color:#ffc107; font-size:1.2rem;"></i>
+      <div>
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+          Activate Your 🪪 Smart Card
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">Enter the code on the back of your Smart Card</p>
+      </div>
+    </div>
+    <form method="POST" action="{{ url_for('activate_card') }}"
+          style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <input type="text" name="code" placeholder="e.g. A1B2C3D4"
+        style="flex:1; min-width:160px; background:var(--surface2); border:1px solid rgba(255,193,7,0.3);
+               color:var(--text); padding:0.6rem 0.85rem; border-radius:8px; font-size:0.9rem;
+               text-transform:uppercase; letter-spacing:2px; font-family:monospace;"
+        required maxlength="8">
+      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem; background:#ffc107; color:#000;">
+        <i class="fa fa-bolt fa-sm"></i> Activate
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  <!-- Medical Card Status -->
+  <div style="background:{% if medical_card %}rgba(220,53,69,0.05){% else %}rgba(255,193,7,0.05){% endif %}; border:1px solid {% if medical_card %}rgba(220,53,69,0.2){% else %}rgba(255,193,7,0.2){% endif %}; border-radius:16px; padding:1.1rem 1.25rem; margin-bottom:1.25rem;">
+    {% if medical_card %}
+    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+      <i class="fa fa-heart-pulse" style="color:#ff6b7a; font-size:1.2rem;"></i>
+      <div style="flex:1;">
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+          ⌚ Medical Bracelet Active ✅
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">
+          Code: <code style="color:#ff6b7a;">{{ medical_card[0].code }}</code>
+          &nbsp;·&nbsp;
+          <code style="color:var(--muted); font-size:0.75rem;">{{ request.host_url }}c/{{ medical_card[0].code }}</code>
+          <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ medical_card[0].code }}')"
+            style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">📋</button>
+        </p>
+      </div>
+    </div>
+    {% else %}
+    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem; flex-wrap:wrap;">
+      <i class="fa fa-heart-pulse" style="color:#ffc107; font-size:1.2rem;"></i>
+      <div>
+        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+          Activate Your ⌚ Medical Bracelet
+        </p>
+        <p style="font-size:0.78rem; color:var(--muted);">Enter the code on the back of your Medical Bracelet</p>
+      </div>
+    </div>
+    <form method="POST" action="{{ url_for('activate_card') }}"
+          style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <input type="text" name="code" placeholder="e.g. B3C4D5E6"
+        style="flex:1; min-width:160px; background:var(--surface2); border:1px solid rgba(255,193,7,0.3);
+               color:var(--text); padding:0.6rem 0.85rem; border-radius:8px; font-size:0.9rem;
+               text-transform:uppercase; letter-spacing:2px; font-family:monospace;"
+        required maxlength="8">
+      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem; background:#ff6b7a; color:#000;">
+        <i class="fa fa-bolt fa-sm"></i> Activate
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
   <!-- ── Header ── -->
   <div class="dash-header">
     <div>
@@ -297,13 +385,13 @@
       <a href="{{ url_for('chat') }}" class="btn-secondary">
         <i class="fa fa-robot fa-sm"></i> AI Chat
       </a>
-      <a href="{{ url_for('public_profile', user_id=user.id) }}" class="btn-primary" target="_blank">
-        <i class="fa fa-eye fa-sm"></i> Smart Card
-      </a>
-      <a href="{{ url_for('medical_profile', user_id=user.id) }}" class="btn-secondary" target="_blank"
-         style="border-color:rgba(220,53,69,0.4); color:#ff6b7a;">
+      <button onclick="document.getElementById('preview-modal').classList.add('open')" class="btn-primary">
+        <i class="fa fa-eye fa-sm"></i> Preview Card
+      </button>
+      <button onclick="document.getElementById('preview-medical-modal').classList.add('open')"
+         class="btn-secondary" style="border-color:rgba(220,53,69,0.4); color:#ff6b7a;">
         <i class="fa fa-heart-pulse fa-sm"></i> Medical
-      </a>
+      </button>
     </div>
   </div>
 
@@ -663,5 +751,31 @@
     });
   }
 </script>
+
+<!-- Preview Modal -->
+<div class="modal-overlay" id="preview-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div style="width:100%; max-width:450px; height:85vh; border-radius:20px; overflow:hidden; position:relative;">
+    <button onclick="document.getElementById('preview-modal').classList.remove('open')"
+      style="position:absolute; top:1rem; right:1rem; z-index:10; background:rgba(0,0,0,0.5); border:none; color:white; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:1rem;">
+      ×
+    </button>
+    <iframe src="{{ url_for('preview_profile', user_id=user.id) }}"
+      style="width:100%; height:100%; border:none; border-radius:20px;">
+    </iframe>
+  </div>
+</div>
+
+<!-- Medical Preview Modal -->
+<div class="modal-overlay" id="preview-medical-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div style="width:100%; max-width:450px; height:85vh; border-radius:20px; overflow:hidden; position:relative;">
+    <button onclick="document.getElementById('preview-medical-modal').classList.remove('open')"
+      style="position:absolute; top:1rem; right:1rem; z-index:10; background:rgba(0,0,0,0.5); border:none; color:white; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:1rem;">
+      ×
+    </button>
+    <iframe src="{{ url_for('preview_medical', user_id=user.id) }}"
+      style="width:100%; height:100%; border:none; border-radius:20px;">
+    </iframe>
+  </div>
+</div>
 
 {% endblock %}
