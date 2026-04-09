@@ -3,7 +3,8 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
 from config import Config
-from models import db, User
+from models import db, User, Card
+import secrets
 from dotenv import load_dotenv
 from functools import wraps
 import os
@@ -123,11 +124,20 @@ def dashboard():
 
 @app.route('/profile/<int:user_id>')
 def public_profile(user_id):
+    # بيشتغل بس لو جاي من كرت مفعّل
+    ref = request.args.get('ref', '')
+    card = Card.query.filter_by(code=ref, user_id=user_id).first()
+    if not card:
+        return render_template('card_invalid.html'), 403
     user = User.query.get_or_404(user_id)
     return render_template('card_profile.html', user=user)
 
 @app.route('/medical/<int:user_id>')
 def medical_profile(user_id):
+    ref = request.args.get('ref', '')
+    card = Card.query.filter_by(code=ref, user_id=user_id).first()
+    if not card:
+        return render_template('card_invalid.html'), 403
     user = User.query.get_or_404(user_id)
     return render_template('bracelet_profile.html', user=user)
 
@@ -414,6 +424,65 @@ def set_product(ptype):
         db.session.commit()
     return redirect(url_for('dashboard'))
 
+@app.route('/preview/<int:user_id>')
+@login_required
+def preview_profile(user_id):
+    if current_user.id != user_id and not current_user.is_admin:
+        return redirect(url_for('dashboard'))
+    user = User.query.get_or_404(user_id)
+    return render_template('card_profile.html', user=user)
+
+@app.route('/preview/medical/<int:user_id>')
+@login_required
+def preview_medical(user_id):
+    if current_user.id != user_id and not current_user.is_admin:
+        return redirect(url_for('dashboard'))
+    user = User.query.get_or_404(user_id)
+    return render_template('bracelet_profile.html', user=user)
+
+# ==================== CARDS ====================
+
+@app.route('/c/<code>')
+def card_redirect(code):
+    card = Card.query.filter_by(code=code).first()
+    if not card or not card.is_active:
+        return render_template('card_invalid.html'), 404
+    if not card.user_id:
+        return render_template('card_not_activated.html'), 404
+    user = User.query.get(card.user_id)
+    if not user or not user.is_active:
+        return render_template('card_invalid.html'), 404
+    if card.card_type == 'medical':
+        return redirect(url_for('medical_profile', user_id=user.id, ref=card.code))
+    return redirect(url_for('public_profile', user_id=user.id, ref=card.code))
+
+@app.route('/activate', methods=['POST'])
+@login_required
+def activate_card():
+    code = request.form.get('code', '').strip().upper()
+    card = Card.query.filter_by(code=code).first()
+
+    if not card:
+        flash('Invalid card code!', 'danger')
+        return redirect(url_for('dashboard'))
+
+    if card.user_id:
+        flash('This card is already activated!', 'danger')
+        return redirect(url_for('dashboard'))
+
+    if not card.is_active:
+        flash('This card is disabled!', 'danger')
+        return redirect(url_for('dashboard'))
+
+    from datetime import datetime, timezone
+    card.user_id = current_user.id
+    card.activated_at = datetime.now(timezone.utc)
+    db.session.commit()
+
+    card_type = '⌚ Medical Bracelet' if card.card_type == 'medical' else '🪪 Smart Card'
+    flash(f'{card_type} activated successfully! 🎉', 'success')
+    return redirect(url_for('dashboard'))
+
 # ==================== ADMIN ====================
 
 @app.route('/admin')
@@ -581,6 +650,60 @@ def admin_set_product(user_id, ptype):
         user.product_type = ptype
         db.session.commit()
     return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/generate_cards', methods=['POST'])
+@login_required
+@admin_required
+def admin_generate_cards():
+    count = int(request.form.get('count', 1))
+    card_type = request.form.get('card_type', 'smart')
+    count = min(count, 100)
+    generated = []
+    for _ in range(count):
+        while True:
+            code = secrets.token_hex(4).upper()
+            if not Card.query.filter_by(code=code).first():
+                break
+        card = Card(code=code, card_type=card_type)
+        db.session.add(card)
+        generated.append(code)
+    db.session.commit()
+    flash(f'{count} {card_type} card(s) generated!', 'success')
+    return redirect(url_for('admin_cards'))
+
+@app.route('/admin/cards')
+@login_required
+@admin_required
+def admin_cards():
+    cards = Card.query.order_by(Card.created_at.desc()).all()
+    total = Card.query.count()
+    activated = Card.query.filter(Card.user_id != None).count()
+    return render_template('admin_cards.html',
+        cards=cards,
+        total=total,
+        activated=activated
+    )
+
+@app.route('/admin/cards/delete/<int:card_id>', methods=['POST'])
+@login_required
+@admin_required
+def admin_delete_card(card_id):
+    card = Card.query.get_or_404(card_id)
+    db.session.delete(card)
+    db.session.commit()
+    flash('Card deleted!', 'success')
+    return redirect(url_for('admin_cards'))
+
+@app.route('/admin/cards/toggle/<int:card_id>', methods=['POST'])
+@login_required
+@admin_required
+def admin_toggle_card(card_id):
+    card = Card.query.get_or_404(card_id)
+    card.is_active = not card.is_active
+    db.session.commit()
+    status = 'enabled' if card.is_active else 'disabled'
+    flash(f'Card {card.code} {status}!', 'success')
+    return redirect(url_for('admin_cards'))
 
 # ==================== DB MIGRATION & STARTUP ====================
 
