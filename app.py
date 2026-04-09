@@ -7,6 +7,7 @@ from config import Config
 from models import db, User, Card
 import secrets
 import resend
+from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from functools import wraps
 import os
@@ -17,6 +18,16 @@ import cloudinary.uploader
 
 load_dotenv()
 resend.api_key = os.getenv('RESEND_API_KEY')
+
+# ==================== GOOGLE OAUTH ====================
+oauth = OAuth(app)
+google = oauth.register(
+    name='google',
+    client_id=os.getenv('GOOGLE_CLIENT_ID'),
+    client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid email profile'}
+)
 
 # ==================== OPENROUTER SETUP ====================
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
@@ -95,7 +106,7 @@ def register():
         db.session.commit()
 
         # بعت إيميل التفعيل
-        verify_url = f"https://micronfc.info/verify/{token}"
+        verify_url = f"https://www.micronfc.info/verify/{token}"
         try:
             resend.Emails.send({
                 "from": "MicroNFC <noreply@micronfc.info>",
@@ -525,6 +536,49 @@ def activate_card():
 
     card_type = '⌚ Medical Bracelet' if card.card_type == 'medical' else '🪪 Smart Card'
     flash(f'{card_type} activated successfully! 🎉', 'success')
+    return redirect(url_for('dashboard'))
+
+# ==================== GOOGLE LOGIN ====================
+
+@app.route('/auth/google')
+def google_login():
+    redirect_uri = 'https://www.micronfc.info/auth/google/callback'
+    return google.authorize_redirect(redirect_uri)
+
+@app.route('/auth/google/callback')
+def google_callback():
+    token = google.authorize_access_token()
+    user_info = token.get('userinfo')
+
+    if not user_info:
+        flash('Google login failed!', 'danger')
+        return redirect(url_for('login'))
+
+    email = user_info['email']
+    name = user_info.get('name', email.split('@')[0])
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        # عمل حساب جديد تلقائياً
+        password = bcrypt.generate_password_hash(secrets.token_hex(16)).decode('utf-8')
+        user = User(
+            name=name,
+            email=email,
+            password=password,
+            is_verified=True,
+            is_active=True,
+            role='user'
+        )
+        db.session.add(user)
+        db.session.commit()
+        flash(f'Welcome {name}! Your account has been created. 🎉', 'success')
+    else:
+        if not user.is_active:
+            flash('Your account has been disabled!', 'danger')
+            return redirect(url_for('login'))
+
+    login_user(user)
     return redirect(url_for('dashboard'))
 
 # ==================== ADMIN ====================
