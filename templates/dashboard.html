@@ -395,25 +395,6 @@
     </div>
   </div>
 
-  <!-- ── Share Links ── -->
-  <div class="share-bars">
-    <div class="share-bar" style="border-color:rgba(0,229,160,0.15);">
-      <i class="fa fa-id-card" style="color:var(--accent); font-size:0.82rem; flex-shrink:0;"></i>
-      <span style="font-size:0.78rem; color:var(--muted); white-space:nowrap; flex-shrink:0;">Smart Card:</span>
-      <span id="share-link" class="share-link">{{ request.host_url }}profile/{{ user.id }}</span>
-      <button onclick="copyLink('share-link','copy-btn-1')" id="copy-btn-1" class="copy-btn">
-        <i class="fa fa-copy fa-sm"></i> Copy
-      </button>
-    </div>
-    <div class="share-bar" style="border-color:rgba(220,53,69,0.15);">
-      <i class="fa fa-heart-pulse" style="color:#ff6b7a; font-size:0.82rem; flex-shrink:0;"></i>
-      <span style="font-size:0.78rem; color:var(--muted); white-space:nowrap; flex-shrink:0;">Medical:</span>
-      <span id="medical-link" class="share-link">{{ request.host_url }}medical/{{ user.id }}</span>
-      <button onclick="copyLink('medical-link','copy-btn-2')" id="copy-btn-2" class="copy-btn">
-        <i class="fa fa-copy fa-sm"></i> Copy
-      </button>
-    </div>
-  </div>
 
   <!-- ── Profile Completion ── -->
   <div class="completion-card">
@@ -674,53 +655,6 @@
 
   </div><!-- /cards-grid medical -->
 
-  <!-- ════════════════════════════════
-       📦 MY PRODUCT
-       ════════════════════════════════ -->
-  <div class="product-section">
-    <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.25rem;">
-      <i class="fa fa-box" style="color:var(--accent); font-size:0.9rem;"></i>
-      <span style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;">My NFC Product</span>
-      <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">Active profile shown on tap</span>
-    </div>
-    <p style="font-size:0.78rem; color:var(--muted2); margin-bottom:0;">
-      Both profiles are always accessible. This sets which one opens first when someone taps your NFC device.
-    </p>
-
-    <div class="product-grid">
-
-      <a href="{{ url_for('set_product', ptype='card') }}"
-         class="product-option{% if user.product_type == 'card' %} active-card{% endif %}">
-        <div style="font-size:1.8rem; margin-bottom:0.4rem;">🪪</div>
-        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem;
-           color:{% if user.product_type == 'card' %}var(--accent){% else %}var(--muted){% endif %};">
-          Smart Card
-        </p>
-        <p style="font-size:0.72rem; color:var(--muted2); margin-top:2px;">Personal & Professional</p>
-        {% if user.product_type == 'card' %}
-          <span style="font-size:0.7rem; color:var(--accent); margin-top:5px; display:block; font-weight:600;">
-            <i class="fa fa-check-circle"></i> Active
-          </span>
-        {% endif %}
-      </a>
-
-      <a href="{{ url_for('set_product', ptype='bracelet') }}"
-         class="product-option{% if user.product_type == 'bracelet' %} active-bracelet{% endif %}">
-        <div style="font-size:1.8rem; margin-bottom:0.4rem;">⌚</div>
-        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem;
-           color:{% if user.product_type == 'bracelet' %}var(--red){% else %}var(--muted){% endif %};">
-          Medical Bracelet
-        </p>
-        <p style="font-size:0.72rem; color:var(--muted2); margin-top:2px;">Emergency Medical Info</p>
-        {% if user.product_type == 'bracelet' %}
-          <span style="font-size:0.7rem; color:var(--red); margin-top:5px; display:block; font-weight:600;">
-            <i class="fa fa-check-circle"></i> Active
-          </span>
-        {% endif %}
-      </a>
-
-    </div>
-  </div>
 
 </div><!-- /dash-wrap -->
 

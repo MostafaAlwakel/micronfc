@@ -58,6 +58,10 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(20), default='user')  # user / subadmin / admin
     is_active = db.Column(db.Boolean, default=True)
 
+    # Email Verification
+    is_verified = db.Column(db.Boolean, default=False)
+    verification_token = db.Column(db.String(100), nullable=True)
+
     def get_id(self):
         return str(self.id)
 
