@@ -499,8 +499,8 @@
   </div>
   <div class="portfolio-grid">
     {% for img in portfolio_list %}
-    <div class="portfolio-item" onclick="openLightbox('{{ url_for('static', filename='uploads/' + img) }}')">
-      <img src="{{ url_for('static', filename='uploads/' + img) }}" alt="Portfolio">
+    <div class="portfolio-item" onclick="openLightbox('{{ img }}')">
+      <img src="{{ img }}" alt="Portfolio">
     </div>
     {% endfor %}
   </div>
