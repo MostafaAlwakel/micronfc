@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from config import Config
 from models import db, User, Card
 import secrets
+import resend
 from dotenv import load_dotenv
 from functools import wraps
 import os
@@ -14,6 +15,7 @@ import cloudinary
 import cloudinary.uploader
 
 load_dotenv()
+resend.api_key = os.getenv('RESEND_API_KEY')
 
 # ==================== OPENROUTER SETUP ====================
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
@@ -85,13 +87,51 @@ def register():
             flash('Email already exists!', 'danger')
             return redirect(url_for('register'))
 
-        user = User(name=name, email=email, password=password)
+        token = secrets.token_urlsafe(32)
+        user = User(name=name, email=email, password=password,
+                   is_verified=False, verification_token=token)
         db.session.add(user)
         db.session.commit()
-        flash('Account created! Please login.', 'success')
+
+        # بعت إيميل التفعيل
+        verify_url = f"https://micronfc.info/verify/{token}"
+        try:
+            resend.Emails.send({
+                "from": "MicroNFC <onboarding@resend.dev>",
+                "to": email,
+                "subject": "Verify your MicroNFC account",
+                "html": f"""
+                <div style="font-family:sans-serif; max-width:480px; margin:0 auto; padding:2rem;">
+                  <h2 style="color:#00e5a0;">Welcome to MicroNFC! 👋</h2>
+                  <p>Hi {name}, please verify your email to activate your account.</p>
+                  <a href="{verify_url}"
+                     style="display:inline-block; background:#00e5a0; color:#000; padding:0.75rem 2rem;
+                            border-radius:10px; text-decoration:none; font-weight:700; margin:1rem 0;">
+                    Verify Email
+                  </a>
+                  <p style="color:#888; font-size:0.85rem;">If you didn't create this account, ignore this email.</p>
+                </div>
+                """
+            })
+        except Exception as e:
+            print("Email error:", e)
+
+        flash('Account created! Please check your email to verify your account.', 'success')
         return redirect(url_for('login'))
 
     return render_template('register.html')
+
+@app.route('/verify/<token>')
+def verify_email(token):
+    user = User.query.filter_by(verification_token=token).first()
+    if not user:
+        flash('Invalid or expired verification link!', 'danger')
+        return redirect(url_for('login'))
+    user.is_verified = True
+    user.verification_token = None
+    db.session.commit()
+    flash('Email verified! You can now login. ✅', 'success')
+    return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -103,6 +143,9 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             if not user.is_active:
                 flash('Your account has been disabled!', 'danger')
+                return redirect(url_for('login'))
+            if not user.is_verified:
+                flash('Please verify your email first! Check your inbox.', 'warning')
                 return redirect(url_for('login'))
             login_user(user)
             return redirect(url_for('dashboard'))
@@ -719,14 +762,29 @@ def migrate_db():
         ("portfolio_images", "TEXT"),
         ("card_theme", "VARCHAR(20) DEFAULT 'dark'"),
         ("extra_links", "TEXT"),
+        ("role", "VARCHAR(20) DEFAULT 'user'"),
+        ("is_active", "BOOLEAN DEFAULT TRUE"),
+        ("profile_photo", "TEXT"),
+        ("cover_photo", "TEXT"),
+        ("instagram", "VARCHAR(200)"),
+        ("whatsapp", "VARCHAR(20)"),
+        ("bot_context", "TEXT"),
+        ("is_admin", "BOOLEAN DEFAULT FALSE"),
     ]
     with db.engine.connect() as conn:
         for col_name, col_type in new_cols:
             try:
-                conn.execute(text(f"ALTER TABLE user ADD COLUMN {col_name} {col_type}"))
+                conn.execute(text(f'ALTER TABLE "user" ADD COLUMN {col_name} {col_type}'))
                 conn.commit()
             except Exception:
                 pass
+
+        # migrate card table
+        try:
+            conn.execute(text('ALTER TABLE card ADD COLUMN card_type VARCHAR(20) DEFAULT \'smart\''))
+            conn.commit()
+        except Exception:
+            pass
 
 with app.app_context():
     db.create_all()
