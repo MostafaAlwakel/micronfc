@@ -19,16 +19,6 @@ import cloudinary.uploader
 load_dotenv()
 resend.api_key = os.getenv('RESEND_API_KEY')
 
-# ==================== GOOGLE OAUTH ====================
-oauth = OAuth(app)
-google = oauth.register(
-    name='google',
-    client_id=os.getenv('GOOGLE_CLIENT_ID'),
-    client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-    client_kwargs={'scope': 'openid email profile'}
-)
-
 # ==================== OPENROUTER SETUP ====================
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -56,6 +46,14 @@ app.config.from_object(Config)
 
 db.init_app(app)
 bcrypt = Bcrypt(app)
+oauth = OAuth(app)
+google = oauth.register(
+    name='google',
+    client_id=os.getenv('GOOGLE_CLIENT_ID'),
+    client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid email profile'}
+)
 
 @app.template_filter('from_json')
 def from_json_filter(value):
