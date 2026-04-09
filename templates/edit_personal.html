@@ -1,395 +1,114 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
-<style>
-  .admin-stat {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-align: center;
-  }
+<div class="auth-container" style="align-items:flex-start; padding-top:2.5rem;">
+  <div class="auth-card" style="max-width:600px;">
 
-  .admin-stat-number {
-    font-family: 'Syne', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-  }
-
-  .admin-stat-label {
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-top: 0.3rem;
-  }
-
-  .admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-  }
-
-  .admin-table th {
-    text-align: left;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
-  .admin-table td {
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-  }
-
-  .admin-table tr:hover td { background: var(--surface2); }
-
-  .badge {
-    display: inline-block;
-    padding: 0.2rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.72rem;
-    font-weight: 600;
-  }
-
-  .badge-user { background: rgba(255,255,255,0.05); color: #8b949e; border: 1px solid var(--border); }
-  .badge-subadmin { background: rgba(0,112,243,0.1); color: #378add; border: 1px solid rgba(0,112,243,0.2); }
-  .badge-admin { background: rgba(255,193,7,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.2); }
-  .badge-card { background: rgba(0,229,160,0.1); color: #00e5a0; border: 1px solid rgba(0,229,160,0.2); }
-  .badge-bracelet { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
-  .badge-active { background: rgba(0,229,160,0.1); color: #00e5a0; border: 1px solid rgba(0,229,160,0.2); }
-  .badge-disabled { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
-
-  .act-btn {
-    padding: 0.3rem 0.65rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    margin: 2px;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .act-edit { background: rgba(0,112,243,0.1); color: #378add; border: 1px solid rgba(0,112,243,0.2); }
-  .act-edit:hover { background: rgba(0,112,243,0.25); }
-  .act-reset { background: rgba(255,193,7,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.2); }
-  .act-reset:hover { background: rgba(255,193,7,0.25); }
-  .act-toggle { background: rgba(0,229,160,0.1); color: #00e5a0; border: 1px solid rgba(0,229,160,0.2); }
-  .act-toggle:hover { background: rgba(0,229,160,0.25); }
-  .act-toggle-off { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
-  .act-delete { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
-  .act-delete:hover { background: rgba(220,53,69,0.25); }
-  .act-view { background: rgba(255,255,255,0.05); color: #8b949e; border: 1px solid var(--border); }
-
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .modal-overlay.open { display: flex; }
-
-  .modal-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 480px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
-  .modal-box h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-  }
-
-  .form-group { margin-bottom: 1rem; }
-  .form-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.4rem; }
-  .form-group input, .form-group select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 0.6rem 0.8rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
-  }
-
-  .avatar-sm {
-    width: 36px; height: 36px; border-radius: 50%;
-    object-fit: cover; border: 2px solid var(--border);
-  }
-
-  .avatar-sm-text {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: rgba(0,229,160,0.1);
-    border: 2px solid rgba(0,229,160,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif; font-weight: 700;
-    font-size: 0.9rem; color: #00e5a0;
-  }
-
-  .search-input {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 0.6rem 1rem;
-    border-radius: 10px;
-    font-size: 0.85rem;
-    width: 260px;
-  }
-
-  .search-input:focus { outline: none; border-color: rgba(0,229,160,0.4); }
-</style>
-
-<div style="max-width: 1300px; margin: 2rem auto; padding: 0 1rem;">
-
-  <!-- HEADER -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
-    <div>
-      <h1 style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:0.2rem;">⚙️ Admin Dashboard</h1>
-      <p style="color:var(--muted); font-size:0.85rem;">Full control over all users and settings</p>
+    <div class="auth-header">
+      <span class="logo-dot" style="width:12px; height:12px;"></span>
+      <h2>Personal Info</h2>
+      <p>Update your personal information</p>
     </div>
-    <div style="display:flex; gap:0.75rem;">
-      <button onclick="document.getElementById('add-user-modal').classList.add('open')" class="btn-primary">
-        ➕ Add User
+
+    <form method="POST" enctype="multipart/form-data">
+
+      <!-- Profile Photo -->
+      <div class="form-group">
+        <label><i class="fa fa-user-circle fa-sm"></i> Profile Photo</label>
+        {% if user.profile_photo %}
+          <div style="margin-bottom:0.75rem;">
+            <img src="{{ user.profile_photo }}"
+                 id="profile-preview"
+                 style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--accent); display:block;">
+          </div>
+        {% else %}
+          <div style="margin-bottom:0.75rem;">
+            <img id="profile-preview" src="" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--accent); display:none;">
+            <div id="profile-placeholder" style="width:80px; height:80px; border-radius:50%; background:var(--accent-dim); border:2px dashed rgba(0,229,160,0.3); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:1.8rem;">
+              <i class="fa fa-user"></i>
+            </div>
+          </div>
+        {% endif %}
+        <input type="file" name="profile_photo" class="form-control" accept="image/*"
+               onchange="previewImage(this,'profile-preview','profile-placeholder')">
+      </div>
+
+      <!-- Cover Photo -->
+      <div class="form-group">
+        <label><i class="fa fa-image fa-sm"></i> Cover Photo</label>
+        {% if user.cover_photo %}
+          <div style="margin-bottom:0.75rem;">
+            <img src="{{ user.cover_photo }}"
+                 id="cover-preview"
+                 style="width:100%; height:110px; border-radius:var(--radius); object-fit:cover; border:1px solid var(--border); display:block;">
+          </div>
+        {% else %}
+          <div style="margin-bottom:0.75rem;">
+            <img id="cover-preview" src="" style="width:100%; height:110px; border-radius:var(--radius); object-fit:cover; border:1px solid var(--border); display:none;">
+            <div id="cover-placeholder" style="width:100%; height:80px; border-radius:var(--radius); background:var(--surface2); border:2px dashed var(--border); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.85rem; gap:8px;">
+              <i class="fa fa-panorama"></i> Cover Photo
+            </div>
+          </div>
+        {% endif %}
+        <input type="file" name="cover_photo" class="form-control" accept="image/*"
+               onchange="previewImage(this,'cover-preview','cover-placeholder')">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa fa-user fa-sm"></i> Full Name</label>
+        <div class="input-wrapper">
+          <i class="fa fa-user input-icon"></i>
+          <input type="text" name="name" class="form-control" value="{{ user.name }}" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa fa-phone fa-sm"></i> Phone</label>
+        <div class="input-wrapper">
+          <i class="fa fa-phone input-icon"></i>
+          <input type="text" name="phone" class="form-control" value="{{ user.phone or '' }}" placeholder="+201012345678">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa fa-briefcase fa-sm"></i> Job Title</label>
+        <div class="input-wrapper">
+          <i class="fa fa-briefcase input-icon"></i>
+          <input type="text" name="job_title" class="form-control" value="{{ user.job_title or '' }}" placeholder="e.g. Software Engineer">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fa fa-align-left fa-sm"></i> Bio</label>
+        <textarea name="bio" class="form-control" rows="3" placeholder="Tell people about yourself...">{{ user.bio or '' }}</textarea>
+      </div>
+
+      <button type="submit" class="btn-primary w-100">
+        <i class="fa fa-save fa-sm"></i> Save Changes
       </button>
-      <a href="{{ url_for('dashboard') }}" class="btn-secondary">← My Dashboard</a>
-    </div>
-  </div>
-
-  <!-- STATS -->
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:1rem; margin-bottom:2rem;">
-    <div class="admin-stat">
-      <div class="admin-stat-number" style="color:var(--accent);">{{ total_users }}</div>
-      <div class="admin-stat-label">Total Users</div>
-    </div>
-    <div class="admin-stat">
-      <div class="admin-stat-number" style="color:#00e5a0;">{{ active_users }}</div>
-      <div class="admin-stat-label">Active Users</div>
-    </div>
-    <div class="admin-stat">
-      <div class="admin-stat-number" style="color:#378add;">{{ card_users }}</div>
-      <div class="admin-stat-label">Smart Cards</div>
-    </div>
-    <div class="admin-stat">
-      <div class="admin-stat-number" style="color:#ff6b7a;">{{ bracelet_users }}</div>
-      <div class="admin-stat-label">Bracelets</div>
-    </div>
-    <div class="admin-stat">
-      <div class="admin-stat-number" style="color:#ffc107;">{{ users | selectattr('is_admin') | list | length }}</div>
-      <div class="admin-stat-label">Admins</div>
-    </div>
-  </div>
-
-  <!-- USERS TABLE -->
-  <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden;">
-
-    <div style="padding:1.2rem 1.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-      <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700;">All Users ({{ total_users }})</h3>
-      <input type="text" class="search-input" placeholder="🔍 Search..." onkeyup="searchUsers(this.value)">
-    </div>
-
-    <div class="table-responsive-wrap">
-      <table class="admin-table" id="users-table">
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Product</th>
-            <th>Status</th>
-            <th>Bot</th>
-            <th>Joined</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for user in users %}
-          <tr id="row-{{ user.id }}">
-
-            <!-- Avatar + Name -->
-            <td>
-              <div style="display:flex; align-items:center; gap:10px;">
-                {% if user.profile_photo %}
-                  <img src="{{ user.profile_photo }}" class="avatar-sm">
-                {% else %}
-                  <div class="avatar-sm-text">{{ user.name[0].upper() }}</div>
-                {% endif %}
-                <span style="font-weight:600;">{{ user.name }}</span>
-              </div>
-            </td>
-
-            <!-- Email -->
-            <td style="color:var(--muted);">{{ user.email }}</td>
-
-            <!-- Role -->
-            <td>
-              <span class="badge badge-{{ user.role or 'user' }}">
-                {% if user.role == 'admin' %}👑 Admin
-                {% elif user.role == 'subadmin' %}🛡️ Sub-Admin
-                {% else %}👤 User{% endif %}
-              </span>
-            </td>
-
-            <!-- Product -->
-            <td>
-              <span class="badge badge-{{ user.product_type }}">
-                {{ '🪪 Card' if user.product_type == 'card' else '⌚ Bracelet' }}
-              </span>
-            </td>
-
-            <!-- Status -->
-            <td>
-              <span class="badge {{ 'badge-active' if user.is_active else 'badge-disabled' }}">
-                {{ '✅ Active' if user.is_active else '🚫 Disabled' }}
-              </span>
-            </td>
-
-            <!-- Bot -->
-            <td>
-              {% if user.bot_context %}
-                <span style="color:#00e5a0; font-size:0.8rem;">✅ Set</span>
-              {% else %}
-                <span style="color:var(--muted); font-size:0.8rem;">❌ Empty</span>
-              {% endif %}
-            </td>
-
-            <!-- Joined -->
-            <td style="color:var(--muted); font-size:0.8rem;">{{ user.created_at.strftime('%d %b %Y') }}</td>
-
-            <!-- Actions -->
-            <td>
-              <!-- Edit -->
-              <a href="{{ url_for('admin_edit_user', user_id=user.id) }}" class="act-btn act-edit">✏️ Edit</a>
-
-              <!-- Reset Password -->
-              <button onclick="openResetModal({{ user.id }}, '{{ user.name }}')" class="act-btn act-reset">🔑 Reset</button>
-
-              <!-- View Profile -->
-              <a href="{{ url_for('public_profile', user_id=user.id) }}" target="_blank" class="act-btn act-view">👁️ View</a>
-
-              {% if user.role != 'admin' %}
-              <!-- Toggle Active -->
-              <form method="POST" action="{{ url_for('admin_toggle_active', user_id=user.id) }}" style="display:inline;">
-                <button type="submit" class="act-btn {{ 'act-toggle-off' if user.is_active else 'act-toggle' }}">
-                  {{ '🚫 Disable' if user.is_active else '✅ Enable' }}
-                </button>
-              </form>
-
-              <!-- Delete -->
-              <form method="POST" action="{{ url_for('admin_delete_user', user_id=user.id) }}" style="display:inline;"
-                    onsubmit="return confirm('Delete {{ user.name }}? This cannot be undone!');">
-                <button type="submit" class="act-btn act-delete">🗑️ Delete</button>
-              </form>
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== ADD USER MODAL ==================== -->
-<div class="modal-overlay" id="add-user-modal">
-  <div class="modal-box">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-      <h3 style="margin:0;">➕ Add New User</h3>
-      <button onclick="document.getElementById('add-user-modal').classList.remove('open')"
-        style="background:none; border:none; color:var(--muted); font-size:1.5rem; cursor:pointer;">×</button>
-    </div>
-    <form method="POST" action="{{ url_for('admin_add_user') }}">
-      <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" name="name" required placeholder="Ahmed Mohamed">
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" required placeholder="ahmed@email.com">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" name="password" required placeholder="••••••••">
-      </div>
-      <div class="form-group">
-        <label>Role</label>
-        <select name="role">
-          <option value="user">👤 User</option>
-          <option value="subadmin">🛡️ Sub-Admin</option>
-          {% if current_user.role == 'admin' %}
-          <option value="admin">👑 Admin</option>
-          {% endif %}
-        </select>
-      </div>
-      <div style="display:flex; gap:0.75rem; margin-top:1.5rem;">
-        <button type="submit" class="btn-primary" style="flex:1;">Add User</button>
-        <button type="button" onclick="document.getElementById('add-user-modal').classList.remove('open')"
-          class="btn-secondary" style="flex:1;">Cancel</button>
-      </div>
     </form>
-  </div>
-</div>
 
-<!-- ==================== RESET PASSWORD MODAL ==================== -->
-<div class="modal-overlay" id="reset-modal">
-  <div class="modal-box">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-      <h3 style="margin:0;">🔑 Reset Password</h3>
-      <button onclick="document.getElementById('reset-modal').classList.remove('open')"
-        style="background:none; border:none; color:var(--muted); font-size:1.5rem; cursor:pointer;">×</button>
-    </div>
-    <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1.5rem;">
-      Resetting password for: <strong id="reset-user-name" style="color:var(--text);"></strong>
+    <p class="auth-footer" style="margin-top:1.2rem;">
+      <a href="{{ url_for('dashboard') }}"><i class="fa fa-arrow-left fa-sm"></i> Back to Dashboard</a>
     </p>
-    <form method="POST" id="reset-form">
-      <div class="form-group">
-        <label>New Password</label>
-        <input type="password" name="new_password" required placeholder="••••••••" minlength="6">
-      </div>
-      <div style="display:flex; gap:0.75rem; margin-top:1.5rem;">
-        <button type="submit" class="btn-primary" style="flex:1;">Reset Password</button>
-        <button type="button" onclick="document.getElementById('reset-modal').classList.remove('open')"
-          class="btn-secondary" style="flex:1;">Cancel</button>
-      </div>
-    </form>
   </div>
 </div>
 
 <script>
-  function searchUsers(query) {
-    const rows = document.querySelectorAll('#users-table tbody tr');
-    query = query.toLowerCase();
-    rows.forEach(row => {
-      row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
-    });
+  function previewImage(input, previewId, placeholderId) {
+    const preview = document.getElementById(previewId);
+    const placeholder = document.getElementById(placeholderId);
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        if (placeholder) placeholder.style.display = 'none';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
   }
-
-  function openResetModal(userId, userName) {
-    document.getElementById('reset-user-name').innerText = userName;
-    document.getElementById('reset-form').action = `/admin/reset_password/${userId}`;
-    document.getElementById('reset-modal').classList.add('open');
-  }
-
-  // إغلاق الـ modal لو ضغط بره
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', function(e) {
-      if (e.target === this) this.classList.remove('open');
-    });
-  });
 </script>
 
 {% endblock %}
