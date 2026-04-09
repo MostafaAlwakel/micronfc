@@ -224,7 +224,7 @@
             <td>
               <div style="display:flex; align-items:center; gap:10px;">
                 {% if user.profile_photo %}
-                  <img src="{{ url_for('static', filename='uploads/' + user.profile_photo) }}" class="avatar-sm">
+                  <img src="{{ user.profile_photo }}" class="avatar-sm">
                 {% else %}
                   <div class="avatar-sm-text">{{ user.name[0].upper() }}</div>
                 {% endif %}
