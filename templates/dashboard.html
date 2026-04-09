@@ -472,7 +472,7 @@
         {% if portfolio_count > 0 %}
         <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:0.4rem;">
           {% for img in (user.portfolio_images | from_json)[:5] %}
-          <img src="{{ url_for('static', filename='uploads/' + img) }}"
+          <img src="{{ img }}"
                style="width:36px; height:36px; border-radius:6px; object-fit:cover; border:1px solid var(--border);">
           {% endfor %}
           {% if portfolio_count > 5 %}
