@@ -97,7 +97,7 @@ def register():
         verify_url = f"https://micronfc.info/verify/{token}"
         try:
             resend.Emails.send({
-                "from": "MicroNFC <onboarding@resend.dev>",
+                "from": "MicroNFC <noreply@micronfc.info>",
                 "to": email,
                 "subject": "Verify your MicroNFC account",
                 "html": f"""
