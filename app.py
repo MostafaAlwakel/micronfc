@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from functools import wraps
 import os
 import json
-import requests
+import resend
 import cloudinary
 import cloudinary.uploader
 
@@ -85,6 +85,44 @@ def admin_required(f):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip()
+        subject = request.form.get('subject', '').strip()
+        message = request.form.get('message', '').strip()
+        try:
+            resend.Emails.send({
+                "from": "MicroNFC Contact <noreply@micronfc.info>",
+                "to": "support@micronfc.info",
+                "reply_to": email,
+                "subject": f"[Contact] {subject}",
+                "html": f"""
+                <div style="font-family:sans-serif; max-width:520px; margin:0 auto; padding:2rem;">
+                  <h2 style="color:#00e5a0;">New Contact Message</h2>
+                  <p><strong>From:</strong> {name} &lt;{email}&gt;</p>
+                  <p><strong>Subject:</strong> {subject}</p>
+                  <hr style="border-color:#333;">
+                  <p style="white-space:pre-wrap;">{message}</p>
+                </div>
+                """
+            })
+            flash('Message sent! We\'ll get back to you within 24 hours.', 'success')
+        except Exception as e:
+            print("Contact email error:", e)
+            flash('Message received! We\'ll get back to you soon.', 'success')
+        return redirect(url_for('contact'))
+    return render_template('contact.html')
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

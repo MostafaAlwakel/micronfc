@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section style="padding: 5rem 0; min-height: 80vh; display: flex; align-items: center;">
+  <div class="container">
+    <div class="row g-5 justify-content-center">
+
+      <!-- Left: Info -->
+      <div class="col-lg-4">
+        <p class="section-label"><i class="fa fa-envelope"></i> Contact</p>
+        <h2 class="section-title" style="font-size: 2rem; margin-bottom: 1rem;">Get in touch.</h2>
+        <p style="color: var(--muted); line-height: 1.8; margin-bottom: 2.5rem;">
+          Have a question, issue, or just want to say hello? We'd love to hear from you. We usually respond within 24 hours.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div style="display: flex; align-items: flex-start; gap: 1rem;">
+            <div style="width: 40px; height: 40px; background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fa fa-envelope" style="color: var(--accent); font-size: 0.85rem;"></i>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 2px;">Email</div>
+              <div style="color: var(--muted); font-size: 0.88rem;">support@micronfc.info</div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: flex-start; gap: 1rem;">
+            <div style="width: 40px; height: 40px; background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fa fa-clock" style="color: var(--accent); font-size: 0.85rem;"></i>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 2px;">Response Time</div>
+              <div style="color: var(--muted); font-size: 0.88rem;">Within 24 hours</div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: flex-start; gap: 1rem;">
+            <div style="width: 40px; height: 40px; background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fa fa-map-marker-alt" style="color: var(--accent); font-size: 0.85rem;"></i>
+            </div>
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 2px;">Location</div>
+              <div style="color: var(--muted); font-size: 0.88rem;">Cairo, Egypt</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="col-lg-6">
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 2.5rem;">
+          <form method="POST" action="{{ url_for('contact') }}">
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label style="font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; display: block;">Name</label>
+                <input type="text" name="name" required placeholder="Your name"
+                  style="width: 100%; background: var(--bg); border: 1px solid var(--border2); color: var(--text); padding: 0.65rem 0.9rem; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s;"
+                  onfocus="this.style.borderColor='rgba(0,229,160,0.4)'" onblur="this.style.borderColor='var(--border2)'">
+              </div>
+              <div class="col-sm-6">
+                <label style="font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; display: block;">Email</label>
+                <input type="email" name="email" required placeholder="your@email.com"
+                  style="width: 100%; background: var(--bg); border: 1px solid var(--border2); color: var(--text); padding: 0.65rem 0.9rem; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s;"
+                  onfocus="this.style.borderColor='rgba(0,229,160,0.4)'" onblur="this.style.borderColor='var(--border2)'">
+              </div>
+              <div class="col-12">
+                <label style="font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; display: block;">Subject</label>
+                <input type="text" name="subject" required placeholder="What's this about?"
+                  style="width: 100%; background: var(--bg); border: 1px solid var(--border2); color: var(--text); padding: 0.65rem 0.9rem; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s;"
+                  onfocus="this.style.borderColor='rgba(0,229,160,0.4)'" onblur="this.style.borderColor='var(--border2)'">
+              </div>
+              <div class="col-12">
+                <label style="font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; display: block;">Message</label>
+                <textarea name="message" rows="5" required placeholder="Write your message here..."
+                  style="width: 100%; background: var(--bg); border: 1px solid var(--border2); color: var(--text); padding: 0.65rem 0.9rem; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; resize: vertical;"
+                  onfocus="this.style.borderColor='rgba(0,229,160,0.4)'" onblur="this.style.borderColor='var(--border2)'"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                  Send Message <i class="fa fa-paper-plane fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
