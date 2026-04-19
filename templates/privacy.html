@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section style="padding: 5rem 0;">
+  <div class="container" style="max-width: 800px;">
+
+    <div style="margin-bottom: 3rem;">
+      <p class="section-label"><i class="fa fa-shield-alt"></i> Legal</p>
+      <h1 style="font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">Privacy Policy</h1>
+      <p style="color: var(--muted); font-size: 0.9rem;">Last updated: April 19, 2026</p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;">
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent);">1. Information We Collect</h2>
+        <p style="color: var(--muted); line-height: 1.8; margin-bottom: 1rem;">
+          When you create a MicroNFC account, we collect the following information:
+        </p>
+        <ul style="color: var(--muted); line-height: 1.9; padding-left: 1.5rem;">
+          <li><strong style="color: var(--text);">Account Info:</strong> Your name, email address, and password (stored encrypted).</li>
+          <li><strong style="color: var(--text);">Profile Info:</strong> Job title, bio, phone number, social media links, and profile/cover photos.</li>
+          <li><strong style="color: var(--text);">Medical Info:</strong> Blood type, allergies, medications, chronic diseases, and emergency contacts — only if you choose to enter them.</li>
+          <li><strong style="color: var(--text);">Usage Data:</strong> Basic analytics like page visits and NFC tap counts to improve the service.</li>
+        </ul>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;">
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent);">2. How We Use Your Information</h2>
+        <ul style="color: var(--muted); line-height: 1.9; padding-left: 1.5rem;">
+          <li>To create and manage your account and smart profile.</li>
+          <li>To display your profile when your NFC card or bracelet is tapped.</li>
+          <li>To power your AI assistant using the context you provide.</li>
+          <li>To send account-related emails (verification, security alerts).</li>
+          <li>To improve and maintain the platform.</li>
+        </ul>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;">
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent);">3. Medical Data</h2>
+        <p style="color: var(--muted); line-height: 1.8;">
+          Medical information you enter is treated with the highest level of care. It is only displayed on your public medical profile page when accessed through your NFC bracelet. You have full control over what you enter — you can update or delete any medical information at any time from your dashboard. We do not sell, share, or use your medical data for any purpose other than displaying it on your profile.
+        </p>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;">
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent);">4. Data Sharing</h2>
+        <p style="color: var(--muted); line-height: 1.8; margin-bottom: 1rem;">
+          We do not sell your personal data to third parties. We only share data with:
+        </p>
+        <ul style="color: var(--muted); line-height: 1.9; padding-left: 1.5rem;">
+          <li><strong style="color: var(--text);">Cloudinary:</strong> For storing and serving your profile and portfolio images.</li>
+          <li><strong style="color: var(--text);">Resend:</strong> For sending transactional emails (verification, notifications).</li>
+          <li><strong style="color: var(--text);">AI Provider:</strong> Your AI assistant context is sent to our AI provider only when you or a visitor interacts with the chatbot.</li>
+        </ul>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;">
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent);">5. Your Rights & Control</h2>
+        <ul style="color: var(--muted); line-height: 1.9; padding-left: 1.5rem;">
+          <li>You can update or delete any information in your profile at any time.</li>
+          <li>You can request full account deletion by contacting us at support@micronfc.info.</li>
+          <li>You control what data is visible on your public profile.</li>
+          <li>You can deactivate your card(s) at any time from your dashboard.</li>
+        </ul>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;">
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent);">6. Security</h2>
+        <p style="color: var(--muted); line-height: 1.8;">
+          We take security seriously. Passwords are hashed using bcrypt and never stored in plaintext. All data is transmitted over HTTPS. Profile pages linked to NFC cards are protected by unique, cryptographically generated codes. Despite our efforts, no system is 100% secure — please use a strong, unique password.
+        </p>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;">
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent);">7. Cookies</h2>
+        <p style="color: var(--muted); line-height: 1.8;">
+          We use session cookies to keep you logged in. We do not use tracking cookies or third-party advertising cookies. Session data is cleared when you log out or close your browser.
+        </p>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem;">
+        <h2 style="font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent);">8. Contact Us</h2>
+        <p style="color: var(--muted); line-height: 1.8;">
+          If you have any questions or concerns about this Privacy Policy or how your data is handled, please reach out:
+        </p>
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="{{ url_for('contact') }}" class="btn-primary" style="font-size: 0.9rem; padding: 0.6rem 1.4rem;">
+            <i class="fa fa-envelope fa-sm"></i> Contact Form
+          </a>
+          <a href="mailto:support@micronfc.info" class="btn-secondary" style="font-size: 0.9rem; padding: 0.6rem 1.4rem;">
+            support@micronfc.info
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
