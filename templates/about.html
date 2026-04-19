@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<section class="hero" style="min-height: 60vh;">
+<!-- Hero -->
+<section class="page-hero">
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="hero-content container">
@@ -11,55 +12,78 @@
       About MicroNFC
     </div>
     <h1>Smart identity,<br><span class="accent">reimagined</span>.</h1>
-    <p class="hero-sub">
-      We build NFC-powered tools that connect people instantly — smart cards, medical bracelets, and AI assistants that work together in one tap.
+    <p>
+      We build NFC-powered tools that connect people instantly — smart cards,
+      medical bracelets, and AI assistants that work together in a single tap.
     </p>
   </div>
 </section>
 
-<!-- Mission Section -->
-<section style="padding: 5rem 0;">
+<!-- Stats -->
+<section style="padding: 2.5rem 0; border-bottom: 1px solid var(--border);">
   <div class="container">
-    <div class="row g-4 align-items-center">
-      <div class="col-lg-6">
+    <div class="stats-row" style="margin-top: 0; padding-top: 0; border-top: none;">
+      <div class="stat-item">
+        <div class="stat-number">NFC</div>
+        <div class="stat-label">Tap to Share</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">2-in-1</div>
+        <div class="stat-label">Card & Bracelet</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">AI</div>
+        <div class="stat-label">Smart Assistant</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Emergency Ready</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission -->
+<section class="inner-section">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6 about-mission-text">
         <p class="section-label"><i class="fa fa-bullseye"></i> Our Mission</p>
-        <h2 class="section-title">Technology that works<br>when it matters most.</h2>
-        <p style="color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem;">
-          MicroNFC was built with one goal: make personal and medical information instantly accessible to anyone, anywhere — without apps, without friction, without barriers.
+        <h2>Technology that works<br>when it matters most.</h2>
+        <p>
+          MicroNFC was built with one goal: make personal and medical information instantly
+          accessible to anyone, anywhere — without apps, without friction, without barriers.
         </p>
-        <p style="color: var(--muted); line-height: 1.8;">
-          Whether it's a first responder needing your blood type in an emergency, or a new connection wanting your professional profile — one tap delivers everything.
+        <p>
+          Whether it's a first responder needing your blood type in an emergency, or a new
+          connection wanting your professional profile — one tap delivers everything they need.
+        </p>
+        <p>
+          We believe identity should be effortless. Your card, your bracelet, your AI assistant —
+          all working seamlessly to represent you at every moment.
         </p>
       </div>
       <div class="col-lg-6">
-        <div class="row g-3">
-          <div class="col-6">
-            <div class="feature-card" style="height: 100%;">
-              <span class="feat-icon">⚡</span>
-              <h3>Instant</h3>
-              <p>No apps. No loading. Tap and share in under a second.</p>
-            </div>
+        <div class="mini-features-grid">
+          <div class="mini-feature">
+            <span class="feat-icon">⚡</span>
+            <h3>Instant</h3>
+            <p>Tap any NFC phone to share in under a second — no app, no download, no friction.</p>
           </div>
-          <div class="col-6">
-            <div class="feature-card" style="height: 100%;">
-              <span class="feat-icon">🔒</span>
-              <h3>Secure</h3>
-              <p>Your data is encrypted and you control what's visible.</p>
-            </div>
+          <div class="mini-feature">
+            <span class="feat-icon">🔒</span>
+            <h3>Secure</h3>
+            <p>Your data is encrypted, and you control exactly what appears on your public profile.</p>
           </div>
-          <div class="col-6">
-            <div class="feature-card" style="height: 100%;">
-              <span class="feat-icon">🌍</span>
-              <h3>Universal</h3>
-              <p>Works with any modern smartphone, no special hardware needed.</p>
-            </div>
+          <div class="mini-feature">
+            <span class="feat-icon">🌍</span>
+            <h3>Universal</h3>
+            <p>Works with any modern Android or iPhone — no special hardware or software needed.</p>
           </div>
-          <div class="col-6">
-            <div class="feature-card" style="height: 100%;">
-              <span class="feat-icon">🤖</span>
-              <h3>Intelligent</h3>
-              <p>AI assistant that represents you and answers questions on your behalf.</p>
-            </div>
+          <div class="mini-feature">
+            <span class="feat-icon">🤖</span>
+            <h3>Intelligent</h3>
+            <p>An AI assistant trained on your data, answering questions on your behalf 24/7.</p>
           </div>
         </div>
       </div>
@@ -68,75 +92,113 @@
 </section>
 
 <!-- How It Works -->
-<section style="padding: 5rem 0; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+<section class="inner-section-alt">
   <div class="container">
-    <div class="text-center mb-5">
+    <div class="text-center" style="margin-bottom: 3.5rem;">
       <p class="section-label"><i class="fa fa-route"></i> How It Works</p>
       <h2 class="section-title">Three steps to your smart profile.</h2>
     </div>
-    <div class="row g-4 justify-content-center">
-      <div class="col-md-4">
-        <div style="text-align: center; padding: 2rem;">
-          <div style="width: 64px; height: 64px; background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem;">1</div>
-          <h3 style="font-family: 'Syne', sans-serif; font-size: 1.1rem; margin-bottom: 0.75rem;">Create Your Account</h3>
-          <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.7;">Sign up and fill in your personal, professional, and medical information in your dashboard.</p>
-        </div>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <h3>Create Your Account</h3>
+        <p>Sign up and fill in your personal, professional, and medical information from your dashboard in just a few minutes.</p>
       </div>
-      <div class="col-md-4">
-        <div style="text-align: center; padding: 2rem;">
-          <div style="width: 64px; height: 64px; background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem;">2</div>
-          <h3 style="font-family: 'Syne', sans-serif; font-size: 1.1rem; margin-bottom: 0.75rem;">Activate Your Card</h3>
-          <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.7;">Enter your card's activation code to link your NFC smart card or medical bracelet to your account.</p>
-        </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <h3>Activate Your Card</h3>
+        <p>Enter your card's unique activation code to link your NFC smart card or medical bracelet to your profile.</p>
       </div>
-      <div class="col-md-4">
-        <div style="text-align: center; padding: 2rem;">
-          <div style="width: 64px; height: 64px; background: var(--accent-dim); border: 1px solid rgba(0,229,160,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem;">3</div>
-          <h3 style="font-family: 'Syne', sans-serif; font-size: 1.1rem; margin-bottom: 0.75rem;">Tap & Share</h3>
-          <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.7;">Anyone with an NFC-enabled phone can tap your card to instantly view your profile — no app needed.</p>
-        </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <h3>Tap & Share</h3>
+        <p>Anyone with an NFC-enabled phone can tap your card to instantly view your full profile — no app needed on their end.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Products Section -->
-<section style="padding: 5rem 0;">
+<!-- Products -->
+<section class="inner-section">
   <div class="container">
-    <div class="text-center mb-5">
+    <div class="text-center" style="margin-bottom: 3.5rem;">
       <p class="section-label"><i class="fa fa-box"></i> Our Products</p>
       <h2 class="section-title">Built for every need.</h2>
     </div>
-    <div class="row g-4 justify-content-center">
-      <div class="col-md-5">
-        <div class="feature-card" style="padding: 2.5rem;">
-          <span class="feat-icon" style="font-size: 2.5rem; margin-bottom: 1.5rem; display: block;">🪪</span>
-          <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Smart NFC Card</h3>
-          <p style="color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem;">
-            A sleek digital business card that shares your full professional profile — contacts, social links, AI assistant, and more. Perfect for networking.
-          </p>
-          <ul style="list-style: none; padding: 0; color: var(--muted); font-size: 0.9rem;">
-            <li style="margin-bottom: 0.5rem;"><i class="fa fa-check" style="color: var(--accent); margin-right: 8px;"></i> Professional profile & bio</li>
-            <li style="margin-bottom: 0.5rem;"><i class="fa fa-check" style="color: var(--accent); margin-right: 8px;"></i> All social media links</li>
-            <li style="margin-bottom: 0.5rem;"><i class="fa fa-check" style="color: var(--accent); margin-right: 8px;"></i> Portfolio gallery</li>
-            <li><i class="fa fa-check" style="color: var(--accent); margin-right: 8px;"></i> AI personal assistant</li>
-          </ul>
-        </div>
+    <div class="product-cards-grid">
+      <div class="product-card">
+        <span class="prod-icon">🪪</span>
+        <h3>Smart NFC Card</h3>
+        <p class="prod-desc">
+          A sleek digital business card that shares your full professional profile in one tap.
+          Perfect for networking events, meetings, and everyday connections.
+        </p>
+        <ul class="prod-features">
+          <li><i class="fa fa-check fa-sm"></i> Full professional profile & bio</li>
+          <li><i class="fa fa-check fa-sm"></i> All social media links in one place</li>
+          <li><i class="fa fa-check fa-sm"></i> Portfolio gallery</li>
+          <li><i class="fa fa-check fa-sm"></i> Custom links & payment info</li>
+          <li><i class="fa fa-check fa-sm"></i> AI personal assistant</li>
+          <li><i class="fa fa-check fa-sm"></i> Custom card themes</li>
+        </ul>
       </div>
-      <div class="col-md-5">
-        <div class="feature-card" style="padding: 2.5rem;">
-          <span class="feat-icon" style="font-size: 2.5rem; margin-bottom: 1.5rem; display: block;">⌚</span>
-          <h3 style="font-size: 1.3rem; margin-bottom: 1rem;">Medical Bracelet</h3>
-          <p style="color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem;">
-            A wearable NFC bracelet that gives first responders and medical staff instant access to critical health data in emergencies — potentially lifesaving.
-          </p>
-          <ul style="list-style: none; padding: 0; color: var(--muted); font-size: 0.9rem;">
-            <li style="margin-bottom: 0.5rem;"><i class="fa fa-check" style="color: var(--accent); margin-right: 8px;"></i> Blood type & allergies</li>
-            <li style="margin-bottom: 0.5rem;"><i class="fa fa-check" style="color: var(--accent); margin-right: 8px;"></i> Medications & conditions</li>
-            <li style="margin-bottom: 0.5rem;"><i class="fa fa-check" style="color: var(--accent); margin-right: 8px;"></i> Emergency contacts</li>
-            <li><i class="fa fa-check" style="color: var(--accent); margin-right: 8px;"></i> Doctor information</li>
-          </ul>
-        </div>
+      <div class="product-card">
+        <span class="prod-icon">⌚</span>
+        <h3>Medical Bracelet</h3>
+        <p class="prod-desc">
+          A wearable NFC bracelet that gives first responders and medical staff instant access
+          to your critical health data in emergencies — potentially lifesaving.
+        </p>
+        <ul class="prod-features">
+          <li><i class="fa fa-check fa-sm"></i> Blood type & allergies</li>
+          <li><i class="fa fa-check fa-sm"></i> Current medications & dosages</li>
+          <li><i class="fa fa-check fa-sm"></i> Chronic diseases & conditions</li>
+          <li><i class="fa fa-check fa-sm"></i> Emergency contacts</li>
+          <li><i class="fa fa-check fa-sm"></i> Doctor name & phone number</li>
+          <li><i class="fa fa-check fa-sm"></i> Always accessible, no app needed</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="inner-section-alt">
+  <div class="container">
+    <div class="text-center" style="margin-bottom: 3.5rem;">
+      <p class="section-label"><i class="fa fa-star"></i> Why MicroNFC</p>
+      <h2 class="section-title">Everything in one platform.</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feat-icon">⚡</span>
+        <h3>Instant NFC Access</h3>
+        <p>Tap any NFC-enabled phone to instantly share your contact and medical data — no app required on either side.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">🏥</span>
+        <h3>Medical Emergency Data</h3>
+        <p>Blood type, allergies, medications, and emergency contacts — always available when it matters most.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">🔒</span>
+        <h3>Secure & Private</h3>
+        <p>Your data is encrypted and protected. You control exactly what is visible on your public profile at all times.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">🤖</span>
+        <h3>AI Assistant</h3>
+        <p>A trained chatbot that knows your info and responds on your behalf — your 24/7 personal representative.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">☁️</span>
+        <h3>Cloud Synced</h3>
+        <p>Update your information from any device, anywhere. Changes reflect instantly on your NFC profile.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feat-icon">🎨</span>
+        <h3>Fully Customizable</h3>
+        <p>Choose your card theme, add your portfolio, social links, and custom buttons to match your style.</p>
       </div>
     </div>
   </div>
@@ -147,8 +209,8 @@
   <div class="container" style="max-width: 600px; text-align: center;">
     <p class="section-label">Get Started Today</p>
     <h2 class="section-title" style="margin-bottom: 1rem;">Ready to tap into the future?</h2>
-    <p style="color: var(--muted); margin-bottom: 2rem; font-size: 1rem;">
-      Join thousands of people who already trust MicroNFC with their smart identity.
+    <p style="color: var(--muted); margin-bottom: 2.5rem; font-size: 1rem; line-height: 1.75;">
+      Create your smart profile in minutes. Works with Smart NFC Cards and Medical Bracelets.
     </p>
     <div class="hero-actions">
       <a href="{{ url_for('register') }}" class="btn-primary">
