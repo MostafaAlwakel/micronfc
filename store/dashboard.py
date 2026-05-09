@@ -1,9 +1,24 @@
+import json
+import cloudinary.uploader
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from functools import wraps
 from . import store_bp
 from .models import Product, Order, StoreStaff
 from models import db, User
+
+
+def _upload_images(files):
+    """Upload multiple files to Cloudinary, return list of secure URLs."""
+    urls = []
+    for f in files:
+        if f and f.filename:
+            try:
+                result = cloudinary.uploader.upload(f)
+                urls.append(result['secure_url'])
+            except Exception as e:
+                print(f"Cloudinary upload error: {e}")
+    return urls
 
 
 def store_admin_required(f):
@@ -52,12 +67,14 @@ def dashboard_products():
 @store_admin_required
 def dashboard_add_product():
     if request.method == 'POST':
+        image_urls = _upload_images(request.files.getlist('images'))
         product = Product(
             name=request.form['name'].strip(),
             description=request.form.get('description', '').strip(),
             price=float(request.form['price']),
             stock=int(request.form.get('stock', 0)),
-            image_url=request.form.get('image_url', '').strip(),
+            image_url=image_urls[0] if image_urls else '',
+            images=json.dumps(image_urls),
             is_active='is_active' in request.form
         )
         db.session.add(product)
@@ -76,8 +93,19 @@ def dashboard_edit_product(product_id):
         product.description = request.form.get('description', '').strip()
         product.price = float(request.form['price'])
         product.stock = int(request.form.get('stock', 0))
-        product.image_url = request.form.get('image_url', '').strip()
         product.is_active = 'is_active' in request.form
+
+        new_urls = _upload_images(request.files.getlist('images'))
+        if new_urls:
+            # New uploads replace old images
+            product.images = json.dumps(new_urls)
+            product.image_url = new_urls[0]
+        else:
+            # Keep existing images; allow manual URL override
+            manual_url = request.form.get('image_url', '').strip()
+            if manual_url:
+                product.image_url = manual_url
+
         db.session.commit()
         flash('Product updated!', 'success')
         return redirect(url_for('store.dashboard_products'))

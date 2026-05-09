@@ -873,6 +873,14 @@ def migrate_db():
         except Exception:
             pass
 
+    # migrate store_products table
+    try:
+        with db.engine.connect() as conn:
+            conn.execute(text('ALTER TABLE store_products ADD COLUMN images TEXT DEFAULT \'\''))
+            conn.commit()
+    except Exception:
+        pass
+
 with app.app_context():
     db.create_all()
     migrate_db()
