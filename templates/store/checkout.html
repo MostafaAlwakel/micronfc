@@ -56,6 +56,20 @@
                style="width:120px; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
       </div>
 
+      <div style="background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius); padding:1rem;">
+        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.75rem; font-weight:600;">Payment Method</label>
+        <div style="display:flex; flex-direction:column; gap:0.6rem;">
+          <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer;">
+            <input type="radio" name="payment_method" value="card" checked>
+            <span style="font-size:0.9rem;"><i class="fa fa-credit-card fa-sm" style="color:var(--accent);"></i> Credit/Debit Card (Stripe)</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer;">
+            <input type="radio" name="payment_method" value="cash">
+            <span style="font-size:0.9rem;"><i class="fa fa-money-bill fa-sm" style="color:#ffc107;"></i> Cash on Delivery</span>
+          </label>
+        </div>
+      </div>
+
       <button type="submit" class="btn-nav" style="padding:0.75rem; font-size:1rem; margin-top:0.5rem;">
         <i class="fa fa-lock fa-sm"></i> Continue to Payment
       </button>

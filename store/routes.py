@@ -32,6 +32,7 @@ def checkout(product_id):
         phone = request.form.get('phone', '').strip()
         address = request.form.get('address', '').strip()
         quantity = int(request.form.get('quantity', 1))
+        payment_method = request.form.get('payment_method', 'card')
 
         if quantity < 1 or quantity > product.stock:
             flash('Invalid quantity.', 'danger')
@@ -49,6 +50,11 @@ def checkout(product_id):
         )
         db.session.add(order)
         db.session.commit()
+
+        if payment_method == 'cash':
+            order.status = 'cash_on_delivery'
+            db.session.commit()
+            return redirect(url_for('store.success', order_id=order.id))
 
         try:
             stripe_session = create_checkout_session(product, quantity, order.id)

@@ -144,6 +144,9 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="navbar-nav ms-auto align-items-center gap-1">
+          <a class="nav-link" href="{{ url_for('store.index') }}">
+            <i class="fa fa-shopping-bag fa-sm"></i> Store
+          </a>
           {% if current_user.is_authenticated %}
             {% if current_user.is_admin %}
               <a class="nav-link" href="{{ url_for('admin_dashboard') }}" style="color: var(--yellow) !important; font-weight: 600;">
