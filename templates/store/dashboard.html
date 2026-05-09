@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width:960px; padding:2rem 1rem 5rem;">
+
+  <div style="margin-bottom:2rem;">
+    <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0;">
+      <i class="fa fa-store" style="color:var(--accent);"></i> Store Dashboard
+    </h2>
+    <p style="color:var(--muted); margin-top:0.4rem;">Overview & management</p>
+  </div>
+
+  <div class="row g-3 mb-4">
+    {% for label, value, icon, color in [
+      ('Total Products', total_products, 'fa-box', 'var(--accent)'),
+      ('Active Products', active_products, 'fa-check-circle', '#34d399'),
+      ('Total Orders', total_orders, 'fa-shopping-cart', '#60a5fa'),
+      ('Paid Orders', paid_orders, 'fa-dollar-sign', '#a78bfa')
+    ] %}
+      <div class="col-6 col-lg-3">
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.25rem;">
+          <i class="fa {{ icon }}" style="color:{{ color }}; font-size:1.3rem; margin-bottom:0.5rem; display:block;"></i>
+          <div style="font-size:1.8rem; font-weight:700; font-family:'Syne',sans-serif;">{{ value }}</div>
+          <div style="color:var(--muted); font-size:0.8rem;">{{ label }}</div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.25rem; margin-bottom:2rem;">
+    <div style="font-size:0.8rem; color:var(--muted); margin-bottom:0.3rem;">Total Revenue (paid orders)</div>
+    <div style="font-size:2.2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--accent);">
+      ${{ '%.2f'|format(revenue) }}
+    </div>
+  </div>
+
+  <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+    <a href="{{ url_for('store.dashboard_products') }}" class="btn-nav" style="padding:0.6rem 1.25rem;">
+      <i class="fa fa-box fa-sm"></i> Products
+    </a>
+    <a href="{{ url_for('store.dashboard_orders') }}" class="btn-nav" style="padding:0.6rem 1.25rem;">
+      <i class="fa fa-shopping-cart fa-sm"></i> Orders
+    </a>
+    <a href="{{ url_for('store.dashboard_staff') }}" class="btn-nav" style="padding:0.6rem 1.25rem;">
+      <i class="fa fa-users fa-sm"></i> Staff
+    </a>
+    <a href="{{ url_for('store.index') }}" style="padding:0.6rem 1.25rem; border:1px solid var(--border2); border-radius:var(--radius); color:var(--text); text-decoration:none; font-size:0.9rem;">
+      <i class="fa fa-eye fa-sm"></i> View Store
+    </a>
+  </div>
+
+</div>
+{% endblock %}

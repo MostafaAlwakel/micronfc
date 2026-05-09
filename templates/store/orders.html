@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width:1000px; padding:2rem 1rem 5rem;">
+
+  <div style="margin-bottom:1.5rem;">
+    <a href="{{ url_for('store.store_dashboard') }}" style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
+      <i class="fa fa-arrow-left fa-sm"></i> Dashboard
+    </a>
+    <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.3rem 0 0;">Orders</h2>
+  </div>
+
+  <div style="display:flex; gap:0.5rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+    {% for s, label in [('', 'All'), ('pending', 'Pending'), ('paid', 'Paid'), ('shipped', 'Shipped'), ('cancelled', 'Cancelled')] %}
+      <a href="{{ url_for('store.dashboard_orders', status=s) }}"
+         style="padding:0.4rem 0.9rem; border-radius:99px; font-size:0.82rem; text-decoration:none; border:1px solid {% if current_status == s %}var(--accent){% else %}var(--border2){% endif %}; color:{% if current_status == s %}var(--accent){% else %}var(--muted){% endif %}; background:{% if current_status == s %}rgba(0,229,160,0.1){% else %}transparent{% endif %};">
+        {{ label }}
+      </a>
+    {% endfor %}
+  </div>
+
+  {% if orders %}
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.88rem;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border2); background:var(--surface2);">
+            <th style="padding:0.85rem 1rem; text-align:left; font-weight:600; color:var(--muted);">#</th>
+            <th style="padding:0.85rem 1rem; text-align:left; font-weight:600; color:var(--muted);">Customer</th>
+            <th style="padding:0.85rem 1rem; text-align:left; font-weight:600; color:var(--muted);">Product</th>
+            <th style="padding:0.85rem 1rem; text-align:right; font-weight:600; color:var(--muted);">Total</th>
+            <th style="padding:0.85rem 1rem; text-align:center; font-weight:600; color:var(--muted);">Status</th>
+            <th style="padding:0.85rem 1rem; text-align:right; font-weight:600; color:var(--muted);">Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            {% set status_colors = {'pending': '#f59e0b', 'paid': '#34d399', 'shipped': '#60a5fa', 'cancelled': '#f87171'} %}
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:0.85rem 1rem; color:var(--muted);">{{ order.id }}</td>
+              <td style="padding:0.85rem 1rem;">
+                <div style="font-weight:600;">{{ order.customer_name }}</div>
+                <div style="font-size:0.78rem; color:var(--muted);">{{ order.customer_email }}</div>
+              </td>
+              <td style="padding:0.85rem 1rem; color:var(--muted);">
+                {{ order.product.name }} × {{ order.quantity }}
+              </td>
+              <td style="padding:0.85rem 1rem; text-align:right; color:var(--accent); font-weight:600;">
+                ${{ '%.2f'|format(order.total_price) }}
+              </td>
+              <td style="padding:0.85rem 1rem; text-align:center;">
+                <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px; background:rgba(0,0,0,0.2); color:{{ status_colors.get(order.status, 'var(--muted)') }}; border:1px solid {{ status_colors.get(order.status, 'var(--border)') }};">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td style="padding:0.85rem 1rem; text-align:right;">
+                <form method="POST" action="{{ url_for('store.dashboard_update_order', order_id=order.id) }}" style="display:flex; gap:0.4rem; justify-content:flex-end;">
+                  <select name="status" style="background:var(--surface2); border:1px solid var(--border2); color:var(--text); padding:0.3rem 0.5rem; border-radius:6px; font-size:0.8rem;">
+                    {% for s in ['pending', 'paid', 'shipped', 'cancelled'] %}
+                      <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                  </select>
+                  <button type="submit" style="padding:0.3rem 0.6rem; background:var(--accent); color:#000; border:none; border-radius:6px; cursor:pointer; font-size:0.8rem; font-weight:600;">
+                    Save
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div style="text-align:center; padding:4rem; color:var(--muted);">
+      <i class="fa fa-shopping-cart" style="font-size:3rem; display:block; margin-bottom:1rem;"></i>
+      <p>No orders found.</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

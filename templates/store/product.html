@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width:860px; padding:2rem 1rem 5rem;">
+
+  <a href="{{ url_for('store.index') }}" style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
+    <i class="fa fa-arrow-left fa-sm"></i> Back to Store
+  </a>
+
+  <div style="display:flex; gap:2rem; flex-wrap:wrap;">
+    <div style="flex:0 0 320px; max-width:100%;">
+      {% if product.image_url %}
+        <img src="{{ product.image_url }}" alt="{{ product.name }}"
+             style="width:100%; border-radius:var(--radius); border:1px solid var(--border);">
+      {% else %}
+        <div style="width:100%; aspect-ratio:1; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); display:flex; align-items:center; justify-content:center;">
+          <i class="fa fa-box" style="font-size:4rem; color:var(--muted2);"></i>
+        </div>
+      {% endif %}
+    </div>
+
+    <div style="flex:1; min-width:260px;">
+      <h1 style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin:0 0 0.5rem;">{{ product.name }}</h1>
+
+      <div style="font-size:2rem; font-weight:700; color:var(--accent); margin-bottom:1rem;">
+        ${{ '%.2f'|format(product.price) }}
+      </div>
+
+      {% if product.description %}
+        <p style="color:var(--muted); line-height:1.7; margin-bottom:1.5rem;">{{ product.description }}</p>
+      {% endif %}
+
+      <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1.5rem;">
+        <i class="fa fa-cubes" style="color:var(--accent);"></i>
+        <span style="color:var(--muted); font-size:0.9rem;">
+          {% if product.stock > 0 %}{{ product.stock }} units in stock{% else %}<span style="color:#f87171;">Out of stock</span>{% endif %}
+        </span>
+      </div>
+
+      {% if product.stock > 0 %}
+        <a href="{{ url_for('store.checkout', product_id=product.id) }}"
+           class="btn-nav" style="display:inline-block; padding:0.75rem 2rem;">
+          <i class="fa fa-shopping-cart fa-sm"></i> Buy Now
+        </a>
+      {% else %}
+        <button disabled style="background:var(--surface2); color:var(--muted); border:1px solid var(--border); padding:0.75rem 2rem; border-radius:var(--radius); cursor:not-allowed;">
+          Out of Stock
+        </button>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
