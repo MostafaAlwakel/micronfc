@@ -52,6 +52,8 @@ class User(UserMixin, db.Model):
 
     # Bot
     bot_context = db.Column(db.Text)
+    medical_chatbot_name = db.Column(db.String(100), default='Medical Assistant')
+    medical_chatbot_prompt = db.Column(db.Text, default='')
 
     # Admin & Access
     is_admin = db.Column(db.Boolean, default=False)

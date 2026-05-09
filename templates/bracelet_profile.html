@@ -243,8 +243,8 @@
 <!-- Chat Popup فقط بدون floating button -->
 <div class="chat-popup" id="chat-popup">
   <div class="chat-popup-header">
-    <span>🤖</span>
-    <h4>{{ user.name }}'s Assistant</h4>
+    <span>❤️</span>
+    <h4>{{ user.medical_chatbot_name or 'Medical Assistant' }}</h4>
     <span style="font-size:0.75rem;color:#ff6b7a;">● Online</span>
     <button onclick="clearChat()" title="New Chat" style="background:none;border:none;color:#8b949e;cursor:pointer;font-size:1rem;">🗑️</button>
     <button onclick="toggleChat()" style="background:none;border:none;color:#8b949e;cursor:pointer;font-size:1.2rem;">×</button>
@@ -252,12 +252,12 @@
 
   <div class="chat-messages" id="chat-box">
     <div class="msg bot">
-      <div class="msg-bubble">👋 Hi! I'm {{ user.name }}'s AI assistant. Ask me anything about them!</div>
+      <div class="msg-bubble">🚨 Hi! I'm {{ user.name }}'s medical AI. Ask me about blood type, allergies, medications, or emergency contacts.</div>
     </div>
   </div>
 
   <div class="chat-input-row">
-    <input type="text" id="user-input" placeholder="Ask about {{ user.name }}...">
+    <input type="text" id="user-input" placeholder="Ask about medical info...">
     <button class="chat-send-btn" onclick="sendMessage()">Send</button>
   </div>
 </div>
@@ -304,7 +304,7 @@
       const res = await fetch(`/api/public_chat/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ message, card_type: 'medical' })
       });
 
       const data = await res.json();

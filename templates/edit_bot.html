@@ -6,36 +6,80 @@
 
     <div class="auth-header">
       <span style="font-size:1.5rem;">🤖</span>
-      <h2>Train Your Bot</h2>
-      <p>اكتب كل حاجة عايز البوت يعرفها عنك</p>
-    </div>
-
-    <div class="bot-tips">
-      <h4><i class="fa fa-lightbulb fa-sm"></i> Tips for a better bot</h4>
-      <ul>
-        <li>اكتب عن شغلك ومهاراتك بالتفصيل</li>
-        <li>وضح إزاي تحب الناس يتواصلوا معاك</li>
-        <li>اذكر مشاريعك والخدمات اللي بتقدمها</li>
-        <li>حدد إيه الأسئلة اللي تقبلها وإيه اللي لأ</li>
-        <li>كلما كتبت أكتر، كلما رد البوت أحسن</li>
-      </ul>
+      <h2>Train Your Bots</h2>
+      <p>تدريب البوت الشخصي والطبي</p>
     </div>
 
     <form method="POST">
-      <div class="form-group">
-        <label><i class="fa fa-pen-to-square fa-sm"></i> معلوماتك — اكتب بحرية كاملة</label>
-        <textarea
-          name="bot_context"
-          class="form-control"
-          rows="14"
-          placeholder="مثال:
+
+      <!-- ── Personal Bot ── -->
+      <div style="border:1px solid var(--border); border-radius:var(--radius); padding:1.25rem; margin-bottom:1.25rem;">
+        <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1rem;">
+          <i class="fa fa-robot" style="color:var(--accent);"></i>
+          <span style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;">البوت الشخصي</span>
+          <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">يظهر على بطاقتك الذكية</span>
+        </div>
+
+        <div class="bot-tips" style="margin-bottom:1rem;">
+          <h4><i class="fa fa-lightbulb fa-sm"></i> Tips for a better bot</h4>
+          <ul>
+            <li>اكتب عن شغلك ومهاراتك بالتفصيل</li>
+            <li>وضح إزاي تحب الناس يتواصلوا معاك</li>
+            <li>اذكر مشاريعك والخدمات اللي بتقدمها</li>
+            <li>كلما كتبت أكتر، كلما رد البوت أحسن</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa fa-pen-to-square fa-sm"></i> معلوماتك — اكتب بحرية كاملة</label>
+          <textarea
+            name="bot_context"
+            class="form-control"
+            rows="10"
+            placeholder="مثال:
 اسمي أحمد، بشتغل مطور Python و Flask.
 عندي مشروع MicroNFC للبطاقات الذكية.
 بقبل شغل فريلانس وتعاون في مشاريع.
 لو حد سأل عن السعر، قوله هتواصل معاه شخصياً.
-بتكلم عربي وانجليزي بطلاقة.
 اهتماماتي: برمجة، AI، ريادة أعمال..."
-        >{{ user.bot_context or '' }}</textarea>
+          >{{ user.bot_context or '' }}</textarea>
+        </div>
+      </div>
+
+      <!-- ── Medical Bot ── -->
+      <div style="border:1px solid rgba(220,53,69,0.25); border-radius:var(--radius); padding:1.25rem; margin-bottom:1.25rem;">
+        <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1rem;">
+          <i class="fa fa-heartbeat" style="color:#ff6b7a;"></i>
+          <span style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;">البوت الطبي</span>
+          <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">يظهر على إسعافتك الطبية</span>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa fa-tag fa-sm"></i> اسم البوت الطبي — Medical Bot Name</label>
+          <input
+            type="text"
+            name="medical_chatbot_name"
+            class="form-control"
+            placeholder="Medical Assistant"
+            value="{{ user.medical_chatbot_name or 'Medical Assistant' }}"
+          >
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa fa-notes-medical fa-sm"></i> معلومات طبية إضافية — Train Medical AI</label>
+          <textarea
+            name="medical_chatbot_prompt"
+            class="form-control"
+            rows="8"
+            placeholder="فصيلة الدم، الحساسيات، الأمراض المزمنة، الأدوية، جهات الطوارئ...
+Blood type, allergies, conditions, medications, emergency contacts..."
+          >{{ user.medical_chatbot_prompt or '' }}</textarea>
+        </div>
+
+        <div style="background:rgba(220,53,69,0.06); border:1px solid rgba(220,53,69,0.2); border-radius:8px; padding:0.75rem 1rem; font-size:0.82rem; color:#ff6b7a; display:flex; align-items:flex-start; gap:0.5rem;">
+          <i class="fa fa-triangle-exclamation" style="margin-top:2px; flex-shrink:0;"></i>
+          <span>⚠️ تأكد إن المعلومات الطبية دقيقة ومحدّثة — ممكن تتستخدم في حالات الطوارئ. Keep medical info accurate and updated — it may be used in emergencies.</span>
+        </div>
       </div>
 
       <div style="display:flex; gap:0.75rem;">

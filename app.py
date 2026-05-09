@@ -334,6 +334,8 @@ def edit_medical():
 def edit_bot():
     if request.method == 'POST':
         current_user.bot_context = request.form['bot_context']
+        current_user.medical_chatbot_name = request.form.get('medical_chatbot_name', 'Medical Assistant').strip() or 'Medical Assistant'
+        current_user.medical_chatbot_prompt = request.form.get('medical_chatbot_prompt', '')
         db.session.commit()
         flash('Bot updated!', 'success')
         return redirect(url_for('dashboard'))
@@ -417,11 +419,25 @@ def public_chat(user_id):
     data = request.get_json()
     user_message = data.get('message', '')
 
-    chat_key = f'public_chat_{user_id}'
+    card_type = data.get('card_type', 'personal')
+    chat_key = f'public_chat_{user_id}_{card_type}'
     if chat_key not in session:
         session[chat_key] = []
 
-    system_prompt = f"""You are a smart personal AI assistant representing {user.name}.
+    if card_type == 'medical':
+        system_prompt = f"""You are a medical emergency AI assistant for {user.name}.
+Medical information:
+{user.medical_chatbot_prompt or f'Blood type: {user.blood_type or "Unknown"}, Allergies: {user.allergies or "None listed"}, Medications: {user.medications or "None listed"}, Emergency contact: {user.emergency_contact_name or "Not provided"}'}
+
+Rules:
+- Provide calm, clear emergency guidance
+- Share medical info (blood type, allergies, conditions, medications) when asked
+- Always recommend calling emergency services (123 in Egypt) for critical cases
+- Never replace professional medical advice
+- Be concise and clear in emergencies
+- Respond in the same language the visitor uses (Arabic or English)"""
+    else:
+        system_prompt = f"""You are a smart personal AI assistant representing {user.name}.
 You speak ON BEHALF of this person to anyone who visits their profile.
 
 Everything you know about them:
@@ -433,7 +449,8 @@ Rules:
 - For general questions (science, tech, advice, etc): answer helpfully as {user.name}'s assistant
 - If asked something personal not in the data, say: "I don't have that info, contact {user.name} directly"
 - Always be friendly, natural, and conversational
-- Never say you are an AI language model — you are {user.name}'s personal assistant"""
+- Never say you are an AI language model — you are {user.name}'s personal assistant
+- Respond in the same language the visitor uses (Arabic or English)"""
 
     messages = [{"role": "system", "content": system_prompt}]
     messages += session[chat_key]
@@ -468,8 +485,9 @@ Rules:
 
 @app.route('/api/public_chat/clear/<int:user_id>', methods=['POST'])
 def clear_public_chat(user_id):
-    chat_key = f'public_chat_{user_id}'
-    session.pop(chat_key, None)
+    session.pop(f'public_chat_{user_id}_personal', None)
+    session.pop(f'public_chat_{user_id}_medical', None)
+    session.pop(f'public_chat_{user_id}', None)
     return jsonify({'status': 'cleared'})
 
 
@@ -827,6 +845,8 @@ def migrate_db():
         ("whatsapp", "VARCHAR(20)"),
         ("bot_context", "TEXT"),
         ("is_admin", "BOOLEAN DEFAULT FALSE"),
+        ("medical_chatbot_name", "VARCHAR(100) DEFAULT 'Medical Assistant'"),
+        ("medical_chatbot_prompt", "TEXT"),
     ]
     with db.engine.connect() as conn:
         for col_name, col_type in new_cols:

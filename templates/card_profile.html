@@ -640,7 +640,7 @@
       const res = await fetch(`/api/public_chat/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ message, card_type: 'personal' })
       });
       const data = await res.json();
       typing.remove();
