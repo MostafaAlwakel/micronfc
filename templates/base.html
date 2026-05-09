@@ -6,7 +6,8 @@
   <title>MicroNFC</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons@9/icons/index.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <style>
@@ -124,172 +125,222 @@
 
     .chat-send-btn:hover { transform: scale(1.05); }
 
+    @media (max-width: 768px) {
+      .chat-fab { bottom: 5rem !important; right: 1.2rem !important; }
+      .chat-popup { bottom: 8.5rem !important; right: 0.75rem !important; width: calc(100vw - 1.5rem) !important; }
+    }
     @media (max-width: 480px) {
-      .chat-popup { width: calc(100vw - 1rem); right: 0.5rem; }
+      .chat-popup { width: calc(100vw - 1rem) !important; right: 0.5rem !important; }
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand" href="{{ url_for('index') }}">
-        <span class="logo-dot"></span> MicroNFC
-      </a>
+<div class="app-layout">
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        style="border: 1px solid var(--border); padding: 0.4rem 0.6rem;">
-        <i class="fa fa-bars" style="color: var(--muted); font-size: 0.9rem;"></i>
-      </button>
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <a href="{{ url_for('dashboard') if current_user.is_authenticated else url_for('index') }}"
+       class="sidebar-logo" style="text-decoration:none;">
+      <span class="logo-dot"></span>
+      <span style="font-family:'Syne',sans-serif; font-size:1.15rem; font-weight:800; color:var(--text);">MicroNFC</span>
+    </a>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <div class="navbar-nav ms-auto align-items-center gap-1">
-          <a class="nav-link" href="{{ url_for('store.index') }}">
-            <i class="fa fa-shopping-bag fa-sm"></i> Store
+    <nav class="sidebar-nav">
+      {% if current_user.is_authenticated %}
+        {% if current_user.is_admin %}
+          <a href="{{ url_for('admin_dashboard') }}"
+             class="sidebar-link {{ 'active' if request.path.startswith('/admin') else '' }}">
+            <i class="fa fa-crown"></i><span>Admin</span>
           </a>
-          <a class="nav-link" href="{{ url_for('store.cart') }}"
-             style="position:relative; padding-right:1.1rem;">
-            <i class="fa fa-shopping-cart fa-sm"></i>
+        {% endif %}
+        <a href="{{ url_for('dashboard') }}"
+           class="sidebar-link {{ 'active' if request.path == '/dashboard' else '' }}">
+          <i class="fa fa-th-large"></i><span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('edit_personal') }}"
+           class="sidebar-link {{ 'active' if request.path == '/edit/personal' else '' }}">
+          <i class="fa fa-user"></i><span>Profile</span>
+        </a>
+        <a href="{{ url_for('edit_social') }}"
+           class="sidebar-link {{ 'active' if request.path == '/edit/social' else '' }}">
+          <i class="fa fa-share-nodes"></i><span>Social Links</span>
+        </a>
+        <a href="{{ url_for('edit_medical') }}"
+           class="sidebar-link {{ 'active' if request.path == '/edit/medical' else '' }}">
+          <i class="fa fa-heartbeat"></i><span>Medical</span>
+        </a>
+        <a href="{{ url_for('edit_bot') }}"
+           class="sidebar-link {{ 'active' if request.path == '/edit/bot' else '' }}">
+          <i class="fa fa-robot"></i><span>Train Bot</span>
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a href="{{ url_for('store.index') }}"
+           class="sidebar-link {{ 'active' if request.path.startswith('/store') and not request.path.startswith('/store/cart') else '' }}">
+          <i class="fa fa-shopping-bag"></i><span>Store</span>
+        </a>
+        <a href="{{ url_for('store.cart') }}"
+           class="sidebar-link {{ 'active' if request.path.startswith('/store/cart') else '' }}">
+          <i class="fa fa-shopping-cart"></i>
+          <span>Cart
             {% if session.get('cart') and session['cart'].values()|sum > 0 %}
-              <span style="position:absolute; top:-4px; right:0; background:var(--accent); color:#000;
-                           border-radius:50%; width:16px; height:16px; font-size:0.6rem; font-weight:700;
-                           display:flex; align-items:center; justify-content:center; line-height:1;">
-                {{ session['cart'].values()|sum }}
-              </span>
+              <span class="cart-sidebar-badge">{{ session['cart'].values()|sum }}</span>
             {% endif %}
-          </a>
-          {% if current_user.is_authenticated %}
-            {% if current_user.is_admin %}
-              <a class="nav-link" href="{{ url_for('admin_dashboard') }}" style="color: var(--yellow) !important; font-weight: 600;">
-                <i class="fa fa-crown fa-sm"></i> Admin
-              </a>
-              <a class="nav-link" href="{{ url_for('admin_cards') }}" style="color: var(--yellow) !important; font-weight: 600;">
-                <i class="fa fa-credit-card fa-sm"></i> Cards
-              </a>
-            {% endif %}
-            <a class="nav-link" href="{{ url_for('dashboard') }}">
-              <i class="fa fa-th-large fa-sm"></i> Dashboard
-            </a>
-            <a class="nav-link" href="{{ url_for('logout') }}">
-              <i class="fa fa-sign-out-alt fa-sm"></i> Logout
-            </a>
-          {% else %}
-            <a class="nav-link" href="{{ url_for('login') }}">
-              <i class="fa fa-sign-in-alt fa-sm"></i> Login
-            </a>
-            <a class="nav-link btn-nav" href="{{ url_for('register') }}">Get Started</a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </nav>
+          </span>
+        </a>
 
-  <div class="container mt-3">
+      {% else %}
+        <a href="{{ url_for('index') }}"
+           class="sidebar-link {{ 'active' if request.path == '/' else '' }}">
+          <i class="fa fa-home"></i><span>Home</span>
+        </a>
+        <a href="{{ url_for('store.index') }}"
+           class="sidebar-link {{ 'active' if request.path.startswith('/store') else '' }}">
+          <i class="fa fa-shopping-bag"></i><span>Store</span>
+        </a>
+      {% endif %}
+    </nav>
+
+    <div class="sidebar-bottom">
+      {% if current_user.is_authenticated %}
+        <div class="sidebar-user">
+          {% if current_user.profile_photo %}
+            <img src="{{ current_user.profile_photo }}" class="sidebar-avatar" alt="">
+          {% else %}
+            <div class="sidebar-avatar-text">{{ current_user.name[0]|upper }}</div>
+          {% endif %}
+          <div style="min-width:0;">
+            <div class="sidebar-username">{{ current_user.name }}</div>
+            <a href="{{ url_for('logout') }}" class="sidebar-logout">
+              <i class="fa fa-sign-out-alt fa-xs"></i> Logout
+            </a>
+          </div>
+        </div>
+      {% else %}
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <a href="{{ url_for('login') }}" class="btn-primary w-100" style="justify-content:center; padding:0.6rem 1rem; font-size:0.88rem;">
+            <i class="fa fa-sign-in-alt fa-sm"></i> Login
+          </a>
+          <a href="{{ url_for('register') }}" class="btn-secondary w-100" style="justify-content:center; padding:0.6rem 1rem; font-size:0.88rem;">
+            Get Started
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <main class="main-content">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            {% if category == 'success' %}<i class="fa fa-check-circle"></i>
-            {% elif category == 'danger' %}<i class="fa fa-exclamation-circle"></i>
-            {% elif category == 'warning' %}<i class="fa fa-exclamation-triangle"></i>
-            {% else %}<i class="fa fa-info-circle"></i>{% endif %}
-            <span>{{ message }}</span>
-            <button class="alert-close" onclick="this.parentElement.remove()">×</button>
-          </div>
-        {% endfor %}
+        <div style="margin-bottom:1rem;">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {% if category == 'success' %}<i class="fa fa-check-circle"></i>
+              {% elif category == 'danger' %}<i class="fa fa-exclamation-circle"></i>
+              {% elif category == 'warning' %}<i class="fa fa-exclamation-triangle"></i>
+              {% else %}<i class="fa fa-info-circle"></i>{% endif %}
+              <span>{{ message }}</span>
+              <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+            </div>
+          {% endfor %}
+        </div>
       {% endif %}
     {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+</div><!-- /app-layout -->
+
+<!-- ── Chat FAB (authenticated only) ── -->
+{% if current_user.is_authenticated %}
+
+<button class="chat-fab" onclick="toggleChat()" title="AI Assistant">
+  <i class="fa fa-robot"></i>
+</button>
+
+<div class="chat-popup" id="chat-popup">
+  <div class="chat-popup-header">
+    <i class="fa fa-robot" style="color: var(--accent);"></i>
+    <h4>{{ current_user.name }}'s Assistant</h4>
+    <span class="chat-status">Online</span>
+    <button onclick="clearChat()" title="Clear chat"
+            style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.85rem; margin-left:4px;">
+      <i class="fa fa-trash"></i>
+    </button>
+    <button onclick="toggleChat()"
+            style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem;">
+      <i class="fa fa-times"></i>
+    </button>
   </div>
 
-  {% block content %}{% endblock %}
-
-  {% if current_user.is_authenticated %}
-
-  <button class="chat-fab" onclick="toggleChat()" title="AI Assistant">
-    <i class="fa fa-robot"></i>
-  </button>
-
-  <div class="chat-popup" id="chat-popup">
-    <div class="chat-popup-header">
-      <i class="fa fa-robot" style="color: var(--accent);"></i>
-      <h4>{{ current_user.name }}'s Assistant</h4>
-      <span class="chat-status">Online</span>
-      <button onclick="clearChat()" title="Clear chat" style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.85rem; margin-left:4px;">
-        <i class="fa fa-trash"></i>
-      </button>
-      <button onclick="toggleChat()" style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem;">
-        <i class="fa fa-times"></i>
-      </button>
-    </div>
-
-    <div class="chat-messages" id="chat-box">
-      <div class="msg bot">
-        <div class="msg-bubble">👋 Hi {{ current_user.name }}! I know your personal, medical, and professional info. Ask me anything!</div>
-      </div>
-    </div>
-
-    <div class="chat-input-row">
-      <input type="text" id="user-input" placeholder="Ask me anything...">
-      <button class="chat-send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+  <div class="chat-messages" id="chat-box">
+    <div class="msg bot">
+      <div class="msg-bubble">👋 Hi {{ current_user.name }}! I know your personal, medical, and professional info. Ask me anything!</div>
     </div>
   </div>
 
-  <script>
-    const chatBox = document.getElementById('chat-box');
-    const input = document.getElementById('user-input');
+  <div class="chat-input-row">
+    <input type="text" id="user-input" placeholder="Ask me anything...">
+    <button class="chat-send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+  </div>
+</div>
 
-    function toggleChat() {
-      document.getElementById('chat-popup').classList.toggle('open');
-      if (document.getElementById('chat-popup').classList.contains('open')) input.focus();
+<script>
+  const chatBox = document.getElementById('chat-box');
+  const input = document.getElementById('user-input');
+
+  function toggleChat() {
+    document.getElementById('chat-popup').classList.toggle('open');
+    if (document.getElementById('chat-popup').classList.contains('open')) input.focus();
+  }
+
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  function addMessage(text, sender) {
+    const div = document.createElement('div');
+    div.className = `msg ${sender}`;
+    div.innerHTML = `<div class="msg-bubble">${text}</div>`;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    return div;
+  }
+
+  async function clearChat() {
+    await fetch('/api/chat/clear', { method: 'POST' });
+    chatBox.innerHTML = '';
+    addMessage('👋 Fresh start! Ask me anything about {{ current_user.name }}.', 'bot');
+  }
+
+  async function sendMessage() {
+    const message = input.value.trim();
+    if (!message) return;
+    addMessage(message, 'user');
+    input.value = '';
+    const typing = addMessage('Thinking...', 'bot typing');
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      const data = await res.json();
+      typing.remove();
+      addMessage(data.response, 'bot');
+    } catch (err) {
+      typing.remove();
+      addMessage('Sorry, something went wrong!', 'bot');
     }
+  }
+</script>
 
-    input.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') sendMessage();
-    });
+{% endif %}
 
-    function addMessage(text, sender) {
-      const div = document.createElement('div');
-      div.className = `msg ${sender}`;
-      div.innerHTML = `<div class="msg-bubble">${text}</div>`;
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight;
-      return div;
-    }
-
-    async function clearChat() {
-      await fetch('/api/chat/clear', { method: 'POST' });
-      chatBox.innerHTML = '';
-      addMessage('👋 Fresh start! Ask me anything about {{ current_user.name }}.', 'bot');
-    }
-
-    async function sendMessage() {
-      const message = input.value.trim();
-      if (!message) return;
-
-      addMessage(message, 'user');
-      input.value = '';
-
-      const typing = addMessage('Thinking...', 'bot typing');
-
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message })
-        });
-
-        const data = await res.json();
-        typing.remove();
-        addMessage(data.response, 'bot');
-      } catch (err) {
-        typing.remove();
-        addMessage('Sorry, something went wrong!', 'bot');
-      }
-    }
-  </script>
-
-  {% endif %}
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
