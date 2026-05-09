@@ -61,7 +61,7 @@
 
 {% if current_user.is_authenticated %}
 
-  <!-- ═══ SIDEBAR LAYOUT ═══ -->
+  <!-- ═══ SIDEBAR LAYOUT FOR AUTHENTICATED USERS ═══ -->
   <div class="app-layout" id="app-layout">
 
     <aside class="sidebar" id="sidebar">
@@ -170,7 +170,7 @@
 
 {% else %}
 
-  <!-- ═══ GUEST LAYOUT ═══ -->
+  <!-- ═══ GUEST LAYOUT FOR UNAUTHENTICATED USERS ═══ -->
   <header class="guest-header">
     <a href="{{ url_for('index') }}" class="guest-logo">
       <span class="logo-dot"></span>
@@ -189,25 +189,28 @@
     </div>
   </header>
 
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div style="max-width:900px;margin:0 auto;padding:1rem 1rem 0;">
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            {% if category == 'success' %}<i class="fa fa-check-circle"></i>
-            {% elif category == 'danger' %}<i class="fa fa-exclamation-circle"></i>
-            {% elif category == 'warning' %}<i class="fa fa-exclamation-triangle"></i>
-            {% else %}<i class="fa fa-info-circle"></i>{% endif %}
-            <span>{{ message }}</span>
-            <button class="alert-close" onclick="this.parentElement.remove()">×</button>
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
+  <div class="guest-content-wrapper" style="max-width:900px;margin:0 auto;padding:0 1rem;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div style="padding:1rem 0 0 0;">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {% if category == 'success' %}<i class="fa fa-check-circle"></i>
+              {% elif category == 'danger' %}<i class="fa fa-exclamation-circle"></i>
+              {% elif category == 'warning' %}<i class="fa fa-exclamation-triangle"></i>
+              {% else %}<i class="fa fa-info-circle"></i>{% endif %}
+              <span>{{ message }}</span>
+              <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
 
 {% endif %}
 
+<!-- ═══ SINGLE CONTENT BLOCK (for both authenticated and guest layouts) ═══ -->
 {% block content %}{% endblock %}
 
 <!-- ═══ CHAT FAB (auth only) ═══ -->
