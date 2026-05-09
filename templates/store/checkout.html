@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="max-width:560px; padding:2rem 1rem 5rem;">
+
+  <a href="{{ url_for('store.product_detail', product_id=product.id) }}"
+     style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
+    <i class="fa fa-arrow-left fa-sm"></i> Back
+  </a>
+
+  <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin-bottom:1rem;">Checkout</h2>
+
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem 1.25rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:1rem;">
+    {% if product.image_url %}
+      <img src="{{ product.image_url }}" alt="{{ product.name }}"
+           style="width:60px; height:60px; object-fit:cover; border-radius:8px; flex-shrink:0;">
+    {% endif %}
+    <div>
+      <div style="font-weight:600;">{{ product.name }}</div>
+      <div style="color:var(--accent); font-weight:700;">{{ '%.2f'|format(product.price) }} EGP</div>
+    </div>
+  </div>
+
+  <form method="POST">
+    <div style="display:flex; flex-direction:column; gap:1rem;">
+
+      <div>
+        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Full Name *</label>
+        <input type="text" name="name" required placeholder="Ahmed Mohamed"
+               style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
+      </div>
+
+      <div>
+        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Email *</label>
+        <input type="email" name="email" required placeholder="you@example.com"
+               style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
+      </div>
+
+      <div>
+        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Phone</label>
+        <input type="tel" name="phone" placeholder="+20 10 0000 0000"
+               style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
+      </div>
+
+      <div>
+        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Shipping Address</label>
+        <textarea name="address" rows="3" placeholder="Street, City, Governorate"
+                  style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif; resize:vertical;"></textarea>
+      </div>
+
+      <div>
+        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">
+          Quantity <span style="color:var(--muted2);">(max {{ product.stock }})</span>
+        </label>
+        <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}"
+               style="width:120px; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
+      </div>
+
+      <button type="submit" class="btn-nav" style="padding:0.75rem; font-size:1rem; margin-top:0.5rem;">
+        <i class="fa fa-lock fa-sm"></i> Continue to Payment
+      </button>
+
+    </div>
+  </form>
+
+</div>
+{% endblock %}

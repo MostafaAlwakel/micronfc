@@ -44,6 +44,9 @@ def upload_image(file):
 app = Flask(__name__)
 app.config.from_object(Config)
 
+from store import store_bp
+app.register_blueprint(store_bp)
+
 db.init_app(app)
 bcrypt = Bcrypt(app)
 oauth = OAuth(app)
