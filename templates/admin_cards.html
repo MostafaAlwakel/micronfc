@@ -4,7 +4,7 @@
 <div style="max-width:1100px; margin:2rem auto; padding:0 1rem;">
 
   <!-- Header -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+  <div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
     <div>
       <h1 style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:0.2rem;">
         💳 NFC Cards
@@ -33,7 +33,7 @@
   <!-- Generate Cards -->
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.25rem; margin-bottom:2rem;">
     <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:1rem;">➕ Generate New Cards</h3>
-    <form method="POST" action="{{ url_for('admin_generate_cards') }}" style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+    <form method="POST" action="{{ url_for('admin_generate_cards') }}" class="gen-cards-form" style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
       <input type="number" name="count" value="1" min="1" max="100"
         style="width:80px; background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.6rem 0.8rem; border-radius:8px; font-size:0.85rem;">
       <select name="card_type"
@@ -48,23 +48,23 @@
   </div>
 
   <!-- Cards Table -->
-  <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden;">
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px;">
     <div style="padding:1.2rem 1.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
       <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700;">All Cards</h3>
       <input type="text" placeholder="🔍 Search..." onkeyup="searchCards(this.value)"
-        style="background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.5rem 0.85rem; border-radius:8px; font-size:0.85rem; width:200px;">
+        class="search-input" style="width:200px;">
     </div>
 
-    <div style="overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; font-size:0.85rem;" id="cards-table">
+    <div class="admin-table-wrap" style="overflow-x:auto;">
+      <table class="admin-table" style="white-space:nowrap;" id="cards-table">
         <thead>
           <tr>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Code</th>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Type</th>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Status</th>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">User</th>
-            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">NFC Link</th>
-            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Created</th>
+            <th class="hide-mobile" style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">NFC Link</th>
+            <th class="hide-mobile" style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Created</th>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Actions</th>
           </tr>
         </thead>
@@ -100,7 +100,7 @@
                 <span style="color:var(--muted2);">—</span>
               {% endif %}
             </td>
-            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">
+            <td class="hide-mobile" style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">
               {% if card.card_type == 'medical' %}
                 <span style="font-size:0.7rem; color:var(--muted2); display:block; margin-bottom:2px;">⌚ Medical Bracelet Link:</span>
               {% else %}
@@ -114,7 +114,7 @@
                 📋
               </button>
             </td>
-            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.8rem;">
+            <td class="hide-mobile" style="padding:0.85rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.8rem;">
               {{ card.created_at.strftime('%d %b %Y') }}
             </td>
             <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">

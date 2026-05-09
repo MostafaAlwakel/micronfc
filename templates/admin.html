@@ -157,12 +157,12 @@
 <div style="max-width: 1300px; margin: 2rem auto; padding: 0 1rem;">
 
   <!-- HEADER -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+  <div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
     <div>
       <h1 style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:0.2rem;">⚙️ Admin Dashboard</h1>
       <p style="color:var(--muted); font-size:0.85rem;">Full control over all users and settings</p>
     </div>
-    <div style="display:flex; gap:0.75rem;">
+    <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
       <button onclick="document.getElementById('add-user-modal').classList.add('open')" class="btn-primary">
         ➕ Add User
       </button>
@@ -171,7 +171,7 @@
   </div>
 
   <!-- STATS -->
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:1rem; margin-bottom:2rem;">
+  <div class="admin-stats-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:1rem; margin-bottom:2rem;">
     <div class="admin-stat">
       <div class="admin-stat-number" style="color:var(--accent);">{{ total_users }}</div>
       <div class="admin-stat-label">Total Users</div>
@@ -195,24 +195,24 @@
   </div>
 
   <!-- USERS TABLE -->
-  <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; overflow:hidden;">
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px;">
 
     <div style="padding:1.2rem 1.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
       <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700;">All Users ({{ total_users }})</h3>
-      <input type="text" class="search-input" placeholder="🔍 Search..." onkeyup="searchUsers(this.value)">
+      <input type="text" class="search-input" placeholder="🔍 Search..." onkeyup="searchUsers(this.value)" style="width:260px;">
     </div>
 
-    <div class="table-responsive-wrap">
+    <div class="admin-table-wrap table-responsive-wrap">
       <table class="admin-table" id="users-table">
         <thead>
           <tr>
             <th>User</th>
-            <th>Email</th>
+            <th class="hide-mobile">Email</th>
             <th>Role</th>
-            <th>Product</th>
+            <th class="hide-mobile">Product</th>
             <th>Status</th>
-            <th>Bot</th>
-            <th>Joined</th>
+            <th class="hide-mobile">Bot</th>
+            <th class="hide-mobile">Joined</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -233,7 +233,7 @@
             </td>
 
             <!-- Email -->
-            <td style="color:var(--muted);">{{ user.email }}</td>
+            <td class="hide-mobile" style="color:var(--muted);">{{ user.email }}</td>
 
             <!-- Role -->
             <td>
@@ -245,7 +245,7 @@
             </td>
 
             <!-- Product -->
-            <td>
+            <td class="hide-mobile">
               <span class="badge badge-{{ user.product_type }}">
                 {{ '🪪 Card' if user.product_type == 'card' else '⌚ Bracelet' }}
               </span>
@@ -259,7 +259,7 @@
             </td>
 
             <!-- Bot -->
-            <td>
+            <td class="hide-mobile">
               {% if user.bot_context %}
                 <span style="color:#00e5a0; font-size:0.8rem;">✅ Set</span>
               {% else %}
@@ -268,7 +268,7 @@
             </td>
 
             <!-- Joined -->
-            <td style="color:var(--muted); font-size:0.8rem;">{{ user.created_at.strftime('%d %b %Y') }}</td>
+            <td class="hide-mobile" style="color:var(--muted); font-size:0.8rem;">{{ user.created_at.strftime('%d %b %Y') }}</td>
 
             <!-- Actions -->
             <td>

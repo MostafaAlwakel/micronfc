@@ -1782,3 +1782,54 @@ html, body {
 /* ── Guest layout (no sidebar) ── */
 .guest-layout { display: block; min-height: 100vh; }
 .guest-main   { display: block; min-height: 100vh; }
+
+/* ===================== ADMIN MOBILE FIX ===================== */
+@media (max-width: 768px) {
+  /* Extend hide-mobile to tablet */
+  .admin-table .hide-mobile { display: none !important; }
+
+  /* Search full width */
+  .search-input { width: 100% !important; box-sizing: border-box; }
+
+  /* Admin table compact */
+  .admin-table th,
+  .admin-table td { padding: 0.6rem 0.7rem !important; font-size: 0.78rem !important; }
+
+  /* Act buttons compact */
+  .act-btn { font-size: 0.7rem !important; padding: 0.3rem 0.5rem !important; }
+
+  /* Admin page top header */
+  .admin-page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .admin-page-header > div:last-child {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .admin-page-header > div:last-child a,
+  .admin-page-header > div:last-child button { flex: 1; min-width: 120px; text-align: center; justify-content: center; }
+
+  /* Stats grid: 2 cols on mobile */
+  .admin-stats-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* Table container: allow horizontal scroll */
+  .admin-table-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+
+  /* Edit user page header */
+  .admin-edit-header { flex-direction: column !important; align-items: flex-start !important; gap: 0.75rem; }
+  .admin-edit-header > div:last-child { width: 100%; }
+  .admin-edit-header > div:last-child a { flex: 1; min-width: 100px; text-align: center; justify-content: center; }
+
+  /* Generate cards form */
+  .gen-cards-form { flex-direction: column !important; }
+  .gen-cards-form input,
+  .gen-cards-form select { width: 100% !important; }
+}
+
+@media (max-width: 480px) {
+  .admin-stats-grid { grid-template-columns: 1fr 1fr !important; }
+  .admin-table th, .admin-table td { padding: 0.45rem 0.5rem !important; }
+}
