@@ -44,9 +44,6 @@ def upload_image(file):
 app = Flask(__name__)
 app.config.from_object(Config)
 
-from store import store_bp
-app.register_blueprint(store_bp)
-
 db.init_app(app)
 bcrypt = Bcrypt(app)
 oauth = OAuth(app)
@@ -82,6 +79,10 @@ def admin_required(f):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
+
+# ==================== STORE BLUEPRINT ====================
+from store import store_bp
+app.register_blueprint(store_bp)
 
 # ==================== ROUTES ====================
 
