@@ -11,118 +11,56 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <style>
+    /* ── Chat FAB ── */
     .chat-fab {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #000;
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 0 30px var(--accent-glow);
-      z-index: 999;
-      border: none;
+      position: fixed; bottom: 2rem; right: 2rem;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: var(--accent); color: #000; font-size: 1.3rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 0 30px var(--accent-glow);
+      z-index: 999; border: none;
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .chat-fab:hover { transform: scale(1.1); box-shadow: 0 0 40px var(--accent-glow); }
 
     .chat-popup {
-      position: fixed;
-      bottom: 6.5rem;
-      right: 2rem;
-      width: 370px;
-      height: 510px;
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 20px;
-      display: none;
-      flex-direction: column;
-      z-index: 998;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.55);
-      overflow: hidden;
+      position: fixed; bottom: 6.5rem; right: 2rem;
+      width: 370px; height: 510px;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 20px; display: none; flex-direction: column;
+      z-index: 998; box-shadow: 0 24px 64px rgba(0,0,0,0.55); overflow: hidden;
     }
     .chat-popup.open { display: flex; animation: fadeInUp 0.25s ease; }
 
     .chat-popup-header {
-      padding: 1rem 1.2rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--surface2);
+      padding: 1rem 1.2rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px; background: var(--surface2);
     }
-
     .chat-popup-header h4 {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      flex: 1;
-      margin: 0;
+      font-family: 'Syne', sans-serif; font-size: 0.9rem;
+      font-weight: 600; flex: 1; margin: 0;
     }
-
-    .chat-status {
-      font-size: 0.72rem;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
+    .chat-status { font-size: 0.72rem; color: var(--accent); display: flex; align-items: center; gap: 4px; }
     .chat-status::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: inline-block;
+      content: ''; width: 6px; height: 6px; background: var(--accent);
+      border-radius: 50%; display: inline-block;
     }
-
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1.2rem 1rem;
-    }
-
+    .chat-messages { flex: 1; overflow-y: auto; padding: 1.2rem 1rem; }
     .chat-input-row {
-      padding: 0.85rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 0.5rem;
+      padding: 0.85rem; border-top: 1px solid var(--border); display: flex; gap: 0.5rem;
     }
-
     .chat-input-row input {
-      flex: 1;
-      background: var(--bg);
-      border: 1px solid var(--border2);
-      color: var(--text);
-      padding: 0.6rem 0.85rem;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      font-family: 'DM Sans', sans-serif;
-      transition: border-color 0.2s;
+      flex: 1; background: var(--bg); border: 1px solid var(--border2);
+      color: var(--text); padding: 0.6rem 0.85rem; border-radius: 10px;
+      font-size: 0.85rem; font-family: 'DM Sans', sans-serif; transition: border-color 0.2s;
     }
-
     .chat-input-row input:focus { outline: none; border-color: rgba(0,229,160,0.4); }
     .chat-input-row input::placeholder { color: var(--muted2); }
-
     .chat-send-btn {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: transform 0.15s;
+      background: var(--accent); color: #000; border: none;
+      padding: 0.6rem 1rem; border-radius: 10px; font-weight: 600;
+      cursor: pointer; font-size: 0.85rem; transition: transform 0.15s;
     }
-
     .chat-send-btn:hover { transform: scale(1.05); }
 
     @media (max-width: 768px) {
@@ -136,115 +74,104 @@
 </head>
 <body>
 
-<div class="app-layout">
+{% if current_user.is_authenticated %}
+<!-- ══════════════ AUTH LAYOUT (sidebar) ══════════════ -->
+<div class="app-layout" id="app-layout">
 
   <!-- ── Sidebar ── -->
-  <aside class="sidebar">
-    <a href="{{ url_for('dashboard') if current_user.is_authenticated else url_for('index') }}"
-       class="sidebar-logo" style="text-decoration:none;">
-      <span class="logo-dot"></span>
-      <span style="font-family:'Syne',sans-serif; font-size:1.15rem; font-weight:800; color:var(--text);">MicroNFC</span>
-    </a>
+  <aside class="sidebar" id="sidebar">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:0 1rem 0 1.25rem; margin-bottom:1.75rem;">
+      <a href="{{ url_for('dashboard') }}" class="sidebar-logo" style="text-decoration:none;">
+        <span class="logo-dot"></span>
+        <span class="sidebar-logo-text">MicroNFC</span>
+      </a>
+      <button class="hamburger-btn" id="hamburger-btn" onclick="toggleSidebar()" title="Toggle sidebar">
+        <span></span><span></span><span></span><span></span>
+      </button>
+    </div>
 
     <nav class="sidebar-nav">
-      {% if current_user.is_authenticated %}
-        {% if current_user.is_admin %}
-          <a href="{{ url_for('admin_dashboard') }}"
-             class="sidebar-link {{ 'active' if request.path == '/admin' else '' }}">
-            <i class="fa fa-crown"></i><span>Admin</span>
-          </a>
-          <a href="{{ url_for('admin_cards') }}"
-             class="sidebar-link {{ 'active' if request.path.startswith('/admin/cards') else '' }}">
-            <i class="fa fa-credit-card"></i><span>NFC Cards</span>
-          </a>
-          <a href="{{ url_for('store.store_dashboard') }}"
-             class="sidebar-link {{ 'active' if request.path.startswith('/store/dashboard') else '' }}">
-            <i class="fa fa-store"></i><span>Store Admin</span>
-          </a>
-          <div class="sidebar-divider"></div>
-        {% endif %}
-        <a href="{{ url_for('dashboard') }}"
-           class="sidebar-link {{ 'active' if request.path == '/dashboard' else '' }}">
-          <i class="fa fa-th-large"></i><span>Dashboard</span>
+      {% if current_user.is_admin %}
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="sidebar-link {{ 'active' if request.path == '/admin' else '' }}" title="Admin">
+          <i class="fa fa-crown"></i><span>Admin</span>
         </a>
-        <a href="{{ url_for('edit_personal') }}"
-           class="sidebar-link {{ 'active' if request.path == '/edit/personal' else '' }}">
-          <i class="fa fa-user"></i><span>Profile</span>
+        <a href="{{ url_for('admin_cards') }}"
+           class="sidebar-link {{ 'active' if request.path.startswith('/admin/cards') else '' }}" title="NFC Cards">
+          <i class="fa fa-credit-card"></i><span>NFC Cards</span>
         </a>
-        <a href="{{ url_for('edit_social') }}"
-           class="sidebar-link {{ 'active' if request.path == '/edit/social' else '' }}">
-          <i class="fa fa-share-nodes"></i><span>Social Links</span>
+        <a href="{{ url_for('store.store_dashboard') }}"
+           class="sidebar-link {{ 'active' if request.path.startswith('/store/dashboard') else '' }}" title="Store Admin">
+          <i class="fa fa-store"></i><span>Store Admin</span>
         </a>
-        <a href="{{ url_for('edit_medical') }}"
-           class="sidebar-link {{ 'active' if request.path == '/edit/medical' else '' }}">
-          <i class="fa fa-heartbeat"></i><span>Medical</span>
-        </a>
-        <a href="{{ url_for('edit_bot') }}"
-           class="sidebar-link {{ 'active' if request.path == '/edit/bot' else '' }}">
-          <i class="fa fa-robot"></i><span>Train Bot</span>
-        </a>
-
         <div class="sidebar-divider"></div>
-
-        <a href="{{ url_for('store.index') }}"
-           class="sidebar-link {{ 'active' if request.path.startswith('/store') and not request.path.startswith('/store/cart') and not request.path.startswith('/store/dashboard') else '' }}">
-          <i class="fa fa-shopping-bag"></i><span>Store</span>
-        </a>
-        <a href="{{ url_for('store.cart') }}"
-           class="sidebar-link {{ 'active' if request.path.startswith('/store/cart') else '' }}">
-          <i class="fa fa-shopping-cart"></i>
-          <span>Cart
-            {% if session.get('cart') and session['cart'].values()|sum > 0 %}
-              <span class="cart-sidebar-badge">{{ session['cart'].values()|sum }}</span>
-            {% endif %}
-          </span>
-        </a>
-
-      {% else %}
-        <a href="{{ url_for('index') }}"
-           class="sidebar-link {{ 'active' if request.path == '/' else '' }}">
-          <i class="fa fa-home"></i><span>Home</span>
-        </a>
-        <a href="{{ url_for('store.index') }}"
-           class="sidebar-link {{ 'active' if request.path.startswith('/store') else '' }}">
-          <i class="fa fa-shopping-bag"></i><span>Store</span>
-        </a>
       {% endif %}
+
+      <a href="{{ url_for('dashboard') }}"
+         class="sidebar-link {{ 'active' if request.path == '/dashboard' else '' }}" title="Dashboard">
+        <i class="fa fa-th-large"></i><span>Dashboard</span>
+      </a>
+      <a href="{{ url_for('edit_personal') }}"
+         class="sidebar-link {{ 'active' if request.path == '/edit/personal' else '' }}" title="Profile">
+        <i class="fa fa-user"></i><span>Profile</span>
+      </a>
+      <a href="{{ url_for('edit_social') }}"
+         class="sidebar-link {{ 'active' if request.path == '/edit/social' else '' }}" title="Social Links">
+        <i class="fa fa-share-nodes"></i><span>Social Links</span>
+      </a>
+      <a href="{{ url_for('edit_medical') }}"
+         class="sidebar-link {{ 'active' if request.path == '/edit/medical' else '' }}" title="Medical">
+        <i class="fa fa-heartbeat"></i><span>Medical</span>
+      </a>
+      <a href="{{ url_for('edit_bot') }}"
+         class="sidebar-link {{ 'active' if request.path == '/edit/bot' else '' }}" title="Train Bot">
+        <i class="fa fa-robot"></i><span>Train Bot</span>
+      </a>
+
+      <div class="sidebar-divider"></div>
+
+      <a href="{{ url_for('store.index') }}"
+         class="sidebar-link {{ 'active' if request.path.startswith('/store') and not request.path.startswith('/store/cart') and not request.path.startswith('/store/dashboard') else '' }}" title="Store">
+        <i class="fa fa-shopping-bag"></i><span>Store</span>
+      </a>
+      <a href="{{ url_for('store.cart') }}"
+         class="sidebar-link {{ 'active' if request.path.startswith('/store/cart') else '' }}" title="Cart">
+        <i class="fa fa-shopping-cart"></i>
+        <span>Cart{% if session.get('cart') and session['cart'].values()|sum > 0 %} <span class="cart-sidebar-badge">{{ session['cart'].values()|sum }}</span>{% endif %}</span>
+      </a>
     </nav>
 
     <div class="sidebar-bottom">
-      {% if current_user.is_authenticated %}
-        <div class="sidebar-user">
-          {% if current_user.profile_photo %}
-            <img src="{{ current_user.profile_photo }}" class="sidebar-avatar" alt="">
-          {% else %}
-            <div class="sidebar-avatar-text">{{ current_user.name[0]|upper }}</div>
-          {% endif %}
-          <div style="min-width:0;">
-            <div class="sidebar-username">{{ current_user.name }}</div>
-            <a href="{{ url_for('logout') }}" class="sidebar-logout">
-              <i class="fa fa-sign-out-alt fa-xs"></i> Logout
-            </a>
-          </div>
-        </div>
-      {% else %}
-        <div style="display:flex; flex-direction:column; gap:0.5rem;">
-          <a href="{{ url_for('login') }}" class="btn-primary w-100" style="justify-content:center; padding:0.6rem 1rem; font-size:0.88rem;">
-            <i class="fa fa-sign-in-alt fa-sm"></i> Login
-          </a>
-          <a href="{{ url_for('register') }}" class="btn-secondary w-100" style="justify-content:center; padding:0.6rem 1rem; font-size:0.88rem;">
-            Get Started
+      <div class="sidebar-user">
+        {% if current_user.profile_photo %}
+          <img src="{{ current_user.profile_photo }}" class="sidebar-avatar" alt="">
+        {% else %}
+          <div class="sidebar-avatar-text">{{ current_user.name[0]|upper }}</div>
+        {% endif %}
+        <div style="min-width:0;" class="sidebar-user-info">
+          <div class="sidebar-username">{{ current_user.name }}</div>
+          <a href="{{ url_for('logout') }}" class="sidebar-logout">
+            <i class="fa fa-sign-out-alt fa-xs"></i> Logout
           </a>
         </div>
-      {% endif %}
+      </div>
     </div>
   </aside>
 
   <!-- ── Main Content ── -->
-  <main class="main-content">
+  <main class="main-content" id="main-content">
+
+    <!-- Top bar with hamburger (desktop only when sidebar is collapsed) -->
+    <div class="main-topbar" id="main-topbar">
+      <button class="hamburger-btn hamburger-btn-topbar" onclick="toggleSidebar()" title="Toggle sidebar">
+        <span></span><span></span><span></span><span></span>
+      </button>
+    </div>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div style="padding: 1rem 1.5rem 0;">
+        <div style="padding: 0.75rem 1.25rem 0;">
           {% for category, message in messages %}
             <div class="alert alert-{{ category }}">
               {% if category == 'success' %}<i class="fa fa-check-circle"></i>
@@ -264,9 +191,51 @@
 
 </div><!-- /app-layout -->
 
-<!-- ── Chat FAB (authenticated only) ── -->
-{% if current_user.is_authenticated %}
+{% else %}
+<!-- ══════════════ GUEST LAYOUT (no sidebar) ══════════════ -->
+<div>
+  <!-- Minimal header for guests -->
+  <header class="guest-header">
+    <a href="{{ url_for('index') }}" class="guest-logo">
+      <span class="logo-dot"></span>
+      <span style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.15rem; color:var(--text);">MicroNFC</span>
+    </a>
+    <div style="display:flex; gap:0.75rem; align-items:center;">
+      <a href="{{ url_for('store.index') }}" class="btn-secondary" style="padding:0.45rem 1rem; font-size:0.85rem;">
+        <i class="fa fa-shopping-bag fa-sm"></i> Store
+      </a>
+      <a href="{{ url_for('login') }}" class="btn-secondary" style="padding:0.45rem 1rem; font-size:0.85rem;">
+        <i class="fa fa-sign-in-alt fa-sm"></i> Login
+      </a>
+      <a href="{{ url_for('register') }}" class="btn-primary" style="padding:0.45rem 1rem; font-size:0.85rem;">
+        Get Started
+      </a>
+    </div>
+  </header>
 
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div style="max-width:800px; margin:0 auto; padding:1rem 1rem 0;">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {% if category == 'success' %}<i class="fa fa-check-circle"></i>
+            {% elif category == 'danger' %}<i class="fa fa-exclamation-circle"></i>
+            {% elif category == 'warning' %}<i class="fa fa-exclamation-triangle"></i>
+            {% else %}<i class="fa fa-info-circle"></i>{% endif %}
+            <span>{{ message }}</span>
+            <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+{% endif %}
+
+<!-- ── Chat FAB (auth only) ── -->
+{% if current_user.is_authenticated %}
 <button class="chat-fab" onclick="toggleChat()" title="AI Assistant">
   <i class="fa fa-robot"></i>
 </button>
@@ -285,13 +254,11 @@
       <i class="fa fa-times"></i>
     </button>
   </div>
-
   <div class="chat-messages" id="chat-box">
     <div class="msg bot">
       <div class="msg-bubble">👋 Hi {{ current_user.name }}! I know your personal, medical, and professional info. Ask me anything!</div>
     </div>
   </div>
-
   <div class="chat-input-row">
     <input type="text" id="user-input" placeholder="Ask me anything...">
     <button class="chat-send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
@@ -299,6 +266,26 @@
 </div>
 
 <script>
+  /* ── Sidebar toggle ── */
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('main-content');
+    const topbar = document.getElementById('main-topbar');
+    const collapsed = sidebar.classList.toggle('collapsed');
+    main.classList.toggle('sidebar-collapsed', collapsed);
+    topbar.classList.toggle('visible', collapsed);
+    localStorage.setItem('sb', collapsed ? '1' : '0');
+  }
+
+  (function restoreSidebar() {
+    if (localStorage.getItem('sb') === '1') {
+      document.getElementById('sidebar')?.classList.add('collapsed');
+      document.getElementById('main-content')?.classList.add('sidebar-collapsed');
+      document.getElementById('main-topbar')?.classList.add('visible');
+    }
+  })();
+
+  /* ── Chat ── */
   const chatBox = document.getElementById('chat-box');
   const input = document.getElementById('user-input');
 
@@ -306,10 +293,7 @@
     document.getElementById('chat-popup').classList.toggle('open');
     if (document.getElementById('chat-popup').classList.contains('open')) input.focus();
   }
-
-  input.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') sendMessage();
-  });
+  input.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
 
   function addMessage(text, sender) {
     const div = document.createElement('div');
@@ -341,13 +325,12 @@
       const data = await res.json();
       typing.remove();
       addMessage(data.response, 'bot');
-    } catch (err) {
+    } catch {
       typing.remove();
       addMessage('Sorry, something went wrong!', 'bot');
     }
   }
 </script>
-
 {% endif %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

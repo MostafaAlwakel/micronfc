@@ -1675,3 +1675,106 @@ html, body {
   .auth-container { padding: 0.75rem; }
   .auth-card { border-radius: 14px; padding: 1.25rem; }
 }
+
+/* ===================== SIDEBAR TOGGLE ===================== */
+.sidebar {
+  transition: transform 0.28s cubic-bezier(.4,0,.2,1), width 0.28s cubic-bezier(.4,0,.2,1);
+}
+
+.sidebar.collapsed {
+  transform: translateX(-100%);
+}
+
+.main-content {
+  transition: margin-left 0.28s cubic-bezier(.4,0,.2,1);
+}
+
+.main-content.sidebar-collapsed {
+  margin-left: 0;
+}
+
+/* ── Hamburger button (4 bars) ── */
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.hamburger-btn:hover { background: var(--surface2); }
+.hamburger-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--muted);
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.hamburger-btn:hover span { background: var(--text); }
+
+/* Sidebar logo text hides when collapsed (via sidebar.collapsed) */
+.sidebar.collapsed .sidebar-logo-text { display: none; }
+.sidebar.collapsed .sidebar-link span { display: none; }
+.sidebar.collapsed .sidebar-user-info { display: none; }
+.sidebar.collapsed .sidebar-divider { margin: 0.3rem 0.5rem; }
+.sidebar.collapsed .sidebar-bottom { padding: 0.75rem 0.5rem; justify-content: center; }
+.sidebar.collapsed .sidebar-user { justify-content: center; }
+.sidebar.collapsed .cart-sidebar-badge { display: none; }
+
+/* ── Topbar (shows when sidebar is collapsed) ── */
+.main-topbar {
+  display: none;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.main-topbar.visible { display: flex; }
+.hamburger-btn-topbar { margin: 0; }
+
+/* ── Guest header ── */
+.guest-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(2,4,8,0.95);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.guest-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  /* Mobile: sidebar stays as bottom bar — toggle not needed */
+  .hamburger-btn { display: none; }
+  .main-topbar { display: none !important; }
+  .sidebar.collapsed {
+    transform: none; /* on mobile it's always the bottom bar */
+  }
+  .main-content.sidebar-collapsed {
+    margin-left: 0; /* already 0 on mobile */
+  }
+  .guest-header { padding: 0.75rem 1rem; }
+  .guest-header .btn-secondary,
+  .guest-header .btn-primary { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
+}
