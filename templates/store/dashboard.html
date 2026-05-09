@@ -45,7 +45,7 @@
   <!-- Revenue -->
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.25rem; margin-bottom:2rem;">
     <div style="font-size:0.8rem; color:var(--muted); margin-bottom:0.3rem;">Total Revenue (paid orders)</div>
-    <div style="font-size:2.2rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--accent);">
+    <div class="revenue-val" style="font-size:clamp(1.2rem,5vw,2.2rem); font-weight:800; font-family:'Syne',sans-serif; color:var(--accent); word-break:break-all;">
       {{ '%.2f'|format(revenue) }} EGP
     </div>
   </div>
