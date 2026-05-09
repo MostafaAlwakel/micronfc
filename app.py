@@ -848,30 +848,28 @@ def migrate_db():
         ("medical_chatbot_name", "VARCHAR(100) DEFAULT 'Medical Assistant'"),
         ("medical_chatbot_prompt", "TEXT"),
     ]
-    with db.engine.connect() as conn:
-        for col_name, col_type in new_cols:
-            try:
+    for col_name, col_type in new_cols:
+        try:
+            with db.engine.connect() as conn:
                 conn.execute(text(f'ALTER TABLE "user" ADD COLUMN {col_name} {col_type}'))
                 conn.commit()
-            except Exception:
-                pass
+        except Exception:
+            pass
 
-        # migrate card table
-        try:
+    # migrate card table
+    try:
+        with db.engine.connect() as conn:
             conn.execute(text('ALTER TABLE card ADD COLUMN card_type VARCHAR(20) DEFAULT \'smart\''))
             conn.commit()
-        except Exception:
-            pass
+    except Exception:
+        pass
 
-        # migrate verification columns
+    # migrate verification columns
+    for col_name, col_type in [("is_verified", "BOOLEAN DEFAULT FALSE"), ("verification_token", "TEXT")]:
         try:
-            conn.execute(text('ALTER TABLE "user" ADD COLUMN is_verified BOOLEAN DEFAULT FALSE'))
-            conn.commit()
-        except Exception:
-            pass
-        try:
-            conn.execute(text('ALTER TABLE "user" ADD COLUMN verification_token TEXT'))
-            conn.commit()
+            with db.engine.connect() as conn:
+                conn.execute(text(f'ALTER TABLE "user" ADD COLUMN {col_name} {col_type}'))
+                conn.commit()
         except Exception:
             pass
 
