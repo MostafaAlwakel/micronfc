@@ -1778,3 +1778,7 @@ html, body {
   .guest-header .btn-secondary,
   .guest-header .btn-primary { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
 }
+
+/* ── Guest layout (no sidebar) ── */
+.guest-layout { display: block; min-height: 100vh; }
+.guest-main   { display: block; min-height: 100vh; }
