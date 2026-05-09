@@ -235,7 +235,7 @@
   <main class="main-content">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div style="margin-bottom:1rem;">
+        <div style="padding: 1rem 1.5rem 0;">
           {% for category, message in messages %}
             <div class="alert alert-{{ category }}">
               {% if category == 'success' %}<i class="fa fa-check-circle"></i>

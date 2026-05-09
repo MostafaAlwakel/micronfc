@@ -1644,3 +1644,34 @@ html, body {
   align-items: center;
   gap: 0.5rem;
 }
+
+/* ===================== SIDEBAR LAYOUT MOBILE FIX ===================== */
+/* Pages handle their own padding — main-content must not double-pad */
+.main-content {
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 0;
+    margin-bottom: 60px;
+  }
+
+  /* auth-container already has padding:2rem — no extra needed */
+  .auth-container {
+    min-height: calc(100vh - 60px);
+    padding: 1.25rem;
+  }
+
+  /* dash-wrap has its own padding — just ensure it's readable */
+  .dash-wrap {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-container { padding: 0.75rem; }
+  .auth-card { border-radius: 14px; padding: 1.25rem; }
+}
