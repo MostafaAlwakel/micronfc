@@ -1833,3 +1833,48 @@ html, body {
   .admin-stats-grid { grid-template-columns: 1fr 1fr !important; }
   .admin-table th, .admin-table td { padding: 0.45rem 0.5rem !important; }
 }
+
+/* ===================== ADMIN TABLE SWIPE FIX ===================== */
+.admin-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+.admin-table-wrap:active { cursor: grabbing; }
+
+/* Force nowrap so table overflows and becomes swipeable */
+.admin-table th,
+.admin-table td {
+  white-space: nowrap;
+}
+
+/* Show all columns on mobile — let user swipe instead */
+@media (max-width: 768px) {
+  .admin-table .hide-mobile {
+    display: table-cell !important;
+  }
+  .admin-table {
+    min-width: 700px;
+  }
+}
+
+/* ===================== MOBILE BOTTOM BAR SCROLL FIX ===================== */
+@media (max-width: 768px) {
+  .sidebar-nav {
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start !important;
+    scroll-snap-type: x mandatory;
+    padding: 0 0.25rem !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .sidebar-nav::-webkit-scrollbar { display: none; }
+
+  .sidebar-link {
+    flex-shrink: 0 !important;
+    min-width: 52px;
+    scroll-snap-align: start;
+  }
+}

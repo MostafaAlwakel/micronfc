@@ -384,6 +384,19 @@
     document.getElementById('reset-modal').classList.add('open');
   }
 
+  // Drag-to-scroll for admin tables
+  document.querySelectorAll('.admin-table-wrap').forEach(el => {
+    let isDown = false, startX, scrollLeft;
+    el.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - el.offsetLeft; scrollLeft = el.scrollLeft; });
+    el.addEventListener('mouseleave', () => isDown = false);
+    el.addEventListener('mouseup', () => isDown = false);
+    el.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      el.scrollLeft = scrollLeft - (e.pageX - el.offsetLeft - startX);
+    });
+  });
+
   // إغلاق الـ modal لو ضغط بره
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', function(e) {
