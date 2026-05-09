@@ -1,36 +1,48 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="container" style="max-width:860px; padding:2rem 1rem 5rem;">
+<div class="container" style="max-width:900px; padding:2rem 1rem 5rem;">
 
-  <a href="{{ url_for('store.index') }}"
-     style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
-    <i class="fa fa-arrow-left fa-sm"></i> Back to Store
-  </a>
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+    <a href="{{ url_for('store.index') }}"
+       style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem;">
+      <i class="fa fa-arrow-left fa-sm"></i> Back to Store
+    </a>
+    <a href="{{ url_for('store.cart') }}" class="cart-pill">
+      <i class="fa fa-shopping-cart fa-sm"></i> Cart
+      {% if cart_count > 0 %}
+        <span class="cart-pill-badge">{{ cart_count }}</span>
+      {% endif %}
+    </a>
+  </div>
 
-  <div style="display:flex; gap:2.5rem; flex-wrap:wrap;">
+  <div class="product-layout">
 
-    <div style="flex:0 0 320px; max-width:100%;">
+    <!-- Image -->
+    <div class="product-image-col">
       {% if product.image_url %}
         <img src="{{ product.image_url }}" alt="{{ product.name }}"
-             style="width:100%; border-radius:var(--radius); border:1px solid var(--border);">
+             style="width:100%; border-radius:var(--radius); border:1px solid var(--border); display:block;">
       {% else %}
-        <div style="width:100%; aspect-ratio:1; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); display:flex; align-items:center; justify-content:center;">
+        <div style="width:100%; aspect-ratio:1; background:var(--surface); border:1px solid var(--border);
+                    border-radius:var(--radius); display:flex; align-items:center; justify-content:center;">
           <i class="fa fa-box" style="font-size:4rem; color:var(--muted2);"></i>
         </div>
       {% endif %}
     </div>
 
-    <div style="flex:1; min-width:260px;">
-      <h1 style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin:0 0 0.5rem;">
+    <!-- Info -->
+    <div class="product-info-col">
+      <h1 style="font-family:'Syne',sans-serif; font-size:1.7rem; font-weight:800; margin:0 0 0.4rem; line-height:1.25;">
         {{ product.name }}
       </h1>
       <div style="font-size:2rem; font-weight:700; color:var(--accent); margin-bottom:1rem;">
         {{ '%.2f'|format(product.price) }} EGP
       </div>
+
       {% if product.description %}
-        <p style="color:var(--muted); line-height:1.7; margin-bottom:1.5rem;">{{ product.description }}</p>
+        <p style="color:var(--muted); line-height:1.7; margin-bottom:1.25rem;">{{ product.description }}</p>
       {% endif %}
+
       <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1.5rem;">
         <i class="fa fa-cubes" style="color:var(--accent);"></i>
         <span style="color:var(--muted); font-size:0.9rem;">
@@ -41,14 +53,36 @@
           {% endif %}
         </span>
       </div>
+
       {% if product.stock > 0 %}
-        <a href="{{ url_for('store.checkout', product_id=product.id) }}"
-           class="btn-nav" style="display:inline-block; padding:0.75rem 2.5rem;">
-          <i class="fa fa-shopping-cart fa-sm"></i> Buy Now
-        </a>
+        <form method="POST" action="{{ url_for('store.cart_add', product_id=product.id) }}">
+          <!-- Quantity selector -->
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.1rem; flex-wrap:wrap;">
+            <label style="font-size:0.85rem; color:var(--muted);">Quantity:</label>
+            <div style="display:flex; align-items:center;">
+              <button type="button" onclick="adjustQty(-1)" class="qty-ctrl">−</button>
+              <input type="number" name="quantity" id="qty-input" value="1" min="1" max="{{ product.stock }}"
+                     style="width:52px; text-align:center; background:var(--surface); font-size:0.95rem;
+                            border-top:1px solid var(--border2); border-bottom:1px solid var(--border2);
+                            border-left:none; border-right:none; color:var(--text); padding:0.5rem 0;
+                            font-family:'DM Sans',sans-serif;">
+              <button type="button" onclick="adjustQty(1)" class="qty-ctrl">+</button>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <button type="submit" class="btn-action btn-add-cart">
+              <i class="fa fa-cart-plus fa-sm"></i> Add to Cart
+            </button>
+            <a href="{{ url_for('store.checkout', product_id=product.id) }}" class="btn-action btn-buy-now">
+              <i class="fa fa-bolt fa-sm"></i> Buy Now
+            </a>
+          </div>
+        </form>
+
       {% else %}
-        <button disabled
-                style="padding:0.75rem 2.5rem; background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:var(--radius); cursor:not-allowed;">
+        <button disabled class="btn-action btn-add-cart" style="opacity:0.45; cursor:not-allowed; width:100%;">
           Out of Stock
         </button>
       {% endif %}
@@ -56,4 +90,92 @@
 
   </div>
 </div>
+
+<style>
+.product-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+.product-image-col { width: 100%; }
+.product-info-col {}
+.cart-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  color: var(--text);
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.cart-pill:hover { border-color: var(--accent); color: var(--accent); }
+.cart-pill-badge {
+  background: var(--accent);
+  color: #000;
+  border-radius: 99px;
+  padding: 0 6px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-ctrl {
+  width: 36px;
+  height: 36px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: border-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-ctrl:first-of-type { border-radius: 6px 0 0 6px; }
+.qty-ctrl:last-of-type { border-radius: 0 6px 6px 0; }
+.qty-ctrl:hover { border-color: var(--accent); color: var(--accent); }
+.btn-action {
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  flex: 1;
+}
+.btn-add-cart { background: var(--accent); color: #000; }
+.btn-buy-now { background: var(--surface2); border: 1px solid var(--border2) !important; color: var(--text); }
+.btn-action:hover:not(:disabled) { opacity: 0.85; }
+@media (max-width: 640px) {
+  .product-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+</style>
+
+<script>
+function adjustQty(delta) {
+  const input = document.getElementById('qty-input');
+  let val = Math.max(1, Math.min(parseInt(input.max), parseInt(input.value) + delta));
+  input.value = val;
+}
+</script>
 {% endblock %}

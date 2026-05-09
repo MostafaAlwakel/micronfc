@@ -1,14 +1,36 @@
-from flask import render_template, request, redirect, url_for, flash, abort, jsonify
+import json
+from flask import render_template, request, redirect, url_for, flash, abort, jsonify, session
 from . import store_bp
-from .models import Product, Order
-from .stripe_utils import create_checkout_session, verify_webhook
+from .models import Product, Order, CartOrder
+from .stripe_utils import create_checkout_session, create_cart_checkout_session, verify_webhook
 from models import db
+
+
+def _get_cart():
+    return session.get('cart', {})
+
+
+def _cart_count():
+    return sum(_get_cart().values())
+
+
+def _get_cart_items():
+    cart = _get_cart()
+    items = []
+    total = 0.0
+    for pid_str, qty in cart.items():
+        product = Product.query.get(int(pid_str))
+        if product and product.is_active:
+            subtotal = product.price * qty
+            total += subtotal
+            items.append({'product': product, 'quantity': qty, 'subtotal': subtotal})
+    return items, total
 
 
 @store_bp.route('/')
 def index():
     products = Product.query.filter_by(is_active=True).all()
-    return render_template('store/index.html', products=products)
+    return render_template('store/index.html', products=products, cart_count=_cart_count())
 
 
 @store_bp.route('/product/<int:product_id>')
@@ -16,7 +38,103 @@ def product_detail(product_id):
     product = Product.query.get_or_404(product_id)
     if not product.is_active:
         abort(404)
-    return render_template('store/product.html', product=product)
+    return render_template('store/product.html', product=product, cart_count=_cart_count())
+
+
+@store_bp.route('/cart/add/<int:product_id>', methods=['POST'])
+def cart_add(product_id):
+    product = Product.query.get_or_404(product_id)
+    if not product.is_active or product.stock < 1:
+        flash('Product not available.', 'danger')
+        return redirect(request.referrer or url_for('store.index'))
+    quantity = int(request.form.get('quantity', 1))
+    cart = session.get('cart', {})
+    pid_str = str(product_id)
+    cart[pid_str] = min(cart.get(pid_str, 0) + quantity, product.stock)
+    session['cart'] = cart
+    session.modified = True
+    flash(f'"{product.name}" added to cart!', 'success')
+    return redirect(request.referrer or url_for('store.index'))
+
+
+@store_bp.route('/cart')
+def cart():
+    items, total = _get_cart_items()
+    return render_template('store/cart.html', items=items, total=total, cart_count=_cart_count())
+
+
+@store_bp.route('/cart/remove/<int:product_id>', methods=['POST'])
+def cart_remove(product_id):
+    cart = session.get('cart', {})
+    cart.pop(str(product_id), None)
+    session['cart'] = cart
+    session.modified = True
+    return redirect(url_for('store.cart'))
+
+
+@store_bp.route('/cart/update/<int:product_id>', methods=['POST'])
+def cart_update(product_id):
+    product = Product.query.get_or_404(product_id)
+    qty = int(request.form.get('quantity', 1))
+    cart = session.get('cart', {})
+    pid_str = str(product_id)
+    if qty < 1:
+        cart.pop(pid_str, None)
+    else:
+        cart[pid_str] = min(qty, product.stock)
+    session['cart'] = cart
+    session.modified = True
+    return redirect(url_for('store.cart'))
+
+
+@store_bp.route('/cart/checkout', methods=['GET', 'POST'])
+def cart_checkout():
+    items, total = _get_cart_items()
+    if not items:
+        flash('Your cart is empty.', 'warning')
+        return redirect(url_for('store.cart'))
+
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        email = request.form['email'].strip()
+        phone = request.form.get('phone', '').strip()
+        address = request.form.get('address', '').strip()
+        payment_method = request.form.get('payment_method', 'card')
+
+        items_json = json.dumps([
+            {'product_id': i['product'].id, 'name': i['product'].name,
+             'quantity': i['quantity'], 'price': i['product'].price}
+            for i in items
+        ])
+        cart_order = CartOrder(
+            customer_name=name, customer_email=email, customer_phone=phone,
+            customer_address=address, items=items_json, total_price=total,
+            payment_method=payment_method, status='pending'
+        )
+        db.session.add(cart_order)
+        db.session.commit()
+
+        if payment_method == 'cash':
+            cart_order.status = 'cash_on_delivery'
+            db.session.commit()
+            session.pop('cart', None)
+            return redirect(url_for('store.success', order_id=cart_order.id, type='cart'))
+
+        try:
+            stripe_session = create_cart_checkout_session(items, cart_order.id)
+            cart_order.stripe_session_id = stripe_session.id
+            db.session.commit()
+            session.pop('cart', None)
+            return redirect(stripe_session.url, code=303)
+        except Exception as e:
+            print('Stripe error:', e)
+            db.session.delete(cart_order)
+            db.session.commit()
+            flash('Payment setup failed. Please try again.', 'danger')
+            return redirect(url_for('store.cart_checkout'))
+
+    return render_template('store/checkout.html', cart_items=items, cart_total=total,
+                           cart_count=_cart_count())
 
 
 @store_bp.route('/checkout/<int:product_id>', methods=['GET', 'POST'])
@@ -39,14 +157,9 @@ def checkout(product_id):
             return redirect(url_for('store.checkout', product_id=product_id))
 
         order = Order(
-            product_id=product.id,
-            customer_name=name,
-            customer_email=email,
-            customer_phone=phone,
-            customer_address=address,
-            quantity=quantity,
-            total_price=product.price * quantity,
-            status='pending'
+            product_id=product.id, customer_name=name, customer_email=email,
+            customer_phone=phone, customer_address=address, quantity=quantity,
+            total_price=product.price * quantity, status='pending'
         )
         db.session.add(order)
         db.session.commit()
@@ -68,12 +181,16 @@ def checkout(product_id):
             flash('Payment setup failed. Please try again.', 'danger')
             return redirect(url_for('store.checkout', product_id=product_id))
 
-    return render_template('store/checkout.html', product=product)
+    return render_template('store/checkout.html', product=product, cart_count=_cart_count())
 
 
 @store_bp.route('/success')
 def success():
     order_id = request.args.get('order_id')
+    order_type = request.args.get('type', 'single')
+    if order_type == 'cart':
+        cart_order = CartOrder.query.get(int(order_id)) if order_id else None
+        return render_template('store/success.html', cart_order=cart_order)
     order = Order.query.get(int(order_id)) if order_id else None
     return render_template('store/success.html', order=order)
 
@@ -81,6 +198,13 @@ def success():
 @store_bp.route('/cancel')
 def cancel():
     order_id = request.args.get('order_id')
+    order_type = request.args.get('type', 'single')
+    if order_type == 'cart':
+        cart_order = CartOrder.query.get(int(order_id)) if order_id else None
+        if cart_order and cart_order.status == 'pending':
+            cart_order.status = 'cancelled'
+            db.session.commit()
+        return render_template('store/cancel.html', cart_order=cart_order)
     order = Order.query.get(int(order_id)) if order_id else None
     if order and order.status == 'pending':
         order.status = 'cancelled'
@@ -92,7 +216,6 @@ def cancel():
 def webhook():
     payload = request.get_data(as_text=True)
     sig_header = request.headers.get('Stripe-Signature')
-
     try:
         event = verify_webhook(payload, sig_header)
     except Exception as e:
@@ -100,7 +223,9 @@ def webhook():
 
     if event['type'] == 'checkout.session.completed':
         session_obj = event['data']['object']
-        order_id = session_obj.get('metadata', {}).get('order_id')
+        metadata = session_obj.get('metadata', {})
+
+        order_id = metadata.get('order_id')
         if order_id:
             order = Order.query.get(int(order_id))
             if order:
@@ -108,6 +233,17 @@ def webhook():
                 product = Product.query.get(order.product_id)
                 if product and product.stock >= order.quantity:
                     product.stock -= order.quantity
+                db.session.commit()
+
+        cart_order_id = metadata.get('cart_order_id')
+        if cart_order_id:
+            cart_order = CartOrder.query.get(int(cart_order_id))
+            if cart_order:
+                cart_order.status = 'paid'
+                for item in cart_order.get_items():
+                    product = Product.query.get(item['product_id'])
+                    if product and product.stock >= item['quantity']:
+                        product.stock -= item['quantity']
                 db.session.commit()
 
     return jsonify({'status': 'ok'})

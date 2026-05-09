@@ -1,5 +1,6 @@
 from models import db
 from datetime import datetime
+import json
 
 
 class Product(db.Model):
@@ -37,6 +38,28 @@ class Order(db.Model):
 
     def __repr__(self):
         return f'<Order {self.id} {self.status}>'
+
+
+class CartOrder(db.Model):
+    __tablename__ = 'store_cart_orders'
+
+    id = db.Column(db.Integer, primary_key=True)
+    customer_name = db.Column(db.String(200), nullable=False)
+    customer_email = db.Column(db.String(200), nullable=False)
+    customer_phone = db.Column(db.String(50))
+    customer_address = db.Column(db.Text)
+    items = db.Column(db.Text, nullable=False)
+    total_price = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(50), default='pending')
+    stripe_session_id = db.Column(db.String(200))
+    payment_method = db.Column(db.String(50), default='card')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def get_items(self):
+        return json.loads(self.items)
+
+    def __repr__(self):
+        return f'<CartOrder {self.id} {self.status}>'
 
 
 class StoreStaff(db.Model):

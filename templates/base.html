@@ -147,6 +147,17 @@
           <a class="nav-link" href="{{ url_for('store.index') }}">
             <i class="fa fa-shopping-bag fa-sm"></i> Store
           </a>
+          <a class="nav-link" href="{{ url_for('store.cart') }}"
+             style="position:relative; padding-right:1.1rem;">
+            <i class="fa fa-shopping-cart fa-sm"></i>
+            {% if session.get('cart') and session['cart'].values()|sum > 0 %}
+              <span style="position:absolute; top:-4px; right:0; background:var(--accent); color:#000;
+                           border-radius:50%; width:16px; height:16px; font-size:0.6rem; font-weight:700;
+                           display:flex; align-items:center; justify-content:center; line-height:1;">
+                {{ session['cart'].values()|sum }}
+              </span>
+            {% endif %}
+          </a>
           {% if current_user.is_authenticated %}
             {% if current_user.is_admin %}
               <a class="nav-link" href="{{ url_for('admin_dashboard') }}" style="color: var(--yellow) !important; font-weight: 600;">

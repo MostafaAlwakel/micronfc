@@ -1,81 +1,217 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="container" style="max-width:560px; padding:2rem 1rem 5rem;">
+<div class="container" style="max-width:1020px; padding:2rem 1rem 5rem;">
 
-  <a href="{{ url_for('store.product_detail', product_id=product.id) }}"
+  <a href="{{ url_for('store.cart') if cart_items else url_for('store.product_detail', product_id=product.id) if product else url_for('store.index') }}"
      style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
-    <i class="fa fa-arrow-left fa-sm"></i> Back
+    <i class="fa fa-arrow-left fa-sm"></i> {{ 'Back to Cart' if cart_items else 'Back' }}
   </a>
 
-  <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin-bottom:1rem;">Checkout</h2>
+  <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin-bottom:1.75rem;">Checkout</h2>
 
-  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem 1.25rem; margin-bottom:1.5rem; display:flex; align-items:center; gap:1rem;">
-    {% if product.image_url %}
-      <img src="{{ product.image_url }}" alt="{{ product.name }}"
-           style="width:60px; height:60px; object-fit:cover; border-radius:8px; flex-shrink:0;">
-    {% endif %}
-    <div>
-      <div style="font-weight:600;">{{ product.name }}</div>
-      <div style="color:var(--accent); font-weight:700;">{{ '%.2f'|format(product.price) }} EGP</div>
-    </div>
-  </div>
+  <div class="checkout-layout">
 
-  <form method="POST">
-    <div style="display:flex; flex-direction:column; gap:1rem;">
+    <!-- Form -->
+    <div class="checkout-form-col">
+      <form method="POST"
+            action="{{ url_for('store.cart_checkout') if cart_items else url_for('store.checkout', product_id=product.id) }}"
+            id="checkout-form">
+        <div class="form-stack">
 
-      <div>
-        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Full Name *</label>
-        <input type="text" name="name" required placeholder="Ahmed Mohamed"
-               style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
-      </div>
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" name="name" required placeholder="Ahmed Mohamed" class="form-input">
+          </div>
 
-      <div>
-        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Email *</label>
-        <input type="email" name="email" required placeholder="you@example.com"
-               style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
-      </div>
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input type="email" name="email" required placeholder="you@example.com" class="form-input">
+          </div>
 
-      <div>
-        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Phone</label>
-        <input type="tel" name="phone" placeholder="+20 10 0000 0000"
-               style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
-      </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" name="phone" placeholder="+20 10 0000 0000" class="form-input">
+          </div>
 
-      <div>
-        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Shipping Address</label>
-        <textarea name="address" rows="3" placeholder="Street, City, Governorate"
-                  style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif; resize:vertical;"></textarea>
-      </div>
+          <div class="form-group">
+            <label class="form-label">Shipping Address</label>
+            <textarea name="address" rows="3" placeholder="Street, City, Governorate"
+                      class="form-input" style="resize:vertical;"></textarea>
+          </div>
 
-      <div>
-        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">
-          Quantity <span style="color:var(--muted2);">(max {{ product.stock }})</span>
-        </label>
-        <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}"
-               style="width:120px; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
-      </div>
+          {% if product %}
+          <div class="form-group">
+            <label class="form-label">
+              Quantity <span style="color:var(--muted2);">(max {{ product.stock }})</span>
+            </label>
+            <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}"
+                   class="form-input" style="max-width:120px;">
+          </div>
+          {% endif %}
 
-      <div style="background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius); padding:1rem;">
-        <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.75rem; font-weight:600;">Payment Method</label>
-        <div style="display:flex; flex-direction:column; gap:0.6rem;">
-          <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer;">
-            <input type="radio" name="payment_method" value="card" checked>
-            <span style="font-size:0.9rem;"><i class="fa fa-credit-card fa-sm" style="color:var(--accent);"></i> Credit/Debit Card (Stripe)</span>
-          </label>
-          <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer;">
-            <input type="radio" name="payment_method" value="cash">
-            <span style="font-size:0.9rem;"><i class="fa fa-money-bill fa-sm" style="color:#ffc107;"></i> Cash on Delivery</span>
-          </label>
+          <!-- Payment Method -->
+          <div>
+            <label class="form-label" style="margin-bottom:0.5rem; display:block;">Payment Method</label>
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+              <label class="payment-option" id="opt-card">
+                <input type="radio" name="payment_method" value="card" checked onchange="updatePaymentUI()">
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <i class="fa fa-credit-card fa-lg" style="color:var(--accent); width:20px; text-align:center;"></i>
+                  <div>
+                    <div style="font-weight:600; font-size:0.9rem;">Credit / Debit Card</div>
+                    <div style="font-size:0.77rem; color:var(--muted);">Secure payment via Stripe</div>
+                  </div>
+                </div>
+              </label>
+              <label class="payment-option" id="opt-cash">
+                <input type="radio" name="payment_method" value="cash" onchange="updatePaymentUI()">
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <i class="fa fa-money-bill-wave fa-lg" style="color:#ffc107; width:20px; text-align:center;"></i>
+                  <div>
+                    <div style="font-weight:600; font-size:0.9rem;">Cash on Delivery</div>
+                    <div style="font-size:0.77rem; color:var(--muted);">Pay when your order arrives</div>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-nav"
+                  style="padding:0.9rem; font-size:1rem; min-height:52px; width:100%; margin-top:0.25rem;">
+            <i class="fa fa-lock fa-sm"></i>
+            <span id="submit-label">Pay with Card</span>
+          </button>
+
         </div>
-      </div>
-
-      <button type="submit" class="btn-nav" style="padding:0.75rem; font-size:1rem; margin-top:0.5rem;">
-        <i class="fa fa-lock fa-sm"></i> Continue to Payment
-      </button>
-
+      </form>
     </div>
-  </form>
 
+    <!-- Order Summary -->
+    <div class="checkout-summary">
+      <h3 style="font-family:'Syne',sans-serif; font-weight:700; margin:0 0 1rem; font-size:1rem; color:var(--text);">
+        Order Summary
+      </h3>
+
+      {% if product %}
+        <div style="display:flex; align-items:center; gap:0.85rem; padding-bottom:1rem; border-bottom:1px solid var(--border); margin-bottom:0.75rem;">
+          {% if product.image_url %}
+            <img src="{{ product.image_url }}"
+                 style="width:56px; height:56px; object-fit:cover; border-radius:8px; border:1px solid var(--border); flex-shrink:0;">
+          {% else %}
+            <div style="width:56px; height:56px; background:var(--surface2); border-radius:8px; border:1px solid var(--border);
+                        display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <i class="fa fa-box" style="color:var(--muted2);"></i>
+            </div>
+          {% endif %}
+          <div>
+            <div style="font-weight:600; font-size:0.9rem; line-height:1.3;">{{ product.name }}</div>
+            <div style="color:var(--accent); font-weight:700; margin-top:0.15rem;">
+              {{ '%.2f'|format(product.price) }} EGP
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.05rem;">
+          <span>Total</span>
+          <span style="color:var(--accent);">{{ '%.2f'|format(product.price) }} EGP</span>
+        </div>
+      {% endif %}
+
+      {% if cart_items %}
+        {% for item in cart_items %}
+        <div style="display:flex; justify-content:space-between; font-size:0.83rem; color:var(--muted); padding:0.3rem 0;">
+          <span>{{ item.product.name }} × {{ item.quantity }}</span>
+          <span>{{ '%.2f'|format(item.subtotal) }} EGP</span>
+        </div>
+        {% endfor %}
+        <div style="border-top:1px solid var(--border); margin-top:0.75rem; padding-top:0.75rem;
+                    display:flex; justify-content:space-between; font-weight:700; font-size:1.05rem;">
+          <span>Total</span>
+          <span style="color:var(--accent);">{{ '%.2f'|format(cart_total) }} EGP</span>
+        </div>
+      {% endif %}
+
+      <div style="margin-top:1rem; padding:0.75rem; background:rgba(0,229,160,0.05); border:1px solid rgba(0,229,160,0.15);
+                  border-radius:8px; font-size:0.78rem; color:var(--muted); display:flex; align-items:center; gap:0.5rem;">
+        <i class="fa fa-shield-halved" style="color:var(--accent);"></i>
+        Secure &amp; encrypted checkout
+      </div>
+    </div>
+
+  </div>
 </div>
+
+<style>
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  align-items: start;
+}
+.checkout-form-col {}
+.form-stack { display: flex; flex-direction: column; gap: 1rem; }
+.form-group {}
+.form-label { font-size: 0.85rem; color: var(--muted); display: block; margin-bottom: 0.3rem; }
+.form-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  min-height: 48px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.form-input:focus { outline: none; border-color: rgba(0,229,160,0.5); }
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+.payment-option.selected {
+  border-color: var(--accent);
+  background: rgba(0,229,160,0.04);
+}
+.payment-option input[type="radio"] { flex-shrink: 0; accent-color: var(--accent); }
+.checkout-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  position: sticky;
+  top: 80px;
+}
+@media (max-width: 700px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+  .checkout-summary {
+    position: static;
+    order: -1;
+  }
+}
+</style>
+
+<script>
+function updatePaymentUI() {
+  const card = document.querySelector('input[value="card"]').checked;
+  document.getElementById('submit-label').textContent = card ? 'Pay with Card' : 'Place Order';
+  document.getElementById('opt-card').classList.toggle('selected', card);
+  document.getElementById('opt-cash').classList.toggle('selected', !card);
+}
+document.addEventListener('DOMContentLoaded', function() {
+  updatePaymentUI();
+  document.querySelectorAll('input[name="payment_method"]').forEach(function(r) {
+    r.addEventListener('change', updatePaymentUI);
+  });
+});
+</script>
 {% endblock %}
