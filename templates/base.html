@@ -150,9 +150,18 @@
       {% if current_user.is_authenticated %}
         {% if current_user.is_admin %}
           <a href="{{ url_for('admin_dashboard') }}"
-             class="sidebar-link {{ 'active' if request.path.startswith('/admin') else '' }}">
+             class="sidebar-link {{ 'active' if request.path == '/admin' else '' }}">
             <i class="fa fa-crown"></i><span>Admin</span>
           </a>
+          <a href="{{ url_for('admin_cards') }}"
+             class="sidebar-link {{ 'active' if request.path.startswith('/admin/cards') else '' }}">
+            <i class="fa fa-credit-card"></i><span>NFC Cards</span>
+          </a>
+          <a href="{{ url_for('store.store_dashboard') }}"
+             class="sidebar-link {{ 'active' if request.path.startswith('/store/dashboard') else '' }}">
+            <i class="fa fa-store"></i><span>Store Admin</span>
+          </a>
+          <div class="sidebar-divider"></div>
         {% endif %}
         <a href="{{ url_for('dashboard') }}"
            class="sidebar-link {{ 'active' if request.path == '/dashboard' else '' }}">
@@ -178,7 +187,7 @@
         <div class="sidebar-divider"></div>
 
         <a href="{{ url_for('store.index') }}"
-           class="sidebar-link {{ 'active' if request.path.startswith('/store') and not request.path.startswith('/store/cart') else '' }}">
+           class="sidebar-link {{ 'active' if request.path.startswith('/store') and not request.path.startswith('/store/cart') and not request.path.startswith('/store/dashboard') else '' }}">
           <i class="fa fa-shopping-bag"></i><span>Store</span>
         </a>
         <a href="{{ url_for('store.cart') }}"
