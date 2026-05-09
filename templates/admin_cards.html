@@ -55,16 +55,18 @@
         class="search-input" style="width:200px;">
     </div>
 
-    <div class="admin-table-wrap" style="overflow-x:auto;">
-      <table class="admin-table" style="white-space:nowrap;" id="cards-table">
+    <div class="admin-table-wrap"
+         style="overflow-x:auto; -webkit-overflow-scrolling:touch; width:100%;">
+      <table class="admin-table" id="cards-table"
+             style="min-width:860px; white-space:nowrap;">
         <thead>
           <tr>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Code</th>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Type</th>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Status</th>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">User</th>
-            <th class="hide-mobile" style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">NFC Link</th>
-            <th class="hide-mobile" style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Created</th>
+            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">NFC Link</th>
+            <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Created</th>
             <th style="text-align:left; padding:0.75rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.72rem; text-transform:uppercase;">Actions</th>
           </tr>
         </thead>
@@ -100,7 +102,7 @@
                 <span style="color:var(--muted2);">—</span>
               {% endif %}
             </td>
-            <td class="hide-mobile" style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">
+            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">
               {% if card.card_type == 'medical' %}
                 <span style="font-size:0.7rem; color:var(--muted2); display:block; margin-bottom:2px;">⌚ Medical Bracelet Link:</span>
               {% else %}
@@ -114,7 +116,7 @@
                 📋
               </button>
             </td>
-            <td class="hide-mobile" style="padding:0.85rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.8rem;">
+            <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border); color:var(--muted); font-size:0.8rem;">
               {{ card.created_at.strftime('%d %b %Y') }}
             </td>
             <td style="padding:0.85rem 1rem; border-bottom:1px solid var(--border);">

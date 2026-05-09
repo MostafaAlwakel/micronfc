@@ -1363,11 +1363,9 @@ textarea.form-control {
   }
 }
 
-/* ===== FIX: لا سحب أفقي ===== */
-html, body {
-  overflow-x: hidden;
-  max-width: 100vw;
-}
+/* ===== FIX: لا سحب أفقي على الصفحة لكن يسمح للـ containers الداخلية بالسحب ===== */
+html { overflow-x: clip; }
+body { overflow-x: clip; max-width: 100vw; }
 
 .container {
   padding-left: 1rem;

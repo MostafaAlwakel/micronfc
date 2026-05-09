@@ -202,17 +202,19 @@
       <input type="text" class="search-input" placeholder="🔍 Search..." onkeyup="searchUsers(this.value)" style="width:260px;">
     </div>
 
-    <div class="admin-table-wrap table-responsive-wrap">
-      <table class="admin-table" id="users-table">
+    <div class="admin-table-wrap table-responsive-wrap"
+         style="overflow-x:auto; -webkit-overflow-scrolling:touch; width:100%;">
+      <table class="admin-table" id="users-table"
+             style="min-width:900px; white-space:nowrap;">
         <thead>
           <tr>
             <th>User</th>
-            <th class="hide-mobile">Email</th>
+            <th>Email</th>
             <th>Role</th>
-            <th class="hide-mobile">Product</th>
+            <th>Product</th>
             <th>Status</th>
-            <th class="hide-mobile">Bot</th>
-            <th class="hide-mobile">Joined</th>
+            <th>Bot</th>
+            <th>Joined</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -233,7 +235,7 @@
             </td>
 
             <!-- Email -->
-            <td class="hide-mobile" style="color:var(--muted);">{{ user.email }}</td>
+            <td style="color:var(--muted);">{{ user.email }}</td>
 
             <!-- Role -->
             <td>
@@ -245,7 +247,7 @@
             </td>
 
             <!-- Product -->
-            <td class="hide-mobile">
+            <td>
               <span class="badge badge-{{ user.product_type }}">
                 {{ '🪪 Card' if user.product_type == 'card' else '⌚ Bracelet' }}
               </span>
@@ -259,7 +261,7 @@
             </td>
 
             <!-- Bot -->
-            <td class="hide-mobile">
+            <td>
               {% if user.bot_context %}
                 <span style="color:#00e5a0; font-size:0.8rem;">✅ Set</span>
               {% else %}
@@ -268,7 +270,7 @@
             </td>
 
             <!-- Joined -->
-            <td class="hide-mobile" style="color:var(--muted); font-size:0.8rem;">{{ user.created_at.strftime('%d %b %Y') }}</td>
+            <td style="color:var(--muted); font-size:0.8rem;">{{ user.created_at.strftime('%d %b %Y') }}</td>
 
             <!-- Actions -->
             <td>
