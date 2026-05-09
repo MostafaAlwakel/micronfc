@@ -6,12 +6,14 @@ from .models import Product, Order, StoreStaff
 from models import db, User
 
 
-def store_staff_required(f):
+def store_admin_required(f):
     @wraps(f)
+    @login_required
     def decorated(*args, **kwargs):
-        is_admin = current_user.role in ['admin', 'subadmin']
-        is_staff = StoreStaff.query.filter_by(user_id=current_user.id).first()
-        if not is_admin and not is_staff:
+        if current_user.role in ['admin', 'subadmin']:
+            return f(*args, **kwargs)
+        staff = StoreStaff.query.filter_by(user_id=current_user.id).first()
+        if not staff:
             flash('Access denied.', 'danger')
             return redirect(url_for('store.index'))
         return f(*args, **kwargs)
@@ -19,8 +21,7 @@ def store_staff_required(f):
 
 
 @store_bp.route('/dashboard')
-@login_required
-@store_staff_required
+@store_admin_required
 def store_dashboard():
     total_products = Product.query.count()
     active_products = Product.query.filter_by(is_active=True).count()
@@ -41,16 +42,14 @@ def store_dashboard():
 
 
 @store_bp.route('/dashboard/products')
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_products():
     products = Product.query.order_by(Product.created_at.desc()).all()
     return render_template('store/products.html', products=products)
 
 
 @store_bp.route('/dashboard/products/add', methods=['GET', 'POST'])
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_add_product():
     if request.method == 'POST':
         product = Product(
@@ -69,8 +68,7 @@ def dashboard_add_product():
 
 
 @store_bp.route('/dashboard/products/edit/<int:product_id>', methods=['GET', 'POST'])
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_edit_product(product_id):
     product = Product.query.get_or_404(product_id)
     if request.method == 'POST':
@@ -87,8 +85,7 @@ def dashboard_edit_product(product_id):
 
 
 @store_bp.route('/dashboard/products/delete/<int:product_id>', methods=['POST'])
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_delete_product(product_id):
     product = Product.query.get_or_404(product_id)
     db.session.delete(product)
@@ -98,8 +95,7 @@ def dashboard_delete_product(product_id):
 
 
 @store_bp.route('/dashboard/orders')
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_orders():
     status = request.args.get('status', '')
     query = Order.query
@@ -110,8 +106,7 @@ def dashboard_orders():
 
 
 @store_bp.route('/dashboard/orders/update/<int:order_id>', methods=['POST'])
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_update_order(order_id):
     order = Order.query.get_or_404(order_id)
     order.status = request.form['status']
@@ -121,16 +116,14 @@ def dashboard_update_order(order_id):
 
 
 @store_bp.route('/dashboard/staff')
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_staff():
     staff_list = StoreStaff.query.all()
     return render_template('store/staff.html', staff_list=staff_list)
 
 
 @store_bp.route('/dashboard/staff/add', methods=['POST'])
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_add_staff():
     email = request.form.get('email', '').strip()
     role = request.form.get('role', 'staff')
@@ -148,8 +141,7 @@ def dashboard_add_staff():
 
 
 @store_bp.route('/dashboard/staff/remove/<int:staff_id>', methods=['POST'])
-@login_required
-@store_staff_required
+@store_admin_required
 def dashboard_remove_staff(staff_id):
     staff = StoreStaff.query.get_or_404(staff_id)
     db.session.delete(staff)
