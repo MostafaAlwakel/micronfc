@@ -2,16 +2,17 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_bcrypt import Bcrypt
+from werkzeug.utils import secure_filename
 from config import Config
 from models import db, User, Card
 import secrets
-import requests
 import resend
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from functools import wraps
 import os
 import json
+import requests
 import cloudinary
 import cloudinary.uploader
 
@@ -799,11 +800,6 @@ def admin_toggle_card(card_id):
     status = 'enabled' if card.is_active else 'disabled'
     flash(f'Card {card.code} {status}!', 'success')
     return redirect(url_for('admin_cards'))
-
-# ==================== STORE BLUEPRINT ====================
-
-from store import store_bp
-app.register_blueprint(store_bp)
 
 # ==================== DB MIGRATION & STARTUP ====================
 

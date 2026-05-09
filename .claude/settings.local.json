@@ -1,9 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(du -sh /c/Users/3com/Downloads/*)",
-      "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(du -sh /c/Users/3com/Downloads/*)"
     ]
   }
 }
