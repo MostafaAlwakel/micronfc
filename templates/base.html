@@ -164,8 +164,6 @@
           </div>
         {% endif %}
       {% endwith %}
-
-      {% block content %}{% endblock %}
     </main>
 
   </div>
@@ -208,9 +206,9 @@
     {% endif %}
   {% endwith %}
 
-  {% block content %}{% endblock %}
-
 {% endif %}
+
+{% block content %}{% endblock %}
 
 <!-- ═══ CHAT FAB (auth only) ═══ -->
 {% if current_user.is_authenticated %}
