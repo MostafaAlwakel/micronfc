@@ -17,15 +17,15 @@
   <!-- Stats -->
   <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin-bottom:2rem;">
     <div style="background:var(--surface2); border:1px solid var(--border); border-radius:16px; padding:1.25rem; text-align:center;">
-      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent);">{{ total }}</div>
+      <div style="font-family:'Syne',sans-serif; font-size:clamp(1.2rem,4vw,2rem); font-weight:800; color:var(--accent);">{{ total }}</div>
       <div style="font-size:0.8rem; color:var(--muted);">Total Cards</div>
     </div>
     <div style="background:var(--surface2); border:1px solid var(--border); border-radius:16px; padding:1.25rem; text-align:center;">
-      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:#00e5a0;">{{ activated }}</div>
+      <div style="font-family:'Syne',sans-serif; font-size:clamp(1.2rem,4vw,2rem); font-weight:800; color:#00e5a0;">{{ activated }}</div>
       <div style="font-size:0.8rem; color:var(--muted);">Activated</div>
     </div>
     <div style="background:var(--surface2); border:1px solid var(--border); border-radius:16px; padding:1.25rem; text-align:center;">
-      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:#ffc107;">{{ total - activated }}</div>
+      <div style="font-family:'Syne',sans-serif; font-size:clamp(1.2rem,4vw,2rem); font-weight:800; color:#ffc107;">{{ total - activated }}</div>
       <div style="font-size:0.8rem; color:var(--muted);">Not Activated</div>
     </div>
   </div>
