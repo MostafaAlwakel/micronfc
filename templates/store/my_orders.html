@@ -36,7 +36,7 @@
               </div>
             </td>
             <td style="padding:0.75rem 1rem; white-space:nowrap;">
-              <div style="font-weight:600;">{{ order.product.name }}</div>
+              <div style="font-weight:600;">{{ order.product.name if order.product else '—' }}</div>
               <div style="font-size:0.76rem; color:var(--muted);">Qty: {{ order.quantity }}</div>
             </td>
             <td style="padding:0.75rem 1rem; text-align:right; color:var(--accent); font-weight:700; white-space:nowrap;">

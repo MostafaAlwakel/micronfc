@@ -232,7 +232,7 @@ def cancel():
 @store_bp.route('/track/<tracking_number>')
 @login_required
 def track_order(tracking_number=None):
-    # Also accept tracking number as a GET query param (from the search form)
+    # Accept tracking number from URL segment or GET query param
     tn = tracking_number or request.args.get('tracking_number', '').strip()
     # Redirect form submissions to clean URL
     if tn and not tracking_number:
@@ -240,21 +240,41 @@ def track_order(tracking_number=None):
     order = None
     error = None
     if tn:
-        order = Order.query.filter_by(
-            tracking_number=tn,
-            user_id=current_user.id
-        ).first()
-        if not order:
-            error = "Order not found or doesn't belong to your account."
+        order = Order.query.filter_by(tracking_number=tn).first()
+        if order:
+            if order.user_id is not None and order.user_id != current_user.id:
+                # Order belongs to a different user
+                order = None
+                error = "Order not found or doesn't belong to your account."
+            elif order.user_id is None:
+                # Backfill: link old order to the user who has the tracking number
+                order.user_id = current_user.id
+                db.session.commit()
+        else:
+            error = "No order found with that tracking number."
     return render_template('store/track.html', order=order, tracking_number=tn, error=error)
 
 
 @store_bp.route('/my-orders')
 @login_required
 def my_orders():
-    orders = Order.query.filter_by(
-        user_id=current_user.id
+    # Show orders by user_id (new) OR by email (old orders placed before user_id was added)
+    orders = Order.query.filter(
+        db.or_(
+            Order.user_id == current_user.id,
+            Order.customer_email == current_user.email
+        )
     ).order_by(Order.created_at.desc()).all()
+
+    # Backfill user_id on old orders so tracking works next time
+    needs_save = False
+    for order in orders:
+        if order.user_id is None:
+            order.user_id = current_user.id
+            needs_save = True
+    if needs_save:
+        db.session.commit()
+
     return render_template('store/my_orders.html', orders=orders)
 
 

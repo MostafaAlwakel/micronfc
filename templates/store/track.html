@@ -103,7 +103,7 @@
       </div>
       <div class="order-detail-row">
         <span style="color:var(--muted); font-size:0.83rem;">Product</span>
-        <span>{{ order.product.name }} &times; {{ order.quantity }}</span>
+        <span>{{ order.product.name if order.product else '—' }} &times; {{ order.quantity }}</span>
       </div>
       <div class="order-detail-row">
         <span style="color:var(--muted); font-size:0.83rem;">Total</span>
