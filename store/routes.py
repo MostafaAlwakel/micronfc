@@ -258,24 +258,47 @@ def track_order(tracking_number=None):
 @store_bp.route('/my-orders')
 @login_required
 def my_orders():
-    # Show orders by user_id (new) OR by email (old orders placed before user_id was added)
-    orders = Order.query.filter(
+    from datetime import datetime as _dt
+
+    # ── Single-product orders (Order) ──────────────────────────────────────
+    single = Order.query.filter(
         db.or_(
             Order.user_id == current_user.id,
             Order.customer_email == current_user.email
         )
     ).order_by(Order.created_at.desc()).all()
 
-    # Backfill user_id on old orders so tracking works next time
     needs_save = False
-    for order in orders:
-        if order.user_id is None:
-            order.user_id = current_user.id
+    for o in single:
+        if o.user_id is None:
+            o.user_id = current_user.id
             needs_save = True
+        o._is_cart    = False
+        o._items_desc = (o.product.name if o.product else '—') + f' × {o.quantity}'
+        o._tracking   = o.tracking_number or ''
     if needs_save:
         db.session.commit()
 
-    return render_template('store/my_orders.html', orders=orders)
+    # ── Cart orders (CartOrder) ─────────────────────────────────────────────
+    cart = CartOrder.query.filter_by(
+        customer_email=current_user.email
+    ).order_by(CartOrder.created_at.desc()).all()
+
+    for co in cart:
+        co._is_cart    = True
+        items          = co.get_items()
+        co._items_desc = (', '.join(f"{i['name']} × {i['quantity']}" for i in items)
+                          if items else '—')
+        co._tracking   = ''
+
+    # ── Merge and sort by date ──────────────────────────────────────────────
+    all_orders = sorted(
+        list(single) + list(cart),
+        key=lambda x: x.created_at or _dt(2000, 1, 1),
+        reverse=True
+    )
+
+    return render_template('store/my_orders.html', orders=all_orders)
 
 
 @store_bp.route('/webhook', methods=['POST'])
