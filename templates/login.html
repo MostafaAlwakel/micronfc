@@ -34,7 +34,7 @@
       <div style="flex:1; height:1px; background:var(--border);"></div>
     </div>
 
-    <form method="POST">
+    <form method="POST" action="/login?next={{ request.args.get('next', '') }}">
       <div class="form-group">
         <label>Email Address</label>
         <div class="input-wrapper">
@@ -60,7 +60,7 @@
     </form>
 
     <p class="auth-footer" style="margin-top: 1.5rem;">
-      Don't have an account? <a href="{{ url_for('register') }}">Create one →</a>
+      Don't have an account? <a href="/register?next={{ request.args.get('next', '') }}">Create one →</a>
     </p>
   </div>
 </div>

@@ -64,6 +64,8 @@ def from_json_filter(value):
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+login_manager.login_message = 'Please login to complete your order.'
+login_manager.login_message_category = 'info'
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -92,6 +94,12 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        next_page = request.args.get('next', '').strip()
+        if next_page and next_page.startswith('/'):
+            return redirect(next_page)
+        return redirect(url_for('dashboard'))
+
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
@@ -131,7 +139,11 @@ def register():
             print("Email error:", e)
 
         flash('Account created! Please check your email to verify your account.', 'success')
-        return redirect(url_for('login'))
+        next_page = request.args.get('next', '').strip()
+        login_url = url_for('login')
+        if next_page and next_page.startswith('/'):
+            login_url = f'{login_url}?next={next_page}'
+        return redirect(login_url)
 
     return render_template('register.html')
 
@@ -149,6 +161,12 @@ def verify_email(token):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        next_page = request.args.get('next', '').strip()
+        if next_page and next_page.startswith('/'):
+            return redirect(next_page)
+        return redirect(url_for('dashboard'))
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -162,6 +180,9 @@ def login():
                 flash('Please verify your email first! Check your inbox.', 'warning')
                 return redirect(url_for('login'))
             login_user(user)
+            next_page = request.args.get('next', '').strip()
+            if next_page and next_page.startswith('/'):
+                return redirect(next_page)
             return redirect(url_for('dashboard'))
         else:
             flash('Invalid email or password!', 'danger')

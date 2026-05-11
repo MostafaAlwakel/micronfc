@@ -85,10 +85,21 @@
         <span>Total</span>
         <span style="color:var(--accent);">{{ '%.2f'|format(total) }} EGP</span>
       </div>
+      {% if current_user.is_authenticated %}
       <a href="{{ url_for('store.cart_checkout') }}"
          class="btn-nav" style="display:block; text-align:center; padding:0.85rem; font-size:1rem; margin-top:1rem;">
         <i class="fa fa-lock fa-sm"></i> Proceed to Checkout
       </a>
+      {% else %}
+      <a href="/login?next=/store/cart/checkout"
+         class="btn-nav" style="display:block; text-align:center; padding:0.85rem; font-size:1rem; margin-top:1rem;">
+        <i class="fa fa-sign-in-alt fa-sm"></i> Login to Checkout
+      </a>
+      <a href="/register?next=/store/cart/checkout"
+         style="display:block; text-align:center; font-size:0.82rem; color:var(--muted); margin-top:0.65rem; text-decoration:none;">
+        Don't have an account? Register
+      </a>
+      {% endif %}
       <a href="{{ url_for('store.index') }}"
          style="display:block; text-align:center; font-size:0.82rem; color:var(--muted); margin-top:0.75rem; text-decoration:none;">
         Continue Shopping
