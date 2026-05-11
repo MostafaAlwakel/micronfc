@@ -41,6 +41,9 @@ class Order(db.Model):
     stripe_session_id = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    user = db.relationship('User', backref='store_orders', lazy=True)
+
     @staticmethod
     def generate_tracking():
         return 'NFC' + ''.join(random.choices(string.digits, k=6))

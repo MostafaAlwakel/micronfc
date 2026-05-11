@@ -3,9 +3,9 @@
 <div class="container" style="max-width:640px; padding:2.5rem 1rem 5rem;">
 
   <div style="margin-bottom:1.5rem;">
-    <a href="{{ url_for('store.index') }}"
+    <a href="{{ url_for('store.my_orders') }}"
        style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
-      <i class="fa fa-arrow-left fa-sm"></i> Back to Store
+      <i class="fa fa-arrow-left fa-sm"></i> My Orders
     </a>
     <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.4rem 0 0;">Track Your Order</h2>
     <p style="color:var(--muted); font-size:0.88rem; margin:0.25rem 0 0;">Enter your tracking number to see the latest status.</p>
@@ -31,12 +31,12 @@
     </button>
   </form>
 
-  {% if tracking_number and not order %}
-  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-              padding:2rem; text-align:center; color:var(--muted); margin-bottom:1.5rem;">
+  {% if error %}
+  <div style="background:var(--surface); border:1px solid rgba(248,113,113,0.3); border-radius:var(--radius);
+              padding:1.5rem; text-align:center; color:var(--muted); margin-bottom:1.5rem;">
     <i class="fa fa-box-open" style="font-size:2.5rem; display:block; margin-bottom:0.75rem; color:var(--muted2);"></i>
     <div style="font-weight:600; color:var(--text); margin-bottom:0.25rem;">Order not found</div>
-    <div style="font-size:0.85rem;">No order with tracking number <strong style="color:var(--accent);">{{ tracking_number }}</strong> was found.</div>
+    <div style="font-size:0.85rem; color:#f87171;">{{ error }}</div>
   </div>
   {% endif %}
 
@@ -136,34 +136,12 @@
   </div>
   {% endif %}
 
-  <!-- Login prompt for guests -->
-  {% if not current_user.is_authenticated %}
-  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-              padding:1.25rem; text-align:center;">
-    <div style="font-size:0.88rem; color:var(--muted); margin-bottom:1rem;">
-      Want to see all your orders in one place?
-    </div>
-    <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
-      <a href="/login" class="btn-nav"
-         style="padding:0.55rem 1.25rem; font-size:0.88rem; text-decoration:none;">
-        <i class="fa fa-sign-in-alt fa-sm"></i> Login
-      </a>
-      <a href="/register"
-         style="padding:0.55rem 1.25rem; font-size:0.88rem; border:1px solid var(--border2);
-                border-radius:var(--radius); color:var(--muted); text-decoration:none; display:inline-flex;
-                align-items:center; gap:0.4rem;">
-        <i class="fa fa-user-plus fa-sm"></i> Create Account
-      </a>
-    </div>
-  </div>
-  {% else %}
   <div style="text-align:center; padding:0.5rem 0;">
     <a href="{{ url_for('store.my_orders') }}"
        style="color:var(--accent); font-size:0.85rem; text-decoration:none;">
       <i class="fa fa-box fa-sm"></i> View all my orders
     </a>
   </div>
-  {% endif %}
 
 </div>
 

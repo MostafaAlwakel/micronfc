@@ -89,6 +89,7 @@ def cart_update(product_id):
 
 
 @store_bp.route('/cart/checkout', methods=['GET', 'POST'])
+@login_required
 def cart_checkout():
     items, total = _get_cart_items()
     if not items:
@@ -96,8 +97,6 @@ def cart_checkout():
         return redirect(url_for('store.cart'))
 
     if request.method == 'POST':
-        name = request.form['name'].strip()
-        email = request.form['email'].strip()
         phone = request.form.get('phone', '').strip()
         address = request.form.get('address', '').strip()
         payment_method = request.form.get('payment_method', 'card')
@@ -113,9 +112,9 @@ def cart_checkout():
             for i in items
         ])
         cart_order = CartOrder(
-            customer_name=name, customer_email=email, customer_phone=phone,
-            customer_address=address, items=items_json, total_price=total,
-            payment_method=payment_method, status='pending'
+            customer_name=current_user.name, customer_email=current_user.email,
+            customer_phone=phone, customer_address=address, items=items_json,
+            total_price=total, payment_method=payment_method, status='pending'
         )
         db.session.add(cart_order)
         db.session.commit()
@@ -144,6 +143,7 @@ def cart_checkout():
 
 
 @store_bp.route('/checkout/<int:product_id>', methods=['GET', 'POST'])
+@login_required
 def checkout(product_id):
     product = Product.query.get_or_404(product_id)
     if not product.is_active or product.stock < 1:
@@ -151,8 +151,6 @@ def checkout(product_id):
         return redirect(url_for('store.index'))
 
     if request.method == 'POST':
-        name = request.form['name'].strip()
-        email = request.form['email'].strip()
         phone = request.form.get('phone', '').strip()
         address = request.form.get('address', '').strip()
         quantity = int(request.form.get('quantity', 1))
@@ -167,11 +165,17 @@ def checkout(product_id):
             return redirect(url_for('store.checkout', product_id=product_id))
 
         order = Order(
-            product_id=product.id, customer_name=name, customer_email=email,
-            customer_phone=phone, customer_address=address, quantity=quantity,
-            total_price=product.price * quantity, status='pending',
+            product_id=product.id,
+            customer_name=current_user.name,
+            customer_email=current_user.email,
+            customer_phone=phone,
+            customer_address=address,
+            quantity=quantity,
+            total_price=product.price * quantity,
+            status='pending',
             payment_method=payment_method,
-            tracking_number=Order.generate_tracking()
+            tracking_number=Order.generate_tracking(),
+            user_id=current_user.id
         )
         db.session.add(order)
         db.session.commit()
@@ -226,18 +230,30 @@ def cancel():
 
 @store_bp.route('/track')
 @store_bp.route('/track/<tracking_number>')
+@login_required
 def track_order(tracking_number=None):
+    # Also accept tracking number as a GET query param (from the search form)
+    tn = tracking_number or request.args.get('tracking_number', '').strip()
+    # Redirect form submissions to clean URL
+    if tn and not tracking_number:
+        return redirect(url_for('store.track_order', tracking_number=tn))
     order = None
-    if tracking_number:
-        order = Order.query.filter_by(tracking_number=tracking_number).first()
-    return render_template('store/track.html', order=order, tracking_number=tracking_number)
+    error = None
+    if tn:
+        order = Order.query.filter_by(
+            tracking_number=tn,
+            user_id=current_user.id
+        ).first()
+        if not order:
+            error = "Order not found or doesn't belong to your account."
+    return render_template('store/track.html', order=order, tracking_number=tn, error=error)
 
 
 @store_bp.route('/my-orders')
 @login_required
 def my_orders():
     orders = Order.query.filter_by(
-        customer_email=current_user.email
+        user_id=current_user.id
     ).order_by(Order.created_at.desc()).all()
     return render_template('store/my_orders.html', orders=orders)
 

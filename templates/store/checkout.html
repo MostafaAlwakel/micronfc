@@ -7,7 +7,15 @@
     <i class="fa fa-arrow-left fa-sm"></i> {{ 'Back to Cart' if cart_items else 'Back' }}
   </a>
 
-  <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin-bottom:1.75rem;">Checkout</h2>
+  <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin-bottom:1rem;">Checkout</h2>
+
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+              padding:0.75rem 1rem; margin-bottom:1.5rem; font-size:0.85rem; color:var(--muted);
+              display:flex; align-items:center; gap:0.5rem;">
+    <i class="fa fa-user-circle" style="color:var(--accent);"></i>
+    Ordering as <strong style="color:var(--text); margin:0 0.2rem;">{{ current_user.name }}</strong>
+    &mdash; <a href="/edit/personal" style="color:var(--accent); text-decoration:none;">Update profile</a>
+  </div>
 
   <div class="checkout-layout">
 
@@ -19,18 +27,21 @@
         <div class="form-stack">
 
           <div class="form-group">
-            <label class="form-label">Full Name *</label>
-            <input type="text" name="name" required placeholder="Ahmed Mohamed" class="form-input">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="name" value="{{ current_user.name }}" class="form-input"
+                   readonly style="opacity:0.65; cursor:not-allowed;">
           </div>
 
           <div class="form-group">
-            <label class="form-label">Email *</label>
-            <input type="email" name="email" required placeholder="you@example.com" class="form-input">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" value="{{ current_user.email }}" class="form-input"
+                   readonly style="opacity:0.65; cursor:not-allowed;">
           </div>
 
           <div class="form-group">
             <label class="form-label">Phone *</label>
-            <input type="tel" name="phone" required placeholder="+20 10 0000 0000" class="form-input">
+            <input type="tel" name="phone" required placeholder="+20 10 0000 0000" class="form-input"
+                   value="{{ current_user.phone or '' }}">
           </div>
 
           <div class="form-group">
