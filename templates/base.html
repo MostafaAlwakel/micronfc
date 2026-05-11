@@ -51,10 +51,10 @@
   {# ──────── AUTH SIDEBAR ──────── #}
   {% if current_user.is_authenticated %}
   <aside class="sidebar" id="sidebar">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 0.75rem 0 1.25rem;margin-bottom:1.75rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 0.75rem 0 1.25rem;margin-bottom:1.5rem;flex-shrink:0;">
       <a href="{{ url_for('dashboard') }}" class="sidebar-logo" style="text-decoration:none;">
         <span class="logo-dot"></span>
-        <span class="sidebar-logo-text">MicroNFC</span>
+        <span class="sidebar-logo-text">Micro<span style="color:var(--accent);">NFC</span></span>
       </a>
       <button class="hamburger-btn" onclick="toggleSidebar()" title="Toggle">
         <span></span><span></span><span></span><span></span>
