@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width:860px; padding:2rem 1rem 5rem;">
+
+  <div style="margin-bottom:1.5rem;">
+    <a href="{{ url_for('store.index') }}"
+       style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
+      <i class="fa fa-arrow-left fa-sm"></i> Store
+    </a>
+    <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.3rem 0 0;">My Orders</h2>
+    <p style="color:var(--muted); font-size:0.85rem; margin:0.2rem 0 0;">Orders placed with {{ current_user.email }}</p>
+  </div>
+
+  {% if orders %}
+  <div style="overflow-x:auto;">
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; min-width:600px;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.86rem;">
+        <thead>
+          <tr style="background:var(--surface2); border-bottom:1px solid var(--border2);">
+            <th style="padding:0.75rem 1rem; text-align:left; color:var(--muted); font-weight:600;">#</th>
+            <th style="padding:0.75rem 1rem; text-align:left; color:var(--muted); font-weight:600;">Product</th>
+            <th style="padding:0.75rem 1rem; text-align:right; color:var(--muted); font-weight:600;">Total</th>
+            <th style="padding:0.75rem 1rem; text-align:center; color:var(--muted); font-weight:600;">Status</th>
+            <th style="padding:0.75rem 1rem; text-align:left; color:var(--muted); font-weight:600;">Tracking</th>
+            <th style="padding:0.75rem 1rem; text-align:left; color:var(--muted); font-weight:600;">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% set sc = {'pending':'#f59e0b','paid':'#34d399','shipped':'#60a5fa','delivered':'#a78bfa','cancelled':'#f87171','cash_on_delivery':'#fbbf24'} %}
+          {% for order in orders %}
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:0.75rem 1rem; color:var(--muted); white-space:nowrap;">{{ order.id }}</td>
+            <td style="padding:0.75rem 1rem; white-space:nowrap;">
+              <div style="font-weight:600;">{{ order.product.name }}</div>
+              <div style="font-size:0.76rem; color:var(--muted);">Qty: {{ order.quantity }}</div>
+            </td>
+            <td style="padding:0.75rem 1rem; text-align:right; color:var(--accent); font-weight:700; white-space:nowrap;">
+              {{ '%.2f'|format(order.total_price) }} EGP
+            </td>
+            <td style="padding:0.75rem 1rem; text-align:center; white-space:nowrap;">
+              <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px; background:rgba(0,0,0,0.2);
+                           color:{{ sc.get(order.status,'var(--muted)') }}; border:1px solid {{ sc.get(order.status,'var(--border)') }};">
+                {{ order.status|replace('_',' ')|title }}
+              </span>
+            </td>
+            <td style="padding:0.75rem 1rem; white-space:nowrap;">
+              {% if order.tracking_number %}
+              <a href="{{ url_for('store.track_order', tracking_number=order.tracking_number) }}"
+                 style="color:var(--accent); font-weight:700; text-decoration:none; font-size:0.85rem; font-family:'Syne',sans-serif;">
+                {{ order.tracking_number }}
+              </a>
+              {% else %}
+              <span style="color:var(--muted2); font-size:0.82rem;">—</span>
+              {% endif %}
+            </td>
+            <td style="padding:0.75rem 1rem; color:var(--muted); font-size:0.8rem; white-space:nowrap;">
+              {{ order.created_at.strftime('%d %b %Y') if order.created_at else '—' }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div style="text-align:center; padding:4rem 1rem; color:var(--muted);">
+    <i class="fa fa-box-open" style="font-size:3rem; display:block; margin-bottom:1rem; color:var(--muted2);"></i>
+    <div style="font-weight:600; color:var(--text); margin-bottom:0.4rem;">No orders yet</div>
+    <p style="font-size:0.88rem;">You haven't placed any orders. Start shopping!</p>
+    <a href="{{ url_for('store.index') }}" class="btn-nav"
+       style="display:inline-block; margin-top:1rem; padding:0.6rem 1.5rem; text-decoration:none;">
+      <i class="fa fa-shopping-bag fa-sm"></i> Browse Store
+    </a>
+  </div>
+  {% endif %}
+
+  <div style="margin-top:1.25rem; text-align:center;">
+    <a href="{{ url_for('store.track_order') }}"
+       style="color:var(--accent); font-size:0.85rem; text-decoration:none;">
+      <i class="fa fa-location-dot fa-sm"></i> Track an order by number
+    </a>
+  </div>
+
+</div>
+{% endblock %}

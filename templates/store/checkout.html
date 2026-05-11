@@ -29,14 +29,14 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Phone</label>
-            <input type="tel" name="phone" placeholder="+20 10 0000 0000" class="form-input">
+            <label class="form-label">Phone *</label>
+            <input type="tel" name="phone" required placeholder="+20 10 0000 0000" class="form-input">
           </div>
 
           <div class="form-group">
-            <label class="form-label">Shipping Address</label>
+            <label class="form-label">Shipping Address *</label>
             <textarea name="address" rows="3" placeholder="Street, City, Governorate"
-                      class="form-input" style="resize:vertical;"></textarea>
+                      class="form-input" style="resize:vertical;" required></textarea>
           </div>
 
           {% if product %}

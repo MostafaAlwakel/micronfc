@@ -79,6 +79,9 @@
         <i class="fa fa-shopping-cart"></i>
         <span>Cart{% if session.get('cart') and session['cart'].values()|sum > 0 %}&nbsp;<span class="cart-sidebar-badge">{{ session['cart'].values()|sum }}</span>{% endif %}</span>
       </a>
+      <a href="{{ url_for('store.my_orders') }}" class="sidebar-link {{ 'active' if request.path == '/store/my-orders' }}" title="My Orders">
+        <i class="fa fa-box"></i><span>My Orders</span>
+      </a>
       <a href="{{ url_for('logout') }}" class="sidebar-link sidebar-link-logout" title="Logout">
         <i class="fa fa-sign-out-alt"></i><span>Logout</span>
       </a>

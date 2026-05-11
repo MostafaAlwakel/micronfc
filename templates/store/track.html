@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width:640px; padding:2.5rem 1rem 5rem;">
+
+  <div style="margin-bottom:1.5rem;">
+    <a href="{{ url_for('store.index') }}"
+       style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
+      <i class="fa fa-arrow-left fa-sm"></i> Back to Store
+    </a>
+    <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.4rem 0 0;">Track Your Order</h2>
+    <p style="color:var(--muted); font-size:0.88rem; margin:0.25rem 0 0;">Enter your tracking number to see the latest status.</p>
+  </div>
+
+  <!-- Search form -->
+  <form method="GET" action="{{ url_for('store.track_order') }}"
+        style="display:flex; gap:0.5rem; margin-bottom:2rem;">
+    <input type="text" name="tracking_number"
+           value="{{ tracking_number or '' }}"
+           placeholder="e.g. NFC123456"
+           style="flex:1; background:var(--surface); border:1px solid var(--border2); color:var(--text);
+                  padding:0.75rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;
+                  font-size:0.95rem; min-height:48px; transition:border-color 0.2s; box-sizing:border-box;"
+           onfocus="this.style.borderColor='rgba(0,229,160,0.5)'"
+           onblur="this.style.borderColor=''"
+           required>
+    <button type="submit"
+            style="padding:0.75rem 1.25rem; background:var(--accent); color:#000; border:none;
+                   border-radius:var(--radius); font-weight:700; cursor:pointer; font-size:0.92rem;
+                   white-space:nowrap;">
+      <i class="fa fa-search fa-sm"></i> Track
+    </button>
+  </form>
+
+  {% if tracking_number and not order %}
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+              padding:2rem; text-align:center; color:var(--muted); margin-bottom:1.5rem;">
+    <i class="fa fa-box-open" style="font-size:2.5rem; display:block; margin-bottom:0.75rem; color:var(--muted2);"></i>
+    <div style="font-weight:600; color:var(--text); margin-bottom:0.25rem;">Order not found</div>
+    <div style="font-size:0.85rem;">No order with tracking number <strong style="color:var(--accent);">{{ tracking_number }}</strong> was found.</div>
+  </div>
+  {% endif %}
+
+  {% if order %}
+  <!-- Order card -->
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+              padding:1.5rem; margin-bottom:1.5rem;">
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.25rem;">
+      <div>
+        <div style="font-size:0.78rem; color:var(--muted); margin-bottom:2px;">Order</div>
+        <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem;">
+          #{{ order.id }}
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:0.78rem; color:var(--muted); margin-bottom:2px;">Tracking</div>
+        <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; color:var(--accent);">
+          {{ order.tracking_number }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress steps -->
+    {% set steps = ['pending', 'paid', 'shipped', 'delivered'] %}
+    {% if order.status in steps %}
+      {% set current_idx = steps.index(order.status) %}
+    {% elif order.status == 'cash_on_delivery' %}
+      {% set current_idx = 0 %}
+    {% else %}
+      {% set current_idx = -1 %}
+    {% endif %}
+
+    <div class="tracking-steps" style="margin-bottom:1.5rem;">
+      {% for step in steps %}
+      {% set si = loop.index0 %}
+      <div class="track-step {{ 'active' if si <= current_idx else '' }}">
+        <div class="track-dot">
+          {% if si < current_idx %}
+            <i class="fa fa-check" style="font-size:0.6rem;"></i>
+          {% endif %}
+        </div>
+        <div class="track-label">{{ step|capitalize }}</div>
+      </div>
+      {% if not loop.last %}
+      <div class="track-line {{ 'active' if si < current_idx else '' }}"></div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if order.status == 'cancelled' %}
+    <div style="padding:0.65rem 0.9rem; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.25);
+                border-radius:8px; font-size:0.82rem; color:#f87171; margin-bottom:1.25rem;
+                display:flex; align-items:center; gap:0.5rem;">
+      <i class="fa fa-times-circle"></i> This order has been cancelled.
+    </div>
+    {% endif %}
+
+    <!-- Details -->
+    <div style="display:flex; flex-direction:column; gap:0;">
+      <div class="order-detail-row">
+        <span style="color:var(--muted); font-size:0.83rem;">Customer</span>
+        <span style="font-weight:600;">{{ order.customer_name }}</span>
+      </div>
+      <div class="order-detail-row">
+        <span style="color:var(--muted); font-size:0.83rem;">Product</span>
+        <span>{{ order.product.name }} &times; {{ order.quantity }}</span>
+      </div>
+      <div class="order-detail-row">
+        <span style="color:var(--muted); font-size:0.83rem;">Total</span>
+        <span style="font-weight:700; color:var(--accent);">{{ '%.2f'|format(order.total_price) }} EGP</span>
+      </div>
+      <div class="order-detail-row">
+        <span style="color:var(--muted); font-size:0.83rem;">Payment</span>
+        <span>
+          {% set pm = order.payment_method or ('cash' if order.status == 'cash_on_delivery' else 'card') %}
+          {% if pm == 'cash' %}
+            <i class="fa fa-money-bill-wave" style="color:#fbbf24;"></i> Cash on Delivery
+          {% else %}
+            <i class="fa fa-credit-card" style="color:#60a5fa;"></i> Card
+          {% endif %}
+        </span>
+      </div>
+      <div class="order-detail-row">
+        <span style="color:var(--muted); font-size:0.83rem;">Order Date</span>
+        <span>{{ order.created_at.strftime('%d %b %Y, %H:%M') if order.created_at else '—' }}</span>
+      </div>
+      <div class="order-detail-row" style="border-bottom:none; padding-bottom:0;">
+        <span style="color:var(--muted); font-size:0.83rem;">Status</span>
+        {% set sc = {'pending':'#f59e0b','paid':'#34d399','shipped':'#60a5fa','delivered':'#a78bfa','cancelled':'#f87171','cash_on_delivery':'#fbbf24'} %}
+        <span style="font-size:0.78rem; padding:0.2rem 0.65rem; border-radius:99px; background:rgba(0,0,0,0.2);
+                     color:{{ sc.get(order.status,'var(--muted)') }}; border:1px solid {{ sc.get(order.status,'var(--border)') }};">
+          {{ order.status|replace('_', ' ')|title }}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Login prompt for guests -->
+  {% if not current_user.is_authenticated %}
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+              padding:1.25rem; text-align:center;">
+    <div style="font-size:0.88rem; color:var(--muted); margin-bottom:1rem;">
+      Want to see all your orders in one place?
+    </div>
+    <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
+      <a href="/login" class="btn-nav"
+         style="padding:0.55rem 1.25rem; font-size:0.88rem; text-decoration:none;">
+        <i class="fa fa-sign-in-alt fa-sm"></i> Login
+      </a>
+      <a href="/register"
+         style="padding:0.55rem 1.25rem; font-size:0.88rem; border:1px solid var(--border2);
+                border-radius:var(--radius); color:var(--muted); text-decoration:none; display:inline-flex;
+                align-items:center; gap:0.4rem;">
+        <i class="fa fa-user-plus fa-sm"></i> Create Account
+      </a>
+    </div>
+  </div>
+  {% else %}
+  <div style="text-align:center; padding:0.5rem 0;">
+    <a href="{{ url_for('store.my_orders') }}"
+       style="color:var(--accent); font-size:0.85rem; text-decoration:none;">
+      <i class="fa fa-box fa-sm"></i> View all my orders
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+
+<style>
+.tracking-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.track-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.track-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  background: var(--surface2);
+  color: var(--muted2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  transition: all 0.3s;
+}
+.track-step.active .track-dot {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #000;
+}
+.track-label {
+  font-size: 0.72rem;
+  color: var(--muted2);
+  white-space: nowrap;
+  font-weight: 500;
+}
+.track-step.active .track-label {
+  color: var(--accent);
+  font-weight: 700;
+}
+.track-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border2);
+  margin-bottom: 22px;
+  transition: background 0.3s;
+}
+.track-line.active {
+  background: var(--accent);
+}
+.order-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+  font-size: 0.88rem;
+}
+</style>
+{% endblock %}

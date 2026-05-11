@@ -1,6 +1,8 @@
 from models import db
 from datetime import datetime
 import json
+import random
+import string
 
 
 class Product(db.Model):
@@ -34,8 +36,14 @@ class Order(db.Model):
     quantity = db.Column(db.Integer, default=1)
     total_price = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(50), default='pending')
+    payment_method = db.Column(db.String(50), default='card')
+    tracking_number = db.Column(db.String(10), unique=True)
     stripe_session_id = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @staticmethod
+    def generate_tracking():
+        return 'NFC' + ''.join(random.choices(string.digits, k=6))
 
     def __repr__(self):
         return f'<Order {self.id} {self.status}>'

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container" style="max-width:1000px; padding:2rem 1rem 5rem;">
+<div class="container" style="max-width:1200px; padding:2rem 1rem 5rem;">
 
   <div style="margin-bottom:1.5rem;">
     <a href="{{ url_for('store.store_dashboard') }}"
@@ -13,7 +13,7 @@
 
   <!-- Status filter -->
   <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem;">
-    {% for s, label in [('','All'),('pending','Pending'),('paid','Paid'),('shipped','Shipped'),('cancelled','Cancelled')] %}
+    {% for s, label in [('','All'),('pending','Pending'),('paid','Paid'),('shipped','Shipped'),('delivered','Delivered'),('cancelled','Cancelled')] %}
       <a href="{{ url_for('store.dashboard_orders', status=s) }}"
          style="padding:0.4rem 0.9rem; border-radius:99px; font-size:0.82rem; text-decoration:none;
            border:1px solid {% if current_status == s %}var(--accent){% else %}var(--border2){% endif %};
@@ -25,57 +25,91 @@
   </div>
 
   {% if orders %}
-    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
-      <table style="width:100%; border-collapse:collapse; font-size:0.88rem;">
-        <thead>
-          <tr style="background:var(--surface2); border-bottom:1px solid var(--border2);">
-            <th style="padding:0.85rem 1rem; text-align:left; color:var(--muted); font-weight:600;">#</th>
-            <th style="padding:0.85rem 1rem; text-align:left; color:var(--muted); font-weight:600;">Customer</th>
-            <th style="padding:0.85rem 1rem; text-align:left; color:var(--muted); font-weight:600;">Product</th>
-            <th style="padding:0.85rem 1rem; text-align:right; color:var(--muted); font-weight:600;">Total</th>
-            <th style="padding:0.85rem 1rem; text-align:center; color:var(--muted); font-weight:600;">Status</th>
-            <th style="padding:0.85rem 1rem; text-align:right; color:var(--muted); font-weight:600;">Update</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% set sc = {'pending':'#f59e0b','paid':'#34d399','shipped':'#60a5fa','cancelled':'#f87171'} %}
-          {% for order in orders %}
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:0.85rem 1rem; color:var(--muted);">{{ order.id }}</td>
-              <td style="padding:0.85rem 1rem;">
-                <div style="font-weight:600;">{{ order.customer_name }}</div>
-                <div style="font-size:0.78rem; color:var(--muted);">{{ order.customer_email }}</div>
-              </td>
-              <td style="padding:0.85rem 1rem; color:var(--muted);">
-                {{ order.product.name }} &times; {{ order.quantity }}
-              </td>
-              <td style="padding:0.85rem 1rem; text-align:right; color:var(--accent); font-weight:600;">
-                {{ '%.2f'|format(order.total_price) }} EGP
-              </td>
-              <td style="padding:0.85rem 1rem; text-align:center;">
-                <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px; background:rgba(0,0,0,0.2); color:{{ sc.get(order.status,'var(--muted)') }}; border:1px solid {{ sc.get(order.status,'var(--border)') }};">
-                  {{ order.status }}
-                </span>
-              </td>
-              <td style="padding:0.85rem 1rem; text-align:right;">
-                <form method="POST" action="{{ url_for('store.dashboard_update_order', order_id=order.id) }}"
-                      style="display:flex; gap:0.4rem; justify-content:flex-end;">
-                  <select name="status"
-                          style="background:var(--surface2); border:1px solid var(--border2); color:var(--text); padding:0.3rem 0.5rem; border-radius:6px; font-size:0.8rem;">
-                    {% for s in ['pending','paid','shipped','cancelled'] %}
-                      <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s }}</option>
-                    {% endfor %}
-                  </select>
-                  <button type="submit"
-                          style="padding:0.3rem 0.6rem; background:var(--accent); color:#000; border:none; border-radius:6px; cursor:pointer; font-size:0.8rem; font-weight:600;">
-                    Save
-                  </button>
-                </form>
-              </td>
+    <div style="overflow-x:auto;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; min-width:900px;">
+        <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+          <thead>
+            <tr style="background:var(--surface2); border-bottom:1px solid var(--border2);">
+              <th style="padding:0.75rem 0.85rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">#</th>
+              <th style="padding:0.75rem 0.85rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">Customer</th>
+              <th style="padding:0.75rem 0.85rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">Phone</th>
+              <th style="padding:0.75rem 0.85rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">Address</th>
+              <th style="padding:0.75rem 0.85rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">Product</th>
+              <th style="padding:0.75rem 0.85rem; text-align:right; color:var(--muted); font-weight:600; white-space:nowrap;">Total</th>
+              <th style="padding:0.75rem 0.85rem; text-align:center; color:var(--muted); font-weight:600; white-space:nowrap;">Payment</th>
+              <th style="padding:0.75rem 0.85rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">Date</th>
+              <th style="padding:0.75rem 0.85rem; text-align:center; color:var(--muted); font-weight:600; white-space:nowrap;">Status</th>
+              <th style="padding:0.75rem 0.85rem; text-align:right; color:var(--muted); font-weight:600; white-space:nowrap;">Update</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% set sc = {'pending':'#f59e0b','paid':'#34d399','shipped':'#60a5fa','delivered':'#a78bfa','cancelled':'#f87171','cash_on_delivery':'#fbbf24'} %}
+            {% for order in orders %}
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:0.75rem 0.85rem; color:var(--muted); white-space:nowrap;">{{ order.id }}</td>
+                <td style="padding:0.75rem 0.85rem; white-space:nowrap;">
+                  <div style="font-weight:600;">{{ order.customer_name }}</div>
+                  <div style="font-size:0.75rem; color:var(--muted);">{{ order.customer_email }}</div>
+                  {% if order.tracking_number %}
+                  <div style="font-size:0.72rem; color:var(--accent); margin-top:2px;">
+                    <i class="fa fa-location-dot fa-xs"></i> {{ order.tracking_number }}
+                  </div>
+                  {% endif %}
+                </td>
+                <td style="padding:0.75rem 0.85rem; color:var(--muted); white-space:nowrap;">
+                  {{ order.customer_phone or '—' }}
+                </td>
+                <td style="padding:0.75rem 0.85rem; color:var(--muted); max-width:160px;">
+                  <div style="white-space:normal; word-break:break-word; font-size:0.8rem;">
+                    {{ order.customer_address or '—' }}
+                  </div>
+                </td>
+                <td style="padding:0.75rem 0.85rem; color:var(--muted); white-space:nowrap;">
+                  {{ order.product.name }} &times; {{ order.quantity }}
+                </td>
+                <td style="padding:0.75rem 0.85rem; text-align:right; color:var(--accent); font-weight:600; white-space:nowrap;">
+                  {{ '%.2f'|format(order.total_price) }} EGP
+                </td>
+                <td style="padding:0.75rem 0.85rem; text-align:center; white-space:nowrap;">
+                  {% set pm = order.payment_method or ('cash' if order.status == 'cash_on_delivery' else 'card') %}
+                  {% if pm == 'cash' %}
+                    <span style="font-size:0.75rem; padding:0.2rem 0.55rem; border-radius:99px; background:rgba(251,191,36,0.15); color:#fbbf24; border:1px solid rgba(251,191,36,0.3);">
+                      <i class="fa fa-money-bill-wave fa-xs"></i> Cash
+                    </span>
+                  {% else %}
+                    <span style="font-size:0.75rem; padding:0.2rem 0.55rem; border-radius:99px; background:rgba(96,165,250,0.15); color:#60a5fa; border:1px solid rgba(96,165,250,0.3);">
+                      <i class="fa fa-credit-card fa-xs"></i> Card
+                    </span>
+                  {% endif %}
+                </td>
+                <td style="padding:0.75rem 0.85rem; color:var(--muted); white-space:nowrap; font-size:0.8rem;">
+                  {{ order.created_at.strftime('%d %b %Y') if order.created_at else '—' }}
+                </td>
+                <td style="padding:0.75rem 0.85rem; text-align:center; white-space:nowrap;">
+                  <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px; background:rgba(0,0,0,0.2); color:{{ sc.get(order.status,'var(--muted)') }}; border:1px solid {{ sc.get(order.status,'var(--border)') }};">
+                    {{ order.status }}
+                  </span>
+                </td>
+                <td style="padding:0.75rem 0.85rem; text-align:right; white-space:nowrap;">
+                  <form method="POST" action="{{ url_for('store.dashboard_update_order', order_id=order.id) }}"
+                        style="display:flex; gap:0.4rem; justify-content:flex-end;">
+                    <select name="status"
+                            style="background:var(--surface2); border:1px solid var(--border2); color:var(--text); padding:0.3rem 0.5rem; border-radius:6px; font-size:0.78rem;">
+                      {% for s in ['pending','paid','shipped','delivered','cancelled'] %}
+                        <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s }}</option>
+                      {% endfor %}
+                    </select>
+                    <button type="submit"
+                            style="padding:0.3rem 0.6rem; background:var(--accent); color:#000; border:none; border-radius:6px; cursor:pointer; font-size:0.78rem; font-weight:600;">
+                      Save
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   {% else %}
     <div style="text-align:center; padding:4rem; color:var(--muted);">

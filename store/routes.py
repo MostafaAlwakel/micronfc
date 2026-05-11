@@ -1,5 +1,6 @@
 import json
 from flask import render_template, request, redirect, url_for, flash, abort, jsonify, session
+from flask_login import login_required, current_user
 from . import store_bp
 from .models import Product, Order, CartOrder
 from .stripe_utils import create_checkout_session, create_cart_checkout_session, verify_webhook
@@ -101,6 +102,11 @@ def cart_checkout():
         address = request.form.get('address', '').strip()
         payment_method = request.form.get('payment_method', 'card')
 
+        if not phone or not address:
+            flash('Phone number and address are required.', 'error')
+            return render_template('store/checkout.html', cart_items=items, cart_total=total,
+                                   cart_count=_cart_count())
+
         items_json = json.dumps([
             {'product_id': i['product'].id, 'name': i['product'].name,
              'quantity': i['quantity'], 'price': i['product'].price}
@@ -152,6 +158,10 @@ def checkout(product_id):
         quantity = int(request.form.get('quantity', 1))
         payment_method = request.form.get('payment_method', 'card')
 
+        if not phone or not address:
+            flash('Phone number and address are required.', 'error')
+            return render_template('store/checkout.html', product=product, cart_count=_cart_count())
+
         if quantity < 1 or quantity > product.stock:
             flash('Invalid quantity.', 'danger')
             return redirect(url_for('store.checkout', product_id=product_id))
@@ -159,7 +169,9 @@ def checkout(product_id):
         order = Order(
             product_id=product.id, customer_name=name, customer_email=email,
             customer_phone=phone, customer_address=address, quantity=quantity,
-            total_price=product.price * quantity, status='pending'
+            total_price=product.price * quantity, status='pending',
+            payment_method=payment_method,
+            tracking_number=Order.generate_tracking()
         )
         db.session.add(order)
         db.session.commit()
@@ -210,6 +222,24 @@ def cancel():
         order.status = 'cancelled'
         db.session.commit()
     return render_template('store/cancel.html', order=order)
+
+
+@store_bp.route('/track')
+@store_bp.route('/track/<tracking_number>')
+def track_order(tracking_number=None):
+    order = None
+    if tracking_number:
+        order = Order.query.filter_by(tracking_number=tracking_number).first()
+    return render_template('store/track.html', order=order, tracking_number=tracking_number)
+
+
+@store_bp.route('/my-orders')
+@login_required
+def my_orders():
+    orders = Order.query.filter_by(
+        customer_email=current_user.email
+    ).order_by(Order.created_at.desc()).all()
+    return render_template('store/my_orders.html', orders=orders)
 
 
 @store_bp.route('/webhook', methods=['POST'])
