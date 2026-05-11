@@ -437,6 +437,23 @@ def clear_chat():
 @app.route('/api/public_chat/<int:user_id>', methods=['POST'])
 def public_chat(user_id):
     user = User.query.get_or_404(user_id)
+
+    # Check monthly reset
+    from datetime import datetime
+    now = datetime.utcnow()
+    if user.plan_reset_date:
+        if now.month != user.plan_reset_date.month or now.year != user.plan_reset_date.year:
+            user.messages_used = 0
+            user.plan_reset_date = now
+            db.session.commit()
+
+    # Check limit
+    if (user.messages_used or 0) >= (user.messages_limit or 20):
+        return jsonify({
+            'response': 'عذراً، انتهت رسائل البوت لهذا الشهر.',
+            'limit_reached': True
+        })
+
     data = request.get_json()
     user_message = data.get('message', '')
 
@@ -497,6 +514,9 @@ Rules:
             session[chat_key] = session[chat_key][-20:]
 
         session.modified = True
+        user.messages_used = (user.messages_used or 0) + 1
+        user.total_messages_ever = (user.total_messages_ever or 0) + 1
+        db.session.commit()
         return jsonify({'response': reply})
 
     except Exception as e:
@@ -622,6 +642,85 @@ def google_callback():
     login_user(user)
     return redirect(url_for('dashboard'))
 
+# ==================== UPGRADE / SUBSCRIPTION ====================
+
+@app.route('/upgrade', methods=['GET', 'POST'])
+@login_required
+def upgrade():
+    if request.method == 'POST':
+        import stripe
+        stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'egp',
+                    'product_data': {
+                        'name': 'MicroNFC Pro - AI Chatbot',
+                        'description': '1000 رسالة شهرياً للبوت الخاص بك',
+                    },
+                    'unit_amount': 10000,
+                    'recurring': {'interval': 'month'},
+                },
+                'quantity': 1,
+            }],
+            mode='subscription',
+            success_url=request.host_url + 'upgrade/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url=request.host_url + 'dashboard',
+            metadata={'user_id': str(current_user.id)},
+        )
+        return redirect(checkout_session.url, code=303)
+    return render_template('upgrade.html')
+
+
+@app.route('/upgrade/success')
+@login_required
+def upgrade_success():
+    session_id = request.args.get('session_id')
+    if session_id:
+        import stripe
+        stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+        checkout_session = stripe.checkout.Session.retrieve(session_id)
+        if checkout_session.payment_status == 'paid':
+            from datetime import datetime
+            current_user.plan = 'pro'
+            current_user.messages_limit = 1000
+            current_user.messages_used = 0
+            current_user.stripe_subscription_id = checkout_session.subscription
+            db.session.commit()
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/webhook/subscription', methods=['POST'])
+def subscription_webhook():
+    import stripe
+    stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+    payload = request.get_data()
+    sig_header = request.headers.get('Stripe-Signature')
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, os.getenv('STRIPE_WEBHOOK_SECRET')
+        )
+    except Exception:
+        return jsonify({'error': 'Invalid signature'}), 400
+    if event['type'] == 'invoice.paid':
+        sub_id = event['data']['object']['subscription']
+        user = User.query.filter_by(stripe_subscription_id=sub_id).first()
+        if user:
+            from datetime import datetime
+            user.messages_used = 0
+            user.plan_reset_date = datetime.utcnow()
+            db.session.commit()
+    if event['type'] == 'customer.subscription.deleted':
+        sub_id = event['data']['object']['id']
+        user = User.query.filter_by(stripe_subscription_id=sub_id).first()
+        if user:
+            user.plan = 'free'
+            user.messages_limit = 20
+            db.session.commit()
+    return jsonify({'status': 'ok'})
+
+
 # ==================== ADMIN ====================
 
 @app.route('/admin')
@@ -633,12 +732,20 @@ def admin_dashboard():
     card_users = User.query.filter_by(product_type='card').count()
     bracelet_users = User.query.filter_by(product_type='bracelet').count()
     active_users = User.query.filter_by(is_active=True).count()
+    pro_users_count = User.query.filter_by(plan='pro').count()
+    free_users_count = User.query.filter_by(plan='free').count()
+    top_bot_users = User.query.filter(
+        User.total_messages_ever > 0
+    ).order_by(User.total_messages_ever.desc()).limit(10).all()
     return render_template('admin.html',
         users=users,
         total_users=total_users,
         card_users=card_users,
         bracelet_users=bracelet_users,
-        active_users=active_users
+        active_users=active_users,
+        pro_users_count=pro_users_count,
+        free_users_count=free_users_count,
+        top_bot_users=top_bot_users,
     )
 
 @app.route('/admin/add_user', methods=['POST'])
@@ -844,6 +951,19 @@ def admin_toggle_card(card_id):
     flash(f'Card {card.code} {status}!', 'success')
     return redirect(url_for('admin_cards'))
 
+
+@app.route('/admin/add-credits/<int:user_id>', methods=['POST'])
+@login_required
+def admin_add_credits(user_id):
+    if current_user.role != 'admin':
+        abort(403)
+    user = User.query.get_or_404(user_id)
+    credits = int(request.form.get('credits', 0))
+    user.messages_limit = (user.messages_limit or 20) + credits
+    db.session.commit()
+    flash(f'تم إضافة {credits} رسالة لـ {user.name}', 'success')
+    return redirect(url_for('admin_dashboard'))
+
 # ==================== DB MIGRATION & STARTUP ====================
 
 def migrate_db():
@@ -884,6 +1004,23 @@ def migrate_db():
             conn.commit()
     except Exception:
         pass
+
+    # migrate subscription columns
+    subscription_cols = [
+        ("plan", "VARCHAR(20) DEFAULT 'free'"),
+        ("messages_used", "INTEGER DEFAULT 0"),
+        ("messages_limit", "INTEGER DEFAULT 20"),
+        ("plan_reset_date", "TIMESTAMP"),
+        ("stripe_subscription_id", "VARCHAR(200)"),
+        ("total_messages_ever", "INTEGER DEFAULT 0"),
+    ]
+    for col_name, col_type in subscription_cols:
+        try:
+            with db.engine.connect() as conn:
+                conn.execute(text(f'ALTER TABLE "user" ADD COLUMN {col_name} {col_type}'))
+                conn.commit()
+        except Exception:
+            pass
 
     # migrate verification columns
     for col_name, col_type in [("is_verified", "BOOLEAN DEFAULT FALSE"), ("verification_token", "TEXT")]:

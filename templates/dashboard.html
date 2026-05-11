@@ -669,6 +669,74 @@
 
   </div><!-- /cards-grid medical -->
 
+  <!-- ════════════════════════════════
+       🤖 AI CHATBOT SECTION
+       ════════════════════════════════ -->
+  <div class="wave-card" style="margin-bottom:1rem;">
+    <div class="wave-card-title">
+      <i class="fa fa-robot" style="color:var(--accent);"></i>
+      AI Chatbot
+      <span style="margin-left:auto; font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px;
+                   background:{% if current_user.plan == 'pro' %}#7c3aed{% else %}var(--surface2){% endif %};
+                   color:{% if current_user.plan == 'pro' %}#fff{% else %}var(--muted){% endif %};">
+        {{ current_user.plan|upper }}
+      </span>
+    </div>
+
+    <div style="margin-bottom:1rem;">
+      <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.4rem;">
+        <span style="color:var(--muted);">الرسائل هذا الشهر</span>
+        <span style="color:var(--text); font-weight:600;">
+          {{ current_user.messages_used or 0 }} / {{ current_user.messages_limit or 20 }}
+        </span>
+      </div>
+      {% set used = current_user.messages_used or 0 %}
+      {% set limit = current_user.messages_limit or 20 %}
+      {% set percent = ((used / limit) * 100)|int if limit > 0 else 0 %}
+      <div style="background:var(--surface2); border-radius:99px; height:8px; overflow:hidden;">
+        <div style="width:{{ percent }}%; height:100%; border-radius:99px;
+                    background:{% if percent >= 90 %}#f87171{% elif percent >= 70 %}#fbbf24{% else %}var(--accent){% endif %};
+                    transition:width 0.3s;"></div>
+      </div>
+      {% if percent >= 90 %}
+      <p style="color:#f87171; font-size:0.75rem; margin-top:0.3rem;">
+        ⚠️ اقتربت من الحد الشهري
+      </p>
+      {% endif %}
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+      <div style="background:var(--surface2); border-radius:var(--radius); padding:0.75rem; text-align:center;">
+        <div style="font-size:1.4rem; font-weight:700; font-family:'Syne',sans-serif; color:var(--accent);">
+          {{ current_user.total_messages_ever or 0 }}
+        </div>
+        <div style="font-size:0.75rem; color:var(--muted);">إجمالي الرسائل</div>
+      </div>
+      <div style="background:var(--surface2); border-radius:var(--radius); padding:0.75rem; text-align:center;">
+        <div style="font-size:1.4rem; font-weight:700; font-family:'Syne',sans-serif; color:var(--accent);">
+          {{ (current_user.messages_limit or 20) - (current_user.messages_used or 0) }}
+        </div>
+        <div style="font-size:0.75rem; color:var(--muted);">رسائل متبقية</div>
+      </div>
+    </div>
+
+    {% if current_user.plan == 'pro' %}
+    <div style="text-align:center; color:#7c3aed; font-size:0.85rem; font-weight:600;">
+      ✨ أنت على خطة Pro
+    </div>
+    {% else %}
+    <a href="/upgrade" style="display:block; text-align:center;
+       background:linear-gradient(135deg,var(--accent),#7c3aed);
+       color:#fff; padding:0.75rem; border-radius:var(--radius);
+       text-decoration:none; font-weight:600; font-size:0.9rem;">
+      ⚡ Upgrade إلى Pro — 100 EGP/شهر
+      <span style="display:block; font-size:0.75rem; opacity:0.8; margin-top:0.2rem;">
+        1000 رسالة شهرياً
+      </span>
+    </a>
+    {% endif %}
+  </div>
+
 
 </div><!-- /dash-wrap -->
 

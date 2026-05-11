@@ -195,6 +195,90 @@
     </div>
   </div>
 
+  <!-- AI CHATBOT OVERVIEW -->
+  <div class="wave-card" style="margin-bottom:1.5rem;">
+    <div class="wave-card-title">
+      <i class="fa fa-robot" style="color:var(--accent);"></i>
+      AI Chatbot Overview
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; margin-bottom:1.5rem;">
+      <div style="background:var(--surface2); border-radius:var(--radius); padding:1rem; text-align:center;">
+        <div style="font-size:1.8rem; font-weight:700; font-family:'Syne',sans-serif; color:#34d399;">
+          {{ pro_users_count or 0 }}
+        </div>
+        <div style="font-size:0.75rem; color:var(--muted);">مستخدمين Pro</div>
+      </div>
+      <div style="background:var(--surface2); border-radius:var(--radius); padding:1rem; text-align:center;">
+        <div style="font-size:1.8rem; font-weight:700; font-family:'Syne',sans-serif; color:#fbbf24;">
+          {{ free_users_count or 0 }}
+        </div>
+        <div style="font-size:0.75rem; color:var(--muted);">مستخدمين Free</div>
+      </div>
+      <div style="background:var(--surface2); border-radius:var(--radius); padding:1rem; text-align:center;">
+        <div style="font-size:1.8rem; font-weight:700; font-family:'Syne',sans-serif; color:#a78bfa;">
+          {{ (pro_users_count or 0) * 100 }} EGP
+        </div>
+        <div style="font-size:0.75rem; color:var(--muted);">إيراد الشهر</div>
+      </div>
+    </div>
+
+    {% if top_bot_users %}
+    <h6 style="color:var(--muted); font-size:0.8rem; margin-bottom:0.75rem;">
+      أكثر المستخدمين نشاطاً
+    </h6>
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+        <thead>
+          <tr style="background:var(--surface2);">
+            <th style="padding:0.6rem 1rem; text-align:left; color:var(--muted);">المستخدم</th>
+            <th style="padding:0.6rem 1rem; text-align:center; color:var(--muted);">الخطة</th>
+            <th style="padding:0.6rem 1rem; text-align:center; color:var(--muted);">هذا الشهر</th>
+            <th style="padding:0.6rem 1rem; text-align:center; color:var(--muted);">الإجمالي</th>
+            <th style="padding:0.6rem 1rem; text-align:center; color:var(--muted);">إضافة رصيد</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in top_bot_users %}
+          <tr style="border-top:1px solid var(--border);">
+            <td style="padding:0.6rem 1rem;">
+              <div style="font-weight:600;">{{ u.name }}</div>
+              <div style="font-size:0.75rem; color:var(--muted);">{{ u.email }}</div>
+            </td>
+            <td style="padding:0.6rem 1rem; text-align:center;">
+              <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px;
+                           background:{% if u.plan == 'pro' %}#7c3aed{% else %}var(--surface2){% endif %};
+                           color:{% if u.plan == 'pro' %}#fff{% else %}var(--muted){% endif %};">
+                {{ u.plan|upper }}
+              </span>
+            </td>
+            <td style="padding:0.6rem 1rem; text-align:center; color:var(--accent); font-weight:600;">
+              {{ u.messages_used or 0 }}/{{ u.messages_limit or 20 }}
+            </td>
+            <td style="padding:0.6rem 1rem; text-align:center; color:var(--muted);">
+              {{ u.total_messages_ever or 0 }}
+            </td>
+            <td style="padding:0.6rem 1rem; text-align:center;">
+              <form action="/admin/add-credits/{{ u.id }}" method="POST"
+                    style="display:flex; gap:0.4rem; justify-content:center; align-items:center;">
+                <input type="number" name="credits" value="100" min="1" max="10000"
+                       style="width:70px; padding:0.3rem 0.5rem; border-radius:6px;
+                              background:var(--surface2); border:1px solid var(--border);
+                              color:var(--text); font-size:0.8rem;">
+                <button type="submit"
+                        style="padding:0.3rem 0.75rem; border-radius:6px; border:none;
+                               background:var(--accent); color:#fff; cursor:pointer; font-size:0.8rem;">
+                  + إضافة
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+
   <!-- USERS TABLE -->
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px;">
 
