@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container" style="max-width:920px; padding:2rem 1rem 5rem;">
+<div class="container" style="max-width:680px; padding:2rem 1rem 5rem;">
 
-  <div style="margin-bottom:1.5rem;">
+  <div style="margin-bottom:1.75rem;">
     <a href="{{ url_for('store.index') }}"
        style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
       <i class="fa fa-arrow-left fa-sm"></i> Store
@@ -12,92 +12,128 @@
   </div>
 
   {% if orders %}
-  <div style="overflow-x:auto;">
-    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; min-width:680px;">
-      <table style="width:100%; border-collapse:collapse; font-size:0.86rem;">
-        <thead>
-          <tr style="background:var(--surface2); border-bottom:1px solid var(--border2);">
-            <th style="padding:0.75rem 1rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">Order #</th>
-            <th style="padding:0.75rem 1rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">Product</th>
-            <th style="padding:0.75rem 1rem; text-align:right; color:var(--muted); font-weight:600; white-space:nowrap;">Total</th>
-            <th style="padding:0.75rem 1rem; text-align:center; color:var(--muted); font-weight:600; white-space:nowrap;">Payment</th>
-            <th style="padding:0.75rem 1rem; text-align:center; color:var(--muted); font-weight:600; white-space:nowrap;">Status</th>
-            <th style="padding:0.75rem 1rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">Date</th>
-            <th style="padding:0.75rem 1rem; text-align:center; color:var(--muted); font-weight:600; white-space:nowrap;">Track</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% set sc = {'pending':'#f59e0b','paid':'#34d399','shipped':'#60a5fa','delivered':'#a78bfa','cancelled':'#f87171','cash_on_delivery':'#fbbf24'} %}
-          {% for order in orders %}
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:0.75rem 1rem; white-space:nowrap;">
-              <div style="font-family:'Syne',sans-serif; font-weight:700; color:var(--accent); font-size:0.85rem;">
-                {{ order.tracking_number or ('#' ~ order.id) }}
-              </div>
-            </td>
-            <td style="padding:0.75rem 1rem; white-space:nowrap;">
-              <div style="font-weight:600;">{{ order.product.name if order.product else '—' }}</div>
-              <div style="font-size:0.76rem; color:var(--muted);">Qty: {{ order.quantity }}</div>
-            </td>
-            <td style="padding:0.75rem 1rem; text-align:right; color:var(--accent); font-weight:700; white-space:nowrap;">
-              {{ '%.2f'|format(order.total_price) }} EGP
-            </td>
-            <td style="padding:0.75rem 1rem; text-align:center; white-space:nowrap;">
-              {% set pm = order.payment_method or ('cash' if order.status == 'cash_on_delivery' else 'card') %}
-              {% if pm == 'cash' %}
-                <span style="font-size:0.75rem; padding:0.2rem 0.55rem; border-radius:99px; background:rgba(251,191,36,0.15); color:#fbbf24; border:1px solid rgba(251,191,36,0.3);">
-                  <i class="fa fa-money-bill-wave fa-xs"></i> Cash
-                </span>
-              {% else %}
-                <span style="font-size:0.75rem; padding:0.2rem 0.55rem; border-radius:99px; background:rgba(96,165,250,0.15); color:#60a5fa; border:1px solid rgba(96,165,250,0.3);">
-                  <i class="fa fa-credit-card fa-xs"></i> Card
-                </span>
+  <div style="display:flex; flex-direction:column; gap:1rem;">
+
+    {% set sc = {'pending':'#f59e0b','paid':'#34d399','shipped':'#60a5fa','delivered':'#a78bfa','cancelled':'#f87171','cash_on_delivery':'#fbbf24'} %}
+    {% set steps = ['pending', 'paid', 'shipped', 'delivered'] %}
+
+    {% for order in orders %}
+
+    {# --- Determine progress index --- #}
+    {% if order.status in steps %}
+      {% set cur = steps.index(order.status) %}
+    {% elif order.status == 'cash_on_delivery' %}
+      {% set cur = 0 %}
+    {% else %}
+      {% set cur = -1 %}
+    {% endif %}
+
+    {# --- Payment badge --- #}
+    {% set pm = order.payment_method or ('cash' if order.status == 'cash_on_delivery' else 'card') %}
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
+
+      {# Header #}
+      <div style="display:flex; justify-content:space-between; align-items:center;
+                  padding:0.85rem 1.1rem; border-bottom:1px solid var(--border);
+                  background:var(--surface2); flex-wrap:wrap; gap:0.5rem;">
+        <div>
+          <span style="font-family:'Syne',sans-serif; font-weight:800; color:var(--accent); font-size:0.95rem; letter-spacing:0.5px;">
+            {{ order.tracking_number or ('#' ~ order.id) }}
+          </span>
+          {% if order.status == 'cancelled' %}
+          <span style="margin-left:0.5rem; font-size:0.72rem; padding:0.15rem 0.5rem; border-radius:99px;
+                       background:rgba(248,113,113,0.15); color:#f87171; border:1px solid rgba(248,113,113,0.3);">
+            Cancelled
+          </span>
+          {% else %}
+          <span style="margin-left:0.5rem; font-size:0.72rem; padding:0.15rem 0.5rem; border-radius:99px;
+                       background:rgba(0,0,0,0.2); color:{{ sc.get(order.status,'var(--muted)') }};
+                       border:1px solid {{ sc.get(order.status,'var(--border)') }};">
+            {{ order.status|replace('_',' ')|title }}
+          </span>
+          {% endif %}
+        </div>
+        <span style="font-size:0.8rem; color:var(--muted2);">
+          {{ order.created_at.strftime('%d %b %Y') if order.created_at else '—' }}
+        </span>
+      </div>
+
+      {# Product + price row #}
+      <div style="padding:0.85rem 1.1rem; display:flex; justify-content:space-between;
+                  align-items:center; flex-wrap:wrap; gap:0.5rem; border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-weight:600; font-size:0.92rem;">
+            {{ order.product.name if order.product else '—' }}
+          </div>
+          <div style="font-size:0.78rem; color:var(--muted); margin-top:2px;">
+            Qty: {{ order.quantity }}
+            &nbsp;·&nbsp;
+            {% if pm == 'cash' %}
+              <i class="fa fa-money-bill-wave" style="color:#fbbf24;"></i> Cash on Delivery
+            {% else %}
+              <i class="fa fa-credit-card" style="color:#60a5fa;"></i> Card
+            {% endif %}
+          </div>
+        </div>
+        <div style="font-family:'Syne',sans-serif; font-weight:800; color:var(--accent); font-size:1rem;">
+          {{ '%.2f'|format(order.total_price) }} EGP
+        </div>
+      </div>
+
+      {# Progress steps #}
+      <div style="padding:1rem 1.1rem;">
+        {% if order.status == 'cancelled' %}
+        <div style="text-align:center; color:#f87171; font-size:0.85rem; padding:0.25rem 0;">
+          <i class="fa fa-times-circle"></i> This order was cancelled.
+        </div>
+        {% else %}
+        <div style="display:flex; align-items:center;">
+          {% for step in steps %}
+          {% set si = loop.index0 %}
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px; flex-shrink:0;">
+            <div style="width:26px; height:26px; border-radius:50%; display:flex; align-items:center;
+                        justify-content:center; font-size:0.6rem; transition:all 0.3s;
+                        {% if si <= cur %}
+                          background:var(--accent); border:2px solid var(--accent); color:#000;
+                        {% else %}
+                          background:var(--surface2); border:2px solid var(--border2); color:var(--muted2);
+                        {% endif %}">
+              {% if si < cur %}
+                <i class="fa fa-check"></i>
               {% endif %}
-            </td>
-            <td style="padding:0.75rem 1rem; text-align:center; white-space:nowrap;">
-              <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px; background:rgba(0,0,0,0.2);
-                           color:{{ sc.get(order.status,'var(--muted)') }}; border:1px solid {{ sc.get(order.status,'var(--border)') }};">
-                {{ order.status|replace('_',' ')|title }}
-              </span>
-            </td>
-            <td style="padding:0.75rem 1rem; color:var(--muted); font-size:0.8rem; white-space:nowrap;">
-              {{ order.created_at.strftime('%d %b %Y') if order.created_at else '—' }}
-            </td>
-            <td style="padding:0.75rem 1rem; text-align:center; white-space:nowrap;">
-              {% if order.tracking_number %}
-              <a href="{{ url_for('store.track_order', tracking_number=order.tracking_number) }}"
-                 style="font-size:0.78rem; padding:0.25rem 0.65rem; background:rgba(0,229,160,0.1);
-                        border:1px solid rgba(0,229,160,0.25); border-radius:6px; color:var(--accent);
-                        text-decoration:none; display:inline-flex; align-items:center; gap:0.3rem;">
-                <i class="fa fa-location-dot fa-xs"></i> Track
-              </a>
-              {% else %}
-              <span style="color:var(--muted2); font-size:0.82rem;">—</span>
-              {% endif %}
-            </td>
-          </tr>
+            </div>
+            <div style="font-size:0.68rem; white-space:nowrap; font-weight:{{ '700' if si <= cur else '400' }};
+                        color:{{ 'var(--accent)' if si <= cur else 'var(--muted2)' }};">
+              {{ step|capitalize }}
+            </div>
+          </div>
+          {% if not loop.last %}
+          <div style="flex:1; height:2px; margin-bottom:18px;
+                      background:{{ 'var(--accent)' if si < cur else 'var(--border2)' }};
+                      transition:background 0.3s;">
+          </div>
+          {% endif %}
           {% endfor %}
-        </tbody>
-      </table>
+        </div>
+        {% endif %}
+      </div>
+
     </div>
+    {% endfor %}
+
   </div>
+
   {% else %}
-  <div style="text-align:center; padding:3rem 1rem; color:var(--muted);">
+  <div style="text-align:center; padding:4rem 1rem; color:var(--muted);">
     <i class="fa fa-box-open" style="font-size:3rem; display:block; margin-bottom:1rem; color:var(--muted2);"></i>
-    <p style="margin-top:0.5rem; margin-bottom:1.25rem;">No orders yet.</p>
+    <p style="margin-bottom:1.25rem;">No orders yet.</p>
     <a href="{{ url_for('store.index') }}" class="btn-nav"
        style="display:inline-block; padding:0.6rem 1.5rem; text-decoration:none;">
       <i class="fa fa-shopping-bag fa-sm"></i> Shop Now
     </a>
   </div>
   {% endif %}
-
-  <div style="margin-top:1.25rem; text-align:center;">
-    <a href="{{ url_for('store.track_order') }}"
-       style="color:var(--accent); font-size:0.85rem; text-decoration:none;">
-      <i class="fa fa-location-dot fa-sm"></i> Track an order by number
-    </a>
-  </div>
 
 </div>
 {% endblock %}

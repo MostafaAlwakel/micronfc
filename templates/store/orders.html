@@ -11,6 +11,22 @@
     <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.3rem 0 0;">Orders</h2>
   </div>
 
+  <!-- Search box -->
+  <div style="margin-bottom:1rem;">
+    <div style="position:relative; max-width:420px;">
+      <i class="fa fa-search" style="position:absolute; left:0.85rem; top:50%; transform:translateY(-50%); color:var(--muted2); pointer-events:none; font-size:0.85rem;"></i>
+      <input type="text" id="order-search"
+             placeholder="Search by tracking #, name, email, phone, address…"
+             oninput="filterOrders(this.value)"
+             style="width:100%; box-sizing:border-box; background:var(--surface); border:1px solid var(--border2);
+                    color:var(--text); padding:0.65rem 1rem 0.65rem 2.25rem; border-radius:var(--radius);
+                    font-family:'DM Sans',sans-serif; font-size:0.88rem; outline:none; transition:border-color 0.2s;"
+             onfocus="this.style.borderColor='rgba(0,229,160,0.5)'"
+             onblur="this.style.borderColor=''">
+    </div>
+    <div id="search-count" style="font-size:0.78rem; color:var(--muted2); margin-top:0.4rem; display:none;"></div>
+  </div>
+
   <!-- Status filter -->
   <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem;">
     {% for s, label in [('','All'),('pending','Pending'),('paid','Paid'),('shipped','Shipped'),('delivered','Delivered'),('cancelled','Cancelled')] %}
@@ -125,4 +141,23 @@
   {% endif %}
 
 </div>
+<script>
+function filterOrders(q) {
+  q = q.toLowerCase().trim();
+  var rows = document.querySelectorAll('tbody tr');
+  var shown = 0;
+  rows.forEach(function(row) {
+    var match = q === '' || row.textContent.toLowerCase().includes(q);
+    row.style.display = match ? '' : 'none';
+    if (match) shown++;
+  });
+  var counter = document.getElementById('search-count');
+  if (q === '') {
+    counter.style.display = 'none';
+  } else {
+    counter.style.display = 'block';
+    counter.textContent = shown + ' result' + (shown !== 1 ? 's' : '') + ' found';
+  }
+}
+</script>
 {% endblock %}
