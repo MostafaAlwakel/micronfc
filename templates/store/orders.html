@@ -50,9 +50,14 @@
                 <td style="padding:0.75rem 0.85rem; white-space:nowrap;">
                   <div style="font-weight:600;">{{ order.customer_name }}</div>
                   <div style="font-size:0.75rem; color:var(--muted);">{{ order.customer_email }}</div>
-                  {% if order.tracking_number %}
+                  {% if order._tracking %}
                   <div style="font-size:0.72rem; color:var(--accent); margin-top:2px;">
-                    <i class="fa fa-location-dot fa-xs"></i> {{ order.tracking_number }}
+                    <i class="fa fa-location-dot fa-xs"></i> {{ order._tracking }}
+                  </div>
+                  {% endif %}
+                  {% if order._is_cart %}
+                  <div style="font-size:0.7rem; color:var(--muted2); margin-top:2px;">
+                    <i class="fa fa-cart-shopping fa-xs"></i> Cart Order
                   </div>
                   {% endif %}
                 </td>
@@ -64,8 +69,8 @@
                     {{ order.customer_address or '—' }}
                   </div>
                 </td>
-                <td style="padding:0.75rem 0.85rem; color:var(--muted); white-space:nowrap;">
-                  {{ order.product.name if order.product else '—' }} &times; {{ order.quantity }}
+                <td style="padding:0.75rem 0.85rem; color:var(--muted); white-space:nowrap; max-width:200px; white-space:normal; word-break:break-word; font-size:0.8rem;">
+                  {{ order._product_desc }}
                 </td>
                 <td style="padding:0.75rem 0.85rem; text-align:right; color:var(--accent); font-weight:600; white-space:nowrap;">
                   {{ '%.2f'|format(order.total_price) }} EGP
@@ -91,7 +96,8 @@
                   </span>
                 </td>
                 <td style="padding:0.75rem 0.85rem; text-align:right; white-space:nowrap;">
-                  <form method="POST" action="{{ url_for('store.dashboard_update_order', order_id=order.id) }}"
+                  <form method="POST"
+                        action="{{ url_for('store.dashboard_update_cart_order', order_id=order.id) if order._is_cart else url_for('store.dashboard_update_order', order_id=order.id) }}"
                         style="display:flex; gap:0.4rem; justify-content:flex-end;">
                     <select name="status"
                             style="background:var(--surface2); border:1px solid var(--border2); color:var(--text); padding:0.3rem 0.5rem; border-radius:6px; font-size:0.78rem;">

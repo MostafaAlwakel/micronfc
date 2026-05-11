@@ -4,7 +4,8 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from functools import wraps
 from . import store_bp
-from .models import Product, Order, StoreStaff
+from .models import Product, Order, CartOrder, StoreStaff
+from datetime import datetime as _dt
 from models import db, User
 
 
@@ -35,17 +36,48 @@ def store_admin_required(f):
     return decorated
 
 
+def _annotate_order(o):
+    """Attach display helpers onto a single-product Order instance."""
+    o._is_cart = False
+    o._product_desc = f"{(o.product.name if o.product else '—')} × {o.quantity}"
+    o._tracking = o.tracking_number or ''
+    return o
+
+
+def _annotate_cart_order(co):
+    """Attach display helpers onto a CartOrder instance."""
+    co._is_cart = True
+    items = co.get_items()
+    co._product_desc = (', '.join(f"{i['name']} ×{i['quantity']}" for i in items)
+                        if items else '—')
+    co._tracking = ''
+    return co
+
+
 @store_bp.route('/dashboard')
 @store_admin_required
 def store_dashboard():
     total_products = Product.query.count()
     active_products = Product.query.filter_by(is_active=True).count()
-    total_orders = Order.query.count()
-    paid_orders = Order.query.filter_by(status='paid').count()
-    revenue = db.session.query(
-        db.func.sum(Order.total_price)
-    ).filter(Order.status == 'paid').scalar() or 0
-    recent_orders = Order.query.order_by(Order.created_at.desc()).limit(10).all()
+
+    total_orders = Order.query.count() + CartOrder.query.count()
+    paid_orders = (Order.query.filter_by(status='paid').count() +
+                   CartOrder.query.filter_by(status='paid').count())
+    revenue = (
+        (db.session.query(db.func.sum(Order.total_price))
+         .filter(Order.status == 'paid').scalar() or 0) +
+        (db.session.query(db.func.sum(CartOrder.total_price))
+         .filter(CartOrder.status == 'paid').scalar() or 0)
+    )
+
+    recent_single = [_annotate_order(o)
+                     for o in Order.query.order_by(Order.created_at.desc()).limit(10).all()]
+    recent_cart = [_annotate_cart_order(co)
+                   for co in CartOrder.query.order_by(CartOrder.created_at.desc()).limit(10).all()]
+    recent_orders = sorted(recent_single + recent_cart,
+                           key=lambda x: x.created_at or _dt(2000, 1, 1),
+                           reverse=True)[:10]
+
     return render_template('store/dashboard.html',
         total_products=total_products,
         active_products=active_products,
@@ -126,10 +158,20 @@ def dashboard_delete_product(product_id):
 @store_admin_required
 def dashboard_orders():
     status = request.args.get('status', '')
-    query = Order.query
+
+    q_single = Order.query
+    q_cart = CartOrder.query
     if status:
-        query = query.filter_by(status=status)
-    orders = query.order_by(Order.created_at.desc()).all()
+        q_single = q_single.filter_by(status=status)
+        q_cart = q_cart.filter_by(status=status)
+
+    single = [_annotate_order(o) for o in q_single.order_by(Order.created_at.desc()).all()]
+    cart = [_annotate_cart_order(co) for co in q_cart.order_by(CartOrder.created_at.desc()).all()]
+
+    orders = sorted(single + cart,
+                    key=lambda x: x.created_at or _dt(2000, 1, 1),
+                    reverse=True)
+
     return render_template('store/orders.html', orders=orders, current_status=status)
 
 
@@ -138,6 +180,16 @@ def dashboard_orders():
 def dashboard_update_order(order_id):
     order = Order.query.get_or_404(order_id)
     order.status = request.form['status']
+    db.session.commit()
+    flash('Order status updated!', 'success')
+    return redirect(url_for('store.dashboard_orders'))
+
+
+@store_bp.route('/dashboard/cart-orders/update/<int:order_id>', methods=['POST'])
+@store_admin_required
+def dashboard_update_cart_order(order_id):
+    cart_order = CartOrder.query.get_or_404(order_id)
+    cart_order.status = request.form['status']
     db.session.commit()
     flash('Order status updated!', 'success')
     return redirect(url_for('store.dashboard_orders'))

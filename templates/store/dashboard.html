@@ -87,7 +87,7 @@
             <tr style="border-bottom:1px solid var(--border);">
               <td style="padding:0.75rem 1rem; color:var(--muted);">{{ order.id }}</td>
               <td style="padding:0.75rem 1rem;">{{ order.customer_name }}</td>
-              <td style="padding:0.75rem 1rem; color:var(--muted);">{{ order.product.name if order.product else '—' }}</td>
+              <td style="padding:0.75rem 1rem; color:var(--muted);">{{ order._product_desc }}</td>
               <td style="padding:0.75rem 1rem; text-align:right; color:var(--accent); font-weight:600;">
                 {{ '%.2f'|format(order.total_price) }} EGP
               </td>
