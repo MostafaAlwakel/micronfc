@@ -432,6 +432,65 @@ def clear_chat():
     return jsonify({'status': 'cleared'})
 
 
+@app.route('/api/support_chat', methods=['POST'])
+@login_required
+def support_chat():
+    data = request.get_json()
+    message = data.get('message', '')
+    history = data.get('history', [])
+
+    system_prompt = """You are MicroNFC's official customer support assistant.
+
+About MicroNFC:
+- We sell smart NFC cards and medical bracelets in Egypt
+- Smart NFC Card: links to a digital profile with AI chatbot (199 EGP)
+- Medical NFC Bracelet: stores emergency medical information (299 EGP)
+- Website: micronfc.info
+- Support Email: support@micronfc.info
+
+Subscription Plans:
+- Free Plan: 20 messages/month for your AI bot
+- Pro Plan: 1000 messages/month for 100 EGP/month
+
+How to order:
+- Visit micronfc.info/store
+- Complete checkout with your details
+- Card will be delivered within 2-3 business days
+
+Common questions:
+- Card not working: make sure NFC is enabled on your phone settings
+- Bot not responding: check your message limit on dashboard
+- Update profile: go to dashboard and click Edit Profile
+- Track order: go to micronfc.info/store/my-orders
+- Cancel subscription: contact support@micronfc.info
+
+If you cannot resolve an issue, always direct the user to support@micronfc.info
+
+Always respond in the same language the user writes in (Arabic or English).
+Be friendly, helpful, and concise."""
+
+    messages = [{"role": "system", "content": system_prompt}]
+    for h in history[-10:]:
+        messages.append({'role': h['role'], 'content': h['content']})
+    messages.append({"role": "user", "content": message})
+
+    headers = {
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    payload = {"model": "gpt-4o-mini", "messages": messages}
+
+    try:
+        response = requests.post(OPENROUTER_URL, headers=headers, json=payload)
+        response.raise_for_status()
+        result = response.json()
+        reply = result['choices'][0]['message']['content']
+        return jsonify({'response': reply})
+    except Exception as e:
+        print("ERROR:", e)
+        return jsonify({'response': 'عذراً، حدث خطأ. يرجى المحاولة مجدداً.'})
+
+
 # ==================== API CHAT (للزوار بدون login) ====================
 
 @app.route('/api/public_chat/<int:user_id>', methods=['POST'])

@@ -151,21 +151,21 @@
 </div>
 
 {# ── Chat FAB ── #}
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated and request.endpoint not in ['public_profile', 'medical_profile', 'preview_profile', 'preview_medical'] %}
 <button class="chat-fab" onclick="toggleChat()" title="AI Assistant"><i class="fa fa-robot"></i></button>
 <div class="chat-popup" id="chat-popup">
   <div class="chat-popup-header">
     <i class="fa fa-robot" style="color:var(--accent);"></i>
-    <h4>{{ current_user.name }}'s Assistant</h4>
+    <h4>MicroNFC Support</h4>
     <span class="chat-status">Online</span>
     <button onclick="clearChat()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;margin-left:4px;"><i class="fa fa-trash"></i></button>
     <button onclick="toggleChat()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;"><i class="fa fa-times"></i></button>
   </div>
   <div class="chat-messages" id="chat-box">
-    <div class="msg bot"><div class="msg-bubble">👋 Hi {{ current_user.name }}! I know your personal, medical, and professional info. Ask me anything!</div></div>
+    <div class="msg bot"><div class="msg-bubble">مرحباً! كيف يمكنني مساعدتك؟ 👋</div></div>
   </div>
   <div class="chat-input-row">
-    <input type="text" id="user-input" placeholder="Ask me anything...">
+    <input type="text" id="user-input" placeholder="اكتب سؤالك هنا...">
     <button class="chat-send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
   </div>
 </div>
@@ -186,18 +186,22 @@
   })();
 
   const chatBox=document.getElementById('chat-box'), input=document.getElementById('user-input');
+  let supportHistory=[];
   function toggleChat(){ document.getElementById('chat-popup').classList.toggle('open'); if(document.getElementById('chat-popup').classList.contains('open')) input.focus(); }
   input.addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage();});
   function addMessage(text,sender){ const d=document.createElement('div'); d.className=`msg ${sender}`; d.innerHTML=`<div class="msg-bubble">${text}</div>`; chatBox.appendChild(d); chatBox.scrollTop=chatBox.scrollHeight; return d; }
-  async function clearChat(){ await fetch('/api/chat/clear',{method:'POST'}); chatBox.innerHTML=''; addMessage('👋 Fresh start! Ask me anything about {{ current_user.name }}.','bot'); }
+  async function clearChat(){ supportHistory=[]; chatBox.innerHTML=''; addMessage('مرحباً! كيف يمكنني مساعدتك؟ 👋','bot'); }
   async function sendMessage(){
     const msg=input.value.trim(); if(!msg) return;
     addMessage(msg,'user'); input.value='';
     const t=addMessage('Thinking...','bot typing');
     try{
-      const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
+      const r=await fetch('/api/support_chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,history:supportHistory})});
       const d=await r.json(); t.remove(); addMessage(d.response,'bot');
-    }catch{ t.remove(); addMessage('Sorry, something went wrong!','bot'); }
+      supportHistory.push({role:'user',content:msg});
+      supportHistory.push({role:'assistant',content:d.response});
+      if(supportHistory.length>20) supportHistory=supportHistory.slice(-20);
+    }catch{ t.remove(); addMessage('عذراً، حدث خطأ. يرجى المحاولة مجدداً.','bot'); }
   }
 </script>
 {% endif %}
