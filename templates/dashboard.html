@@ -410,338 +410,307 @@
   </div>
 
   <!-- ════════════════════════════════
-       🪪 SMART CARD SECTION
+       TAB NAVIGATION
        ════════════════════════════════ -->
-  <div class="section-header">
-    <div class="section-icon green"><i class="fa fa-id-card"></i></div>
-    <span class="section-title" style="color:var(--accent);">Smart Card</span>
-    <div class="section-line"></div>
-    <span class="section-badge green">🪪 Personal & Professional</span>
+  <div class="profile-tabs">
+    <button class="tab-btn active" onclick="showTab('personal', event)">
+      <i class="fa fa-user"></i><span>Personal</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('social', event)">
+      <i class="fa fa-share-alt"></i><span>Social</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('extras', event)">
+      <i class="fa fa-location-dot"></i><span>Extras</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('links', event)">
+      <i class="fa fa-link"></i><span>Links</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('portfolio', event)">
+      <i class="fa fa-images"></i><span>Portfolio</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('theme', event)">
+      <i class="fa fa-palette"></i><span>Theme</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('medical', event)">
+      <i class="fa fa-heartbeat"></i><span>Medical</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('bot', event)">
+      <i class="fa fa-robot"></i><span>AI Bot</span>
+    </button>
   </div>
 
-  <div class="cards-grid">
-
-    <!-- Personal Info -->
-    <div class="dash-card">
-      <div class="dash-card-header">
-        <div class="card-icon green"><i class="fa fa-user"></i></div>
-        <h3>Personal Info</h3>
-      </div>
-      <div class="dash-card-body">
-        <p><span class="label">Phone</span>
-           <span class="{{ 'val-set' if user.phone else 'val-none' }}">{{ user.phone or '—' }}</span></p>
-        <p><span class="label">Job Title</span>
-           <span class="{{ 'val-set' if user.job_title else 'val-none' }}">{{ user.job_title or '—' }}</span></p>
-        <p><span class="label">Bio</span>
-           <span class="{{ 'val-set' if user.bio else 'val-none' }}">
-             {{ (user.bio[:35]+'…') if user.bio and user.bio|length>35 else (user.bio or '—') }}
-           </span></p>
-        <p><span class="label">Photo</span>
-           <span class="{{ 'val-set' if user.profile_photo else 'val-none' }}">
-             {{ '✓ Uploaded' if user.profile_photo else '—' }}
-           </span></p>
-      </div>
-      <a href="{{ url_for('edit_personal') }}" class="btn-secondary" style="font-size:0.82rem;">
-        <i class="fa fa-pencil fa-sm"></i> Edit
+  <!-- ── Personal ── -->
+  <div id="tab-personal" class="tab-content active">
+    <div class="tab-inner">
+      <h3 class="tab-title"><i class="fa fa-user"></i> Personal Info</h3>
+      <a href="{{ url_for('edit_personal') }}" class="btn-edit-full">
+        <i class="fa fa-pencil"></i> Edit Personal Info
       </a>
-    </div>
-
-    <!-- Social Links -->
-    <div class="dash-card">
-      <div class="dash-card-header">
-        <div class="card-icon blue"><i class="fa fa-share-nodes"></i></div>
-        <h3>Social Links</h3>
-      </div>
-      <div class="dash-card-body">
-        <p><span class="label">Active</span>
-           <span class="val-set">{{ social_count }} / 10 platforms</span></p>
-        <p>
-          {% for name, val in [('Instagram', user.instagram), ('Snapchat', user.snapchat),
-                                ('Facebook', user.facebook), ('TikTok', user.tiktok),
-                                ('YouTube', user.youtube), ('Twitter', user.twitter),
-                                ('LinkedIn', user.linkedin), ('GitHub', user.github),
-                                ('WhatsApp', user.whatsapp), ('Website', user.website)] %}
-            {% if val %}
-            <span style="display:inline-block; background:rgba(0,229,160,0.08); border:1px solid rgba(0,229,160,0.15);
-                         border-radius:5px; padding:1px 6px; font-size:0.7rem; color:var(--accent); margin:2px 2px 2px 0;">
-              {{ name }}
-            </span>
-            {% endif %}
-          {% endfor %}
-          {% if social_count == 0 %}<span class="val-none">No links added yet</span>{% endif %}
-        </p>
-      </div>
-      <a href="{{ url_for('edit_social') }}" class="btn-secondary" style="font-size:0.82rem;">
-        <i class="fa fa-pencil fa-sm"></i> Edit
-      </a>
-    </div>
-
-    <!-- Location & Payment -->
-    <div class="dash-card">
-      <div class="dash-card-header">
-        <div class="card-icon orange"><i class="fa fa-location-dot"></i></div>
-        <h3>Location & Payment</h3>
-      </div>
-      <div class="dash-card-body">
-        <p><span class="label">Google Maps</span>
-           <span class="{{ 'val-set' if user.location_url else 'val-none' }}">
-             {{ '✓ Linked' if user.location_url else '—' }}
-           </span></p>
-        <p><span class="label">InstaPay</span>
-           <span class="{{ 'val-set' if user.instapay else 'val-none' }}">
-             {{ user.instapay or '—' }}
-           </span></p>
-      </div>
-      <a href="{{ url_for('edit_extras') }}" class="btn-secondary" style="font-size:0.82rem;">
-        <i class="fa fa-pencil fa-sm"></i> Edit
-      </a>
-    </div>
-
-    <!-- Card Theme -->
-    <div class="dash-card">
-      <div class="dash-card-header">
-        <div class="card-icon purple"><i class="fa fa-palette"></i></div>
-        <h3>Card Theme</h3>
-      </div>
-      <div class="dash-card-body">
-        {% set theme_colors = {
-          'dark':   '#00e5a0',
-          'light':  '#0070f3',
-          'purple': '#a855f7',
-          'ocean':  '#38bdf8',
-          'sunset': '#f97316',
-          'pink':   '#ec4899',
-        } %}
-        {% set current_theme = user.card_theme or 'dark' %}
-        {% set theme_color = theme_colors.get(current_theme, '#00e5a0') %}
-        <p style="display:flex; align-items:center; gap:8px;">
-          <span style="width:14px; height:14px; border-radius:50%; background:{{ theme_color }};
-                       box-shadow:0 0 8px {{ theme_color }}55; display:inline-block; flex-shrink:0;"></span>
-          <span class="val-set" style="color:{{ theme_color }}; text-transform:capitalize;">{{ current_theme }}</span>
-        </p>
-        <p style="font-size:0.78rem; color:var(--muted); margin-top:0.25rem;">
-          Choose how your digital card looks to visitors
-        </p>
-      </div>
-      <a href="{{ url_for('edit_theme') }}" class="btn-secondary" style="font-size:0.82rem;">
-        <i class="fa fa-palette fa-sm"></i> Change Theme
-      </a>
-    </div>
-
-    <!-- Portfolio -->
-    <div class="dash-card">
-      <div class="dash-card-header">
-        <div class="card-icon green"><i class="fa fa-images"></i></div>
-        <h3>Portfolio Gallery</h3>
-      </div>
-      <div class="dash-card-body">
-        <p><span class="label">Images</span>
-           <span class="val-set">{{ portfolio_count }} / 12</span></p>
-
-        {% if portfolio_count > 0 %}
-        <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:0.4rem;">
-          {% for img in (user.portfolio_images | from_json)[:5] %}
-          <img src="{{ img }}"
-               style="width:36px; height:36px; border-radius:6px; object-fit:cover; border:1px solid var(--border);">
-          {% endfor %}
-          {% if portfolio_count > 5 %}
-          <div style="width:36px; height:36px; border-radius:6px; background:var(--surface2); border:1px solid var(--border);
-                      display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:var(--muted);">
-            +{{ portfolio_count - 5 }}
-          </div>
-          {% endif %}
+      <div class="info-summary">
+        <div class="info-row">
+          <span class="info-label">Name</span>
+          <span class="info-val">{{ user.name or '—' }}</span>
         </div>
-        {% else %}
-        <p style="font-size:0.78rem; color:var(--muted2); margin-top:0.25rem;">
-          Showcase your work with photos
-        </p>
-        {% endif %}
+        <div class="info-row">
+          <span class="info-label">Phone</span>
+          <span class="info-val">{{ user.phone or '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Job Title</span>
+          <span class="info-val">{{ user.job_title or '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Bio</span>
+          <span class="info-val">{{ (user.bio[:80]+'…') if user.bio and user.bio|length>80 else (user.bio or '—') }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Profile Photo</span>
+          <span class="info-val">{% if user.profile_photo %}<span style="color:var(--accent);">✓ Uploaded</span>{% else %}—{% endif %}</span>
+        </div>
       </div>
-      <a href="{{ url_for('edit_portfolio') }}" class="btn-secondary" style="font-size:0.82rem;">
-        <i class="fa fa-upload fa-sm"></i> Manage
-      </a>
     </div>
-
-    <!-- Custom Links -->
-    <div class="dash-card">
-      <div class="dash-card-header">
-        <div class="card-icon blue"><i class="fa fa-link"></i></div>
-        <h3>Custom Links</h3>
-      </div>
-      <div class="dash-card-body">
-        <p><span class="label">Added</span>
-           <span class="{{ 'val-set' if links_count > 0 else 'val-none' }}">{{ links_count }} link{{ 's' if links_count != 1 }}</span></p>
-        {% if links_count > 0 %}
-        {% for lnk in (user.extra_links | from_json)[:3] %}
-        <p style="font-size:0.78rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-          <i class="fa fa-link fa-xs" style="color:var(--accent);"></i> {{ lnk.title }}
-        </p>
-        {% endfor %}
-        {% else %}
-        <p style="font-size:0.78rem; color:var(--muted2);">Add any extra links to your card</p>
-        {% endif %}
-      </div>
-      <a href="{{ url_for('edit_links') }}" class="btn-secondary" style="font-size:0.82rem;">
-        <i class="fa fa-pencil fa-sm"></i> Manage
-      </a>
-    </div>
-
-    <!-- Store -->
-    <div class="dash-card">
-      <div class="dash-card-header">
-        <div class="card-icon orange"><i class="fa fa-shopping-bag"></i></div>
-        <h3>Store</h3>
-      </div>
-      <div class="dash-card-body">
-        <p style="font-size:0.78rem; color:var(--muted2);">Browse and order NFC cards &amp; bracelets</p>
-      </div>
-      <a href="{{ url_for('store.index') }}" class="btn-secondary" style="font-size:0.82rem;">
-        <i class="fa fa-shopping-bag fa-sm"></i> Shop Now
-      </a>
-    </div>
-
-  </div><!-- /cards-grid smart card -->
-
-  <!-- ════════════════════════════════
-       ⌚ MEDICAL BRACELET SECTION
-       ════════════════════════════════ -->
-  <div class="section-header">
-    <div class="section-icon red"><i class="fa fa-heart-pulse"></i></div>
-    <span class="section-title" style="color:var(--red);">Medical Bracelet</span>
-    <div class="section-line" style="background:rgba(220,53,69,0.2);"></div>
-    <span class="section-badge red">⌚ Emergency Info</span>
   </div>
 
-  <div class="cards-grid" style="margin-bottom:2rem;">
-
-    <!-- Medical Info -->
-    <div class="dash-card medical">
-      <div class="dash-card-header">
-        <div class="card-icon red"><i class="fa fa-notes-medical"></i></div>
-        <h3>Medical Info</h3>
-      </div>
-      <div class="dash-card-body">
-        <p><span class="label">Blood Type</span>
-           {% if user.blood_type %}
-             <strong class="val-red">{{ user.blood_type }}</strong>
-           {% else %}<span class="val-none">—</span>{% endif %}
-        </p>
-        <p><span class="label">Allergies</span>
-           <span class="{{ 'val-set' if user.allergies else 'val-none' }}">
-             {{ (user.allergies[:30]+'…') if user.allergies and user.allergies|length>30 else (user.allergies or '—') }}
-           </span></p>
-        <p><span class="label">Medications</span>
-           <span class="{{ 'val-set' if user.medications else 'val-none' }}">
-             {{ (user.medications[:30]+'…') if user.medications and user.medications|length>30 else (user.medications or '—') }}
-           </span></p>
-        <p><span class="label">Doctor</span>
-           <span class="{{ 'val-set' if user.doctor_name else 'val-none' }}">{{ user.doctor_name or '—' }}</span></p>
-      </div>
-      <a href="{{ url_for('edit_medical') }}" class="btn-secondary" style="font-size:0.82rem; border-color:rgba(220,53,69,0.3); color:var(--red);">
-        <i class="fa fa-pencil fa-sm"></i> Edit
+  <!-- ── Social ── -->
+  <div id="tab-social" class="tab-content">
+    <div class="tab-inner">
+      <h3 class="tab-title"><i class="fa fa-share-alt"></i> Social Links</h3>
+      <a href="{{ url_for('edit_social') }}" class="btn-edit-full">
+        <i class="fa fa-pencil"></i> Edit Social Links
       </a>
+      <div class="info-summary">
+        {% for label, val in [('Instagram', user.instagram), ('Snapchat', user.snapchat),
+                               ('Facebook', user.facebook), ('TikTok', user.tiktok),
+                               ('YouTube', user.youtube), ('Twitter', user.twitter),
+                               ('LinkedIn', user.linkedin), ('GitHub', user.github),
+                               ('WhatsApp', user.whatsapp), ('Website', user.website)] %}
+        <div class="info-row">
+          <span class="info-label">{{ label }}</span>
+          <span class="info-val">
+            {% if val %}<span style="color:var(--accent);">✓ Set</span>{% else %}—{% endif %}
+          </span>
+        </div>
+        {% endfor %}
+      </div>
     </div>
+  </div>
 
-    <!-- Emergency Contact -->
-    <div class="dash-card medical">
-      <div class="dash-card-header">
-        <div class="card-icon red"><i class="fa fa-phone-volume"></i></div>
-        <h3>Emergency Contact</h3>
-      </div>
-      <div class="dash-card-body">
-        <p><span class="label">Contact</span>
-           <span class="{{ 'val-set' if user.emergency_contact_name else 'val-none' }}">
-             {{ user.emergency_contact_name or '—' }}
-           </span></p>
-        <p><span class="label">Phone</span>
-           <span class="{{ 'val-set' if user.emergency_contact_phone else 'val-none' }}">
-             {{ user.emergency_contact_phone or '—' }}
-           </span></p>
-        <p><span class="label">Doctor</span>
-           <span class="{{ 'val-set' if user.doctor_name else 'val-none' }}">{{ user.doctor_name or '—' }}</span></p>
-        <p><span class="label">Dr. Phone</span>
-           <span class="{{ 'val-set' if user.doctor_phone else 'val-none' }}">{{ user.doctor_phone or '—' }}</span></p>
-      </div>
-      <a href="{{ url_for('edit_medical') }}" class="btn-secondary" style="font-size:0.82rem; border-color:rgba(220,53,69,0.3); color:var(--red);">
-        <i class="fa fa-pencil fa-sm"></i> Edit
+  <!-- ── Extras ── -->
+  <div id="tab-extras" class="tab-content">
+    <div class="tab-inner">
+      <h3 class="tab-title"><i class="fa fa-location-dot"></i> Location & Payment</h3>
+      <a href="{{ url_for('edit_extras') }}" class="btn-edit-full">
+        <i class="fa fa-pencil"></i> Edit Extras
       </a>
+      <div class="info-summary">
+        <div class="info-row">
+          <span class="info-label">Google Maps</span>
+          <span class="info-val">{% if user.location_url %}<span style="color:var(--accent);">✓ Linked</span>{% else %}—{% endif %}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">InstaPay</span>
+          <span class="info-val">{{ user.instapay or '—' }}</span>
+        </div>
+      </div>
     </div>
+  </div>
 
-  </div><!-- /cards-grid medical -->
-
-  <!-- ════════════════════════════════
-       🤖 AI CHATBOT SECTION
-       ════════════════════════════════ -->
-  <div class="wave-card" style="margin-bottom:1rem;">
-    <div class="wave-card-title">
-      <i class="fa fa-robot" style="color:var(--accent);"></i>
-      AI Chatbot
-      <span style="margin-left:auto; font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px;
-                   background:{% if current_user.plan == 'pro' %}#7c3aed{% else %}var(--surface2){% endif %};
-                   color:{% if current_user.plan == 'pro' %}#fff{% else %}var(--muted){% endif %};">
-        {{ current_user.plan|upper }}
-      </span>
+  <!-- ── Custom Links ── -->
+  <div id="tab-links" class="tab-content">
+    <div class="tab-inner">
+      <h3 class="tab-title"><i class="fa fa-link"></i> Custom Links</h3>
+      <a href="{{ url_for('edit_links') }}" class="btn-edit-full">
+        <i class="fa fa-pencil"></i> Manage Links
+      </a>
+      {% if links_count > 0 %}
+      <div class="info-summary">
+        {% for lnk in (user.extra_links | from_json) %}
+        <div class="info-row">
+          <span class="info-label"><i class="fa fa-link fa-xs" style="color:var(--accent);"></i> {{ lnk.title }}</span>
+          <span class="info-val" style="font-size:0.78rem; color:var(--muted);">{{ lnk.url[:40] }}{% if lnk.url|length > 40 %}…{% endif %}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="color:var(--muted); font-size:0.875rem;">No custom links added yet.</p>
+      {% endif %}
     </div>
+  </div>
 
-    <div style="margin-bottom:1rem;">
-      <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.4rem;">
-        <span style="color:var(--muted);">الرسائل هذا الشهر</span>
-        <span style="color:var(--text); font-weight:600;">
-          {{ current_user.messages_used or 0 }} / {{ current_user.messages_limit or 20 }}
+  <!-- ── Portfolio ── -->
+  <div id="tab-portfolio" class="tab-content">
+    <div class="tab-inner">
+      <h3 class="tab-title"><i class="fa fa-images"></i> Portfolio Gallery</h3>
+      <a href="{{ url_for('edit_portfolio') }}" class="btn-edit-full">
+        <i class="fa fa-upload"></i> Manage Portfolio
+      </a>
+      {% if portfolio_count > 0 %}
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.75rem;">{{ portfolio_count }} / 12 images</p>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        {% for img in (user.portfolio_images | from_json) %}
+        <img src="{{ img }}" style="width:64px; height:64px; border-radius:8px; object-fit:cover; border:1px solid var(--border);">
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="color:var(--muted); font-size:0.875rem;">No images uploaded yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ── Theme ── -->
+  <div id="tab-theme" class="tab-content">
+    <div class="tab-inner">
+      <h3 class="tab-title"><i class="fa fa-palette"></i> Card Theme</h3>
+      <a href="{{ url_for('edit_theme') }}" class="btn-edit-full">
+        <i class="fa fa-palette"></i> Change Theme
+      </a>
+      {% set theme_colors = {'dark':'#00e5a0','light':'#0070f3','purple':'#a855f7','ocean':'#38bdf8','sunset':'#f97316','pink':'#ec4899'} %}
+      {% set ct = user.card_theme or 'dark' %}
+      {% set tc = theme_colors.get(ct, '#00e5a0') %}
+      <div class="info-summary">
+        <div class="info-row">
+          <span class="info-label">Current Theme</span>
+          <span class="info-val" style="display:flex; align-items:center; gap:8px;">
+            <span style="width:14px; height:14px; border-radius:50%; background:{{ tc }}; display:inline-block; flex-shrink:0;"></span>
+            <span style="color:{{ tc }}; text-transform:capitalize; font-weight:600;">{{ ct }}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Medical ── -->
+  <div id="tab-medical" class="tab-content">
+    <div class="tab-inner">
+      <h3 class="tab-title"><i class="fa fa-heartbeat"></i> Medical Info</h3>
+      <a href="{{ url_for('edit_medical') }}" class="btn-edit-full" style="background:rgba(220,53,69,0.8);">
+        <i class="fa fa-pencil"></i> Edit Medical Info
+      </a>
+      <div class="info-summary">
+        <div class="info-row">
+          <span class="info-label">Blood Type</span>
+          <span class="info-val" style="{% if user.blood_type %}color:#f87171; font-weight:700;{% endif %}">{{ user.blood_type or '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Allergies</span>
+          <span class="info-val">{{ (user.allergies[:60]+'…') if user.allergies and user.allergies|length>60 else (user.allergies or '—') }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Medications</span>
+          <span class="info-val">{{ (user.medications[:60]+'…') if user.medications and user.medications|length>60 else (user.medications or '—') }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Chronic Diseases</span>
+          <span class="info-val">{{ (user.chronic_diseases[:60]+'…') if user.chronic_diseases and user.chronic_diseases|length>60 else (user.chronic_diseases or '—') }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Emergency Contact</span>
+          <span class="info-val">{{ user.emergency_contact_name or '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Emergency Phone</span>
+          <span class="info-val">{{ user.emergency_contact_phone or '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Doctor</span>
+          <span class="info-val">{{ user.doctor_name or '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Doctor Phone</span>
+          <span class="info-val">{{ user.doctor_phone or '—' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AI Bot ── -->
+  <div id="tab-bot" class="tab-content">
+    <div class="tab-inner">
+      <h3 class="tab-title"><i class="fa fa-robot"></i> AI Bot</h3>
+
+      <!-- Subscription badge -->
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+        <span style="font-size:0.85rem; color:var(--muted);">Plan</span>
+        <span style="font-size:0.8rem; padding:0.2rem 0.75rem; border-radius:99px;
+                     background:{% if current_user.plan == 'pro' %}#7c3aed{% else %}var(--surface2){% endif %};
+                     color:{% if current_user.plan == 'pro' %}#fff{% else %}var(--muted){% endif %}; font-weight:600;">
+          {{ current_user.plan|upper }}
         </span>
       </div>
+
+      <!-- Usage bar -->
       {% set used = current_user.messages_used or 0 %}
       {% set limit = current_user.messages_limit or 20 %}
       {% set percent = ((used / limit) * 100)|int if limit > 0 else 0 %}
-      <div style="background:var(--surface2); border-radius:99px; height:8px; overflow:hidden;">
-        <div style="width:{{ percent }}%; height:100%; border-radius:99px;
-                    background:{% if percent >= 90 %}#f87171{% elif percent >= 70 %}#fbbf24{% else %}var(--accent){% endif %};
-                    transition:width 0.3s;"></div>
+      <div style="margin-bottom:1rem;">
+        <div style="display:flex; justify-content:space-between; font-size:0.82rem; margin-bottom:0.35rem;">
+          <span style="color:var(--muted);">الرسائل هذا الشهر</span>
+          <span style="font-weight:600;">{{ used }} / {{ limit }}</span>
+        </div>
+        <div style="background:var(--surface2); border-radius:99px; height:7px; overflow:hidden;">
+          <div style="width:{{ percent }}%; height:100%; border-radius:99px;
+                      background:{% if percent >= 90 %}#f87171{% elif percent >= 70 %}#fbbf24{% else %}var(--accent){% endif %};
+                      transition:width 0.3s;"></div>
+        </div>
+        {% if percent >= 90 %}
+        <p style="color:#f87171; font-size:0.75rem; margin-top:0.3rem;">⚠️ اقتربت من الحد الشهري</p>
+        {% endif %}
       </div>
-      {% if percent >= 90 %}
-      <p style="color:#f87171; font-size:0.75rem; margin-top:0.3rem;">
-        ⚠️ اقتربت من الحد الشهري
-      </p>
+
+      <!-- Stats -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+        <div style="background:var(--surface2); border-radius:var(--radius); padding:0.75rem; text-align:center;">
+          <div style="font-size:1.3rem; font-weight:700; font-family:'Syne',sans-serif; color:var(--accent);">{{ current_user.total_messages_ever or 0 }}</div>
+          <div style="font-size:0.75rem; color:var(--muted);">إجمالي الرسائل</div>
+        </div>
+        <div style="background:var(--surface2); border-radius:var(--radius); padding:0.75rem; text-align:center;">
+          <div style="font-size:1.3rem; font-weight:700; font-family:'Syne',sans-serif; color:var(--accent);">{{ limit - used }}</div>
+          <div style="font-size:0.75rem; color:var(--muted);">رسائل متبقية</div>
+        </div>
+      </div>
+
+      <a href="{{ url_for('edit_bot') }}" class="btn-edit-full">
+        <i class="fa fa-brain"></i> Train Bot
+      </a>
+      <a href="{{ url_for('chat') }}" class="btn-edit-full" style="background:var(--surface2); color:var(--text);">
+        <i class="fa fa-comments"></i> Open AI Chat
+      </a>
+
+      {% if current_user.plan == 'free' %}
+      <a href="/upgrade" style="display:block; text-align:center; margin-top:0.5rem;
+         background:linear-gradient(135deg,var(--accent),#7c3aed);
+         color:#fff; padding:0.75rem; border-radius:var(--radius);
+         text-decoration:none; font-weight:600; font-size:0.9rem;">
+        ⚡ Upgrade إلى Pro — 100 EGP/شهر
+        <span style="display:block; font-size:0.75rem; opacity:0.8; margin-top:0.2rem;">1000 رسالة شهرياً</span>
+      </a>
+      {% else %}
+      <div style="text-align:center; color:#7c3aed; font-size:0.85rem; font-weight:600; margin-top:0.5rem;">✨ أنت على خطة Pro</div>
       {% endif %}
     </div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
-      <div style="background:var(--surface2); border-radius:var(--radius); padding:0.75rem; text-align:center;">
-        <div style="font-size:1.4rem; font-weight:700; font-family:'Syne',sans-serif; color:var(--accent);">
-          {{ current_user.total_messages_ever or 0 }}
-        </div>
-        <div style="font-size:0.75rem; color:var(--muted);">إجمالي الرسائل</div>
-      </div>
-      <div style="background:var(--surface2); border-radius:var(--radius); padding:0.75rem; text-align:center;">
-        <div style="font-size:1.4rem; font-weight:700; font-family:'Syne',sans-serif; color:var(--accent);">
-          {{ (current_user.messages_limit or 20) - (current_user.messages_used or 0) }}
-        </div>
-        <div style="font-size:0.75rem; color:var(--muted);">رسائل متبقية</div>
-      </div>
-    </div>
-
-    {% if current_user.plan == 'pro' %}
-    <div style="text-align:center; color:#7c3aed; font-size:0.85rem; font-weight:600;">
-      ✨ أنت على خطة Pro
-    </div>
-    {% else %}
-    <a href="/upgrade" style="display:block; text-align:center;
-       background:linear-gradient(135deg,var(--accent),#7c3aed);
-       color:#fff; padding:0.75rem; border-radius:var(--radius);
-       text-decoration:none; font-weight:600; font-size:0.9rem;">
-      ⚡ Upgrade إلى Pro — 100 EGP/شهر
-      <span style="display:block; font-size:0.75rem; opacity:0.8; margin-top:0.2rem;">
-        1000 رسالة شهرياً
-      </span>
-    </a>
-    {% endif %}
   </div>
-
 
 </div><!-- /dash-wrap -->
 
 <script>
-  // Completion bar
+  // ── Tab switching ──
+  function showTab(name, e) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    (e ? e.currentTarget : document.querySelector(`[onclick="showTab('${name}', event)"]`)).classList.add('active');
+    localStorage.setItem('activeTab', name);
+  }
+
+  // Restore last tab
+  (function() {
+    const saved = localStorage.getItem('activeTab');
+    if (saved && document.getElementById('tab-' + saved)) {
+      showTab(saved);
+    }
+  })();
+
+  // ── Completion bar ──
   const filled = {{ filled }};
   const pct = Math.round(filled / 8 * 100);
   document.getElementById('pct-bar').style.width = pct + '%';
