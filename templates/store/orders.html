@@ -41,9 +41,8 @@
   </div>
 
   {% if orders %}
-    <div style="overflow-x:auto;">
-      <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; min-width:900px;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+    <div class="admin-table-wrap" style="background:var(--surface); border:1px solid var(--border);">
+      <table style="min-width:900px; width:100%; border-collapse:collapse; font-size:0.85rem;">
           <thead>
             <tr style="background:var(--surface2); border-bottom:1px solid var(--border2);">
               <th style="padding:0.75rem 0.85rem; text-align:left; color:var(--muted); font-weight:600; white-space:nowrap;">#</th>
@@ -131,7 +130,6 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>
     </div>
   {% else %}
     <div style="text-align:center; padding:4rem; color:var(--muted);">
