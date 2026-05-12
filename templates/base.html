@@ -42,6 +42,9 @@
     }
     @media (max-width:480px) { .chat-popup { width:calc(100vw - 1rem) !important; right:0.5rem !important; } }
 
+    /* ── Global overflow fix ── */
+    body, .main-content, .app-layout { max-width: 100vw; overflow-x: hidden; }
+
     /* ── Profile Tabs (inline to bypass static cache) ── */
     .profile-tabs { display:flex; gap:.25rem; overflow-x:auto; padding-bottom:.5rem; margin-bottom:1.5rem; scrollbar-width:none; -ms-overflow-style:none; }
     .profile-tabs::-webkit-scrollbar { display:none; }

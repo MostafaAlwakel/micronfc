@@ -17,6 +17,7 @@
     max-width: 960px;
     margin: 0 auto;
     padding: 1.5rem 1rem 5rem;
+    overflow-x: hidden;
   }
 
   /* ── Header ── */
@@ -399,10 +400,10 @@
         <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
           🪪 Smart Card Active ✅
         </p>
-        <p style="font-size:0.78rem; color:var(--muted);">
+        <p style="font-size:0.78rem; color:var(--muted); word-break:break-all;">
           Code: <code style="color:var(--accent);">{{ smart_card[0].code }}</code>
           &nbsp;·&nbsp;
-          <code style="color:var(--muted); font-size:0.75rem;">{{ request.host_url }}c/{{ smart_card[0].code }}</code>
+          <code style="color:var(--muted); font-size:0.75rem;">micronfc.info/c/{{ smart_card[0].code }}</code>
           <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ smart_card[0].code }}')"
             style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">📋</button>
         </p>
@@ -441,10 +442,10 @@
         <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
           ⌚ Medical Bracelet Active ✅
         </p>
-        <p style="font-size:0.78rem; color:var(--muted);">
+        <p style="font-size:0.78rem; color:var(--muted); word-break:break-all;">
           Code: <code style="color:#ff6b7a;">{{ medical_card[0].code }}</code>
           &nbsp;·&nbsp;
-          <code style="color:var(--muted); font-size:0.75rem;">{{ request.host_url }}c/{{ medical_card[0].code }}</code>
+          <code style="color:var(--muted); font-size:0.75rem;">micronfc.info/c/{{ medical_card[0].code }}</code>
           <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ medical_card[0].code }}')"
             style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">📋</button>
         </p>
