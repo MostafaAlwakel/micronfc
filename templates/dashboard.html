@@ -509,7 +509,11 @@
         </div>
         <div class="info-row">
           <span class="info-label">InstaPay</span>
-          <span class="info-val">{{ user.instapay or '—' }}</span>
+          <span class="info-val">
+            {% if user.instapay %}
+              <a href="{{ user.instapay }}" target="_blank" style="color:var(--accent); text-decoration:none;">✓ Set</a>
+            {% else %}—{% endif %}
+          </span>
         </div>
       </div>
     </div>
@@ -527,7 +531,7 @@
         {% for lnk in (user.extra_links | from_json) %}
         <div class="info-row">
           <span class="info-label"><i class="fa fa-link fa-xs" style="color:var(--accent);"></i> {{ lnk.title }}</span>
-          <span class="info-val" style="font-size:0.78rem; color:var(--muted);">{{ lnk.url[:40] }}{% if lnk.url|length > 40 %}…{% endif %}</span>
+          <span class="info-val" style="font-size:0.78rem; color:var(--muted);">{{ lnk.url[:30] }}{% if lnk.url|length > 30 %}…{% endif %}</span>
         </div>
         {% endfor %}
       </div>
