@@ -148,9 +148,19 @@ def dashboard_edit_product(product_id):
 @store_admin_required
 def dashboard_delete_product(product_id):
     product = Product.query.get_or_404(product_id)
-    db.session.delete(product)
-    db.session.commit()
-    flash('Product deleted!', 'success')
+    try:
+        orders_count = Order.query.filter_by(product_id=product_id).count()
+        if orders_count > 0:
+            product.is_active = False
+            db.session.commit()
+            flash(f'المنتج له {orders_count} طلب - تم إخفاؤه بدلاً من حذفه.', 'warning')
+        else:
+            db.session.delete(product)
+            db.session.commit()
+            flash('تم حذف المنتج بنجاح.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('حدث خطأ أثناء الحذف. حاول مرة أخرى.', 'danger')
     return redirect(url_for('store.dashboard_products'))
 
 
