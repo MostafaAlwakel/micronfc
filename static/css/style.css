@@ -385,9 +385,15 @@ body {
 .feature-card:hover { background: var(--surface2); }
 
 .feat-icon {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  display: block;
+  width: 48px;
+  height: 48px;
+  background: #EFF6FF;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.1rem;
+  flex-shrink: 0;
 }
 
 .feature-card h3 {
