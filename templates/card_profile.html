@@ -380,7 +380,7 @@
     {% endif %}
     {% if user.instapay %}
     <a href="https://ipn.eg/S/{{ user.instapay }}" target="_blank" class="action-btn" style="color:#00c896; background:rgba(0,200,150,0.07); border-color:rgba(0,200,150,0.2);">
-      <i class="fa fa-money-bill-wave"></i>
+      <img src="{{ url_for('static', filename='images/instapay-icon.svg') }}" width="20" height="20" alt="InstaPay" style="display:inline; vertical-align:middle;">
       <span>InstaPay</span>
     </a>
     {% endif %}

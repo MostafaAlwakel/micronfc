@@ -303,7 +303,7 @@
           {% endif %}
         </div>
         <div class="form-group full-width">
-          <label style="color:#00c896;"><i class="fa fa-money-bill-wave fa-sm"></i> InstaPay Number</label>
+          <label style="color:#00c896; display:inline-flex; align-items:center; gap:6px;"><img src="{{ url_for('static', filename='images/instapay-icon.svg') }}" width="20" height="20" alt="InstaPay" style="display:inline; vertical-align:middle;"> InstaPay Number</label>
           <input type="text" name="instapay" value="{{ user.instapay or '' }}"
                  placeholder="01012345678" class="form-control">
         </div>
