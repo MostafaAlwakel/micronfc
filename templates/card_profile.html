@@ -566,7 +566,8 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
   const userId = {{ user.id }};
-  const profileUrl = window.location.origin + '/profile/' + userId;
+  {% set smart_card = user.cards | selectattr('card_type', 'equalto', 'smart') | list %}
+  const profileUrl = {% if smart_card %}'{{ request.host_url }}c/{{ smart_card[0].code }}'{% else %}window.location.origin + '/profile/' + userId{% endif %};
 
   // QR Code
   let qrGenerated = false;
