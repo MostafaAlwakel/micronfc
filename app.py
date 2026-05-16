@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from functools import wraps
 import os
 import json
+import re
 import requests
 import cloudinary
 import cloudinary.uploader
@@ -268,12 +269,26 @@ def edit_social():
         return redirect(url_for('dashboard'))
     return render_template('edit_social.html', user=current_user)
 
+def extract_instapay_link(text):
+    match = re.search(r'https://ipn\.eg/S/[^\s]+', text)
+    if match:
+        return match.group(0)
+    return None
+
 @app.route('/edit/extras', methods=['GET', 'POST'])
 @login_required
 def edit_extras():
     if request.method == 'POST':
         current_user.location_url = request.form['location_url']
-        current_user.instapay = request.form['instapay']
+        raw = request.form.get('instapay', '').strip()
+        if raw:
+            instapay_link = extract_instapay_link(raw)
+            if not instapay_link:
+                flash('الرابط غير صحيح، تأكد إنه يحتوي على رابط InstaPay', 'danger')
+                return render_template('edit_extras.html', user=current_user, instapay_raw=raw)
+            current_user.instapay = instapay_link
+        else:
+            current_user.instapay = ''
         db.session.commit()
         flash('Location & payment info updated!', 'success')
         return redirect(url_for('dashboard'))

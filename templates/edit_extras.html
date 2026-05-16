@@ -38,17 +38,21 @@
       <!-- InstaPay -->
       <div class="form-group">
         <label style="color:#00c896; display:flex; align-items:center; gap:6px;">
-          <img src="{{ url_for('static', filename='images/instapay-icon.svg') }}" width="20" height="20" alt="InstaPay" style="display:inline; vertical-align:middle;"> InstaPay Number
+          <img src="{{ url_for('static', filename='images/instapay-icon.svg') }}" width="20" height="20" alt="InstaPay" style="display:inline; vertical-align:middle;"> InstaPay
         </label>
-        <p style="font-size:0.78rem; color:var(--muted); margin-bottom:0.5rem; line-height:1.5;">
-          رقم التليفون المرتبط بحساب InstaPay الخاص بك
+        <p style="font-size:0.78rem; color:var(--muted); margin-bottom:0.5rem; line-height:1.6;">
+          الصق رابط InstaPay أو أي نص يحتوي عليه — سيتم استخلاص الرابط تلقائياً
         </p>
-        <div class="input-wrapper">
-          <i class="fa fa-mobile-screen input-icon" style="color:#00c896;"></i>
-          <input type="text" name="instapay" class="form-control"
-                 value="{{ user.instapay or '' }}"
-                 placeholder="01012345678">
-        </div>
+        <textarea name="instapay" class="form-control"
+                  rows="3"
+                  placeholder="الصق رابط InstaPay أو أي نص يحتوي عليه&#10;مثال: اضغط الرابط لإرسال نقود إلى ashraf@instapay&#10;سيتم استخلاص الرابط تلقائياً ✓"
+                  style="resize:vertical; font-family:monospace; font-size:0.85rem; direction:rtl;">{{ instapay_raw if instapay_raw is defined else (user.instapay or '') }}</textarea>
+        {% if user.instapay %}
+        <p style="font-size:0.75rem; color:#00c896; margin-top:0.4rem; display:flex; align-items:center; gap:4px;">
+          <i data-lucide="check-circle-2" style="width:14px;height:14px;stroke:#00c896;"></i>
+          رابط محفوظ: <code style="font-size:0.72rem; color:var(--muted);">{{ user.instapay }}</code>
+        </p>
+        {% endif %}
       </div>
 
       <button type="submit" class="btn-primary w-100">
