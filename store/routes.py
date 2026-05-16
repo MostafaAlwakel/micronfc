@@ -44,6 +44,10 @@ def product_detail(product_id):
 
 @store_bp.route('/cart/add/<int:product_id>', methods=['POST'])
 def cart_add(product_id):
+    if not current_user.is_authenticated:
+        session['redirect_after_login'] = url_for('store.checkout', product_id=product_id)
+        session.modified = True
+        return redirect(url_for('login'))
     product = Product.query.get_or_404(product_id)
     if not product.is_active or product.stock < 1:
         flash('Product not available.', 'danger')
@@ -89,8 +93,11 @@ def cart_update(product_id):
 
 
 @store_bp.route('/cart/checkout', methods=['GET', 'POST'])
-@login_required
 def cart_checkout():
+    if not current_user.is_authenticated:
+        session['redirect_after_login'] = url_for('store.cart_checkout')
+        session.modified = True
+        return redirect(url_for('login'))
     items, total = _get_cart_items()
     if not items:
         flash('Your cart is empty.', 'warning')
@@ -143,8 +150,11 @@ def cart_checkout():
 
 
 @store_bp.route('/checkout/<int:product_id>', methods=['GET', 'POST'])
-@login_required
 def checkout(product_id):
+    if not current_user.is_authenticated:
+        session['redirect_after_login'] = url_for('store.checkout', product_id=product_id)
+        session.modified = True
+        return redirect(url_for('login'))
     product = Product.query.get_or_404(product_id)
     if not product.is_active or product.stock < 1:
         flash('This product is not available.', 'danger')

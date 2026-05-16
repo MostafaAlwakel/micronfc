@@ -181,6 +181,9 @@ def login():
                 flash('Please verify your email first! Check your inbox.', 'warning')
                 return redirect(url_for('login'))
             login_user(user)
+            next_url = session.pop('redirect_after_login', None)
+            if next_url:
+                return redirect(next_url)
             next_page = request.args.get('next', '').strip()
             if next_page and next_page.startswith('/'):
                 return redirect(next_page)
@@ -714,6 +717,9 @@ def google_callback():
             return redirect(url_for('login'))
 
     login_user(user)
+    next_url = session.pop('redirect_after_login', None)
+    if next_url:
+        return redirect(next_url)
     return redirect(url_for('dashboard'))
 
 # ==================== UPGRADE / SUBSCRIPTION ====================
