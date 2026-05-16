@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 
@@ -16,13 +16,13 @@
       <!-- Location -->
       <div class="form-group">
         <label style="color:#34a853;">
-          <i class="fa fa-location-dot fa-sm"></i> Google Maps Link
+          <i data-lucide="map-pin" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Google Maps Link
         </label>
         <p style="font-size:0.78rem; color:var(--muted); margin-bottom:0.5rem; line-height:1.5;">
           افتح Google Maps ← دوس على المكان ← <strong>Share</strong> ← <strong>Copy link</strong>
         </p>
         <div class="input-wrapper">
-          <i class="fa fa-map-pin input-icon" style="color:#34a853;"></i>
+          <i data-lucide="map-pin" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
           <input type="url" name="location_url" class="form-control"
                  value="{{ user.location_url or '' }}"
                  placeholder="https://maps.app.goo.gl/...">
@@ -30,7 +30,7 @@
         {% if user.location_url %}
         <a href="{{ user.location_url }}" target="_blank"
            style="font-size:0.78rem; color:#34a853; text-decoration:none; margin-top:0.4rem; display:inline-block;">
-          <i class="fa fa-arrow-up-right-from-square fa-xs"></i> Preview on Maps
+          <i data-lucide="external-link" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Preview on Maps
         </a>
         {% endif %}
       </div>
@@ -56,12 +56,12 @@
       </div>
 
       <button type="submit" class="btn-primary w-100">
-        <i class="fa fa-save fa-sm"></i> Save Changes
+        <i data-lucide="save" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Save Changes
       </button>
     </form>
 
     <p class="auth-footer" style="margin-top:1.2rem;">
-      <a href="{{ url_for('dashboard') }}"><i class="fa fa-arrow-left fa-sm"></i> Back to Dashboard</a>
+      <a href="{{ url_for('dashboard') }}"><i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Back to Dashboard</a>
     </p>
   </div>
 </div>

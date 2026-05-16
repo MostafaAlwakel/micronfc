@@ -4,7 +4,7 @@
 
   <a href="{{ url_for('store.cart') if cart_items else url_for('store.product_detail', product_id=product.id) if product else url_for('store.index') }}"
      style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
-    <i class="fa fa-arrow-left fa-sm"></i> {{ 'Back to Cart' if cart_items else 'Back' }}
+    <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> {{ 'Back to Cart' if cart_items else 'Back' }}
   </a>
 
   <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin-bottom:1rem;">Checkout</h2>
@@ -12,7 +12,7 @@
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
               padding:0.75rem 1rem; margin-bottom:1.5rem; font-size:0.85rem; color:var(--muted);
               display:flex; align-items:center; gap:0.5rem;">
-    <i class="fa fa-user-circle" style="color:var(--accent);"></i>
+    <i data-lucide="user-circle" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
     Ordering as <strong style="color:var(--text); margin:0 0.2rem;">{{ current_user.name }}</strong>
     &mdash; <a href="/edit/personal" style="color:var(--accent); text-decoration:none;">Update profile</a>
   </div>
@@ -67,7 +67,7 @@
               <label class="payment-option" id="opt-card">
                 <input type="radio" name="payment_method" value="card" checked onchange="updatePaymentUI()">
                 <div style="display:flex; align-items:center; gap:0.75rem;">
-                  <i class="fa fa-credit-card fa-lg" style="color:var(--accent); width:20px; text-align:center;"></i>
+                  <i data-lucide="credit-card" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
                   <div>
                     <div style="font-weight:600; font-size:0.9rem;">Credit / Debit Card</div>
                     <div style="font-size:0.77rem; color:var(--muted);">Secure payment via Stripe</div>
@@ -77,7 +77,7 @@
               <label class="payment-option" id="opt-cash">
                 <input type="radio" name="payment_method" value="cash" onchange="updatePaymentUI()">
                 <div style="display:flex; align-items:center; gap:0.75rem;">
-                  <i class="fa fa-money-bill-wave fa-lg" style="color:#ffc107; width:20px; text-align:center;"></i>
+                  <i data-lucide="wallet" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
                   <div>
                     <div style="font-weight:600; font-size:0.9rem;">Cash on Delivery</div>
                     <div style="font-size:0.77rem; color:var(--muted);">Pay when your order arrives</div>
@@ -89,7 +89,7 @@
 
           <button type="submit" class="btn-nav"
                   style="padding:0.9rem; font-size:1rem; min-height:52px; width:100%; margin-top:0.25rem;">
-            <i class="fa fa-lock fa-sm"></i>
+            <i data-lucide="lock" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
             <span id="submit-label">Pay with Card</span>
           </button>
 
@@ -143,7 +143,7 @@
 
       <div style="margin-top:1rem; padding:0.75rem; background:rgba(27,79,216,0.05); border:1px solid rgba(27,79,216,0.15);
                   border-radius:8px; font-size:0.78rem; color:var(--muted); display:flex; align-items:center; gap:0.5rem;">
-        <i class="fa fa-shield-halved" style="color:var(--accent);"></i>
+        <i data-lucide="shield-check" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;" ></i>
         Secure &amp; encrypted checkout
       </div>
     </div>

@@ -4,7 +4,7 @@
 
   <a href="{{ url_for('store.dashboard_products') }}"
      style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
-    <i class="fa fa-arrow-left fa-sm"></i> Products
+    <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Products
   </a>
 
   <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin-bottom:1.5rem;">Edit Product</h2>
@@ -42,7 +42,7 @@
       {% if existing_imgs %}
       <div>
         <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.5rem;">
-          <i class="fa fa-images fa-sm"></i> Current Images
+          <i data-lucide="images" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Current Images
         </label>
         <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
           {% for img in existing_imgs %}
@@ -67,12 +67,12 @@
       <!-- Upload new images -->
       <div>
         <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.5rem;">
-          <i class="fa fa-cloud-upload-alt fa-sm"></i> Upload New Images (replaces current)
+          <i data-lucide="cloud-upload" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;" ></i> Upload New Images (replaces current)
         </label>
         <div onclick="document.getElementById('imageInput').click()"
              style="cursor:pointer; border:2px dashed var(--border2); border-radius:var(--radius); padding:1.5rem; text-align:center; transition:border-color 0.2s;"
              onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor='var(--border2)'">
-          <i class="fa fa-images" style="font-size:1.5rem; color:var(--muted);"></i>
+          <i data-lucide="images" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
           <p style="color:var(--muted); margin-top:0.4rem; font-size:0.85rem;">Click to upload images (multiple allowed)</p>
         </div>
         <input type="file" name="images" id="imageInput" multiple accept="image/*" style="display:none">
@@ -95,7 +95,7 @@
       </label>
 
       <button type="submit" class="btn-nav" style="padding:0.75rem; font-size:1rem;">
-        <i class="fa fa-save fa-sm"></i> Save Changes
+        <i data-lucide="save" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Save Changes
       </button>
 
     </div>

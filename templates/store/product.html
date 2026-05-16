@@ -5,10 +5,10 @@
   <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
     <a href="{{ url_for('store.index') }}"
        style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem;">
-      <i class="fa fa-arrow-left fa-sm"></i> Back to Store
+      <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Back to Store
     </a>
     <a href="{{ url_for('store.cart') }}" class="cart-pill">
-      <i class="fa fa-shopping-cart fa-sm"></i> Cart
+      <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Cart
       {% if cart_count > 0 %}
         <span class="cart-pill-badge">{{ cart_count }}</span>
       {% endif %}
@@ -106,7 +106,7 @@
       {% endif %}
 
       <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1.5rem;">
-        <i class="fa fa-cubes" style="color:var(--accent);"></i>
+        <i data-lucide="boxes" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;" ></i>
         <span style="color:var(--muted); font-size:0.9rem;">
           {% if product.stock > 0 %}
             {{ product.stock }} units in stock
@@ -135,10 +135,10 @@
           <!-- Action buttons -->
           <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
             <button type="submit" class="btn-action btn-add-cart">
-              <i class="fa fa-cart-plus fa-sm"></i> Add to Cart
+              <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Add to Cart
             </button>
             <a href="{{ url_for('store.checkout', product_id=product.id) }}" class="btn-action btn-buy-now">
-              <i class="fa fa-bolt fa-sm"></i> Buy Now
+              <i data-lucide="zap" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Buy Now
             </a>
           </div>
         </form>

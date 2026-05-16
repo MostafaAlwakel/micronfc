@@ -7,12 +7,12 @@
     <div>
       <a href="{{ url_for('store.store_dashboard') }}"
          style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
-        <i class="fa fa-arrow-left fa-sm"></i> Dashboard
+        <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Dashboard
       </a>
       <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin:0.3rem 0 0;">Products</h2>
     </div>
     <a href="{{ url_for('store.dashboard_add_product') }}" class="btn-nav" style="padding:0.6rem 1.25rem;">
-      <i class="fa fa-plus fa-sm"></i> Add Product
+      <i data-lucide="plus" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Add Product
     </a>
   </div>
 
@@ -77,7 +77,7 @@
     </div>
   {% else %}
     <div style="text-align:center; padding:4rem; color:var(--muted);">
-      <i class="fa fa-box-open" style="font-size:3rem; display:block; margin-bottom:1rem;"></i>
+      <i data-lucide="package-open" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <p>No products yet. <a href="{{ url_for('store.dashboard_add_product') }}" style="color:var(--accent);">Add one</a></p>
     </div>
   {% endif %}

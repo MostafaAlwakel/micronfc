@@ -32,25 +32,25 @@
   <!-- Contact -->
   <div class="dash-card" style="margin-bottom:1.5rem;">
     <div class="dash-card-header">
-      <i class="fa fa-address-book" style="color:var(--accent);"></i>
+      <i data-lucide="contact-2" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <h3>Contact</h3>
     </div>
     <div class="dash-card-body">
       {% if user.phone %}
-        <p><span class="label"><i class="fa fa-phone fa-sm"></i> Phone</span>
+        <p><span class="label"><i data-lucide="phone" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Phone</span>
           <a href="tel:{{ user.phone }}" style="color:var(--accent); text-decoration:none;">{{ user.phone }}</a>
         </p>
       {% endif %}
-      <p><span class="label"><i class="fa fa-envelope fa-sm"></i> Email</span>
+      <p><span class="label"><i data-lucide="mail" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Email</span>
         <a href="mailto:{{ user.email }}" style="color:var(--text); text-decoration:none;">{{ user.email }}</a>
       </p>
       {% if user.whatsapp %}
-        <p><span class="label"><i class="fab fa-whatsapp fa-sm" style="color:#25d366;"></i> WhatsApp</span>
+        <p><span class="label"><img src="https://cdn.simpleicons.org/whatsapp/25D366" width="20" height="20" alt="WhatsApp" style="vertical-align:middle;display:inline-block;"> WhatsApp</span>
           <a href="https://wa.me/{{ user.whatsapp }}" target="_blank" style="color:#25d366; text-decoration:none;">Chat on WhatsApp</a>
         </p>
       {% endif %}
       {% if user.website %}
-        <p><span class="label"><i class="fa fa-globe fa-sm"></i> Website</span>
+        <p><span class="label"><i data-lucide="globe" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Website</span>
           <a href="{{ user.website }}" target="_blank" style="color:var(--accent); text-decoration:none;">{{ user.website }}</a>
         </p>
       {% endif %}
@@ -61,28 +61,28 @@
   {% if user.linkedin or user.github or user.twitter or user.instagram %}
   <div class="dash-card" style="margin-bottom:1.5rem;">
     <div class="dash-card-header">
-      <i class="fa fa-share-nodes" style="color:var(--accent);"></i>
+      <i data-lucide="share-2" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <h3>Social Links</h3>
     </div>
     <div style="display:flex; gap:0.75rem; flex-wrap:wrap; padding:0.5rem 0;">
       {% if user.instagram %}
         <a href="{{ user.instagram }}" target="_blank" class="social-btn social-instagram">
-          <i class="fab fa-instagram"></i> Instagram
+          <img src="https://cdn.simpleicons.org/instagram/E4405F" width="20" height="20" alt="Instagram" style="vertical-align:middle;display:inline-block;"> Instagram
         </a>
       {% endif %}
       {% if user.linkedin %}
         <a href="{{ user.linkedin }}" target="_blank" class="social-btn social-linkedin">
-          <i class="fab fa-linkedin"></i> LinkedIn
+          <img src="https://cdn.simpleicons.org/linkedin/0A66C2" width="20" height="20" alt="LinkedIn" style="vertical-align:middle;display:inline-block;"> LinkedIn
         </a>
       {% endif %}
       {% if user.github %}
         <a href="{{ user.github }}" target="_blank" class="social-btn social-github">
-          <i class="fab fa-github"></i> GitHub
+          <img src="https://cdn.simpleicons.org/github/181717" width="20" height="20" alt="GitHub" style="vertical-align:middle;display:inline-block;"> GitHub
         </a>
       {% endif %}
       {% if user.twitter %}
         <a href="{{ user.twitter }}" target="_blank" class="social-btn social-twitter">
-          <i class="fab fa-twitter"></i> Twitter
+          <img src="https://cdn.simpleicons.org/x/000000" width="20" height="20" alt="X" style="vertical-align:middle;display:inline-block;"> Twitter
         </a>
       {% endif %}
     </div>
@@ -97,18 +97,18 @@
     </div>
     <div class="dash-card-body">
       {% if user.blood_type %}
-        <p><span class="label"><i class="fa fa-droplet fa-sm"></i> Blood Type</span>
+        <p><span class="label"><i data-lucide="droplet" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Blood Type</span>
           <strong style="color:var(--red); font-size:1.1rem;">{{ user.blood_type }}</strong>
         </p>
       {% endif %}
       {% if user.allergies %}
-        <p><span class="label"><i class="fa fa-triangle-exclamation fa-sm"></i> Allergies</span> {{ user.allergies }}</p>
+        <p><span class="label"><i data-lucide="alert-triangle" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Allergies</span> {{ user.allergies }}</p>
       {% endif %}
       {% if user.chronic_diseases %}
-        <p><span class="label"><i class="fa fa-heart-pulse fa-sm"></i> Diseases</span> {{ user.chronic_diseases }}</p>
+        <p><span class="label"><i data-lucide="heart-pulse" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Diseases</span> {{ user.chronic_diseases }}</p>
       {% endif %}
       {% if user.medications %}
-        <p><span class="label"><i class="fa fa-pills fa-sm"></i> Medications</span> {{ user.medications }}</p>
+        <p><span class="label"><i data-lucide="pill" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Medications</span> {{ user.medications }}</p>
       {% endif %}
     </div>
   </div>
@@ -117,7 +117,7 @@
   {% if user.emergency_contact_name or user.doctor_name %}
   <div class="dash-card" style="margin-bottom:1.5rem;">
     <div class="dash-card-header">
-      <i class="fa fa-phone-volume" style="color:var(--red);"></i>
+      <i data-lucide="phone-call" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <h3>Emergency Contacts</h3>
     </div>
     <div class="dash-card-body">

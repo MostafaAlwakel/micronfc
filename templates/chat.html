@@ -65,10 +65,10 @@
 
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
     <a href="{{ url_for('dashboard') }}" class="btn-secondary" style="padding:0.5rem 1rem; font-size:0.85rem;">
-      <i class="fa fa-arrow-left fa-sm"></i> Dashboard
+      <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Dashboard
     </a>
     <button onclick="clearPageChat()" class="btn-secondary" style="padding:0.5rem 1rem; font-size:0.85rem;">
-      <i class="fa fa-rotate-left fa-sm"></i> Clear Chat
+      <i data-lucide="rotate-ccw" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;" ></i> Clear Chat
     </button>
   </div>
 
@@ -85,7 +85,7 @@
         </span>
       </div>
       <a href="{{ url_for('edit_bot') }}" class="btn-secondary" style="padding:0.4rem 0.85rem; font-size:0.8rem;">
-        <i class="fa fa-brain fa-sm"></i> Train
+        <i data-lucide="brain" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Train
       </a>
     </div>
 
@@ -98,7 +98,7 @@
     <div class="chat-page-input">
       <input type="text" id="user-input" placeholder="Ask me anything..." autofocus>
       <button class="btn-primary" onclick="sendMessage()" style="padding:0.7rem 1.2rem; border-radius:12px;">
-        <i class="fa fa-paper-plane fa-sm"></i>
+        <i data-lucide="send" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       </button>
     </div>
   </div>

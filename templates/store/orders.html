@@ -6,7 +6,7 @@
   <div style="margin-bottom:1.5rem;">
     <a href="{{ url_for('store.store_dashboard') }}"
        style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
-      <i class="fa fa-arrow-left fa-sm"></i> Dashboard
+      <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Dashboard
     </a>
     <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin:0.3rem 0 0;">Orders</h2>
   </div>
@@ -14,7 +14,7 @@
   <!-- Search box -->
   <div style="margin-bottom:1rem;">
     <div style="position:relative; max-width:420px;">
-      <i class="fa fa-search" style="position:absolute; left:0.85rem; top:50%; transform:translateY(-50%); color:var(--muted2); pointer-events:none; font-size:0.85rem;"></i>
+      <i data-lucide="search" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <input type="text" id="order-search"
              placeholder="Search by tracking #, name, email, phone, address…"
              oninput="filterOrders(this.value)"
@@ -67,12 +67,12 @@
                   <div style="font-size:0.75rem; color:var(--muted);">{{ order.customer_email }}</div>
                   {% if order._tracking %}
                   <div style="font-size:0.72rem; color:var(--accent); margin-top:2px;">
-                    <i class="fa fa-location-dot fa-xs"></i> {{ order._tracking }}
+                    <i data-lucide="map-pin" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> {{ order._tracking }}
                   </div>
                   {% endif %}
                   {% if order._is_cart %}
                   <div style="font-size:0.7rem; color:var(--muted2); margin-top:2px;">
-                    <i class="fa fa-cart-shopping fa-xs"></i> Cart Order
+                    <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;" ></i> Cart Order
                   </div>
                   {% endif %}
                 </td>
@@ -94,11 +94,11 @@
                   {% set pm = order.payment_method or ('cash' if order.status == 'cash_on_delivery' else 'card') %}
                   {% if pm == 'cash' %}
                     <span style="font-size:0.75rem; padding:0.2rem 0.55rem; border-radius:99px; background:rgba(251,191,36,0.15); color:#fbbf24; border:1px solid rgba(251,191,36,0.3);">
-                      <i class="fa fa-money-bill-wave fa-xs"></i> Cash
+                      <i data-lucide="wallet" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Cash
                     </span>
                   {% else %}
                     <span style="font-size:0.75rem; padding:0.2rem 0.55rem; border-radius:99px; background:rgba(96,165,250,0.15); color:#60a5fa; border:1px solid rgba(96,165,250,0.3);">
-                      <i class="fa fa-credit-card fa-xs"></i> Card
+                      <i data-lucide="credit-card" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Card
                     </span>
                   {% endif %}
                 </td>
@@ -133,7 +133,7 @@
     </div>
   {% else %}
     <div style="text-align:center; padding:4rem; color:var(--muted);">
-      <i class="fa fa-shopping-cart" style="font-size:3rem; display:block; margin-bottom:1rem;"></i>
+      <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <p>No orders found.</p>
     </div>
   {% endif %}

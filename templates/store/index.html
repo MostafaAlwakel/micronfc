@@ -5,12 +5,12 @@
   <div class="store-header">
     <div>
       <h1 style="font-family:'Inter',sans-serif; font-size:2rem; font-weight:800; margin:0;">
-        <i class="fa fa-store" style="color:var(--accent);"></i> MicroNFC Store
+        <i data-lucide="store" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> MicroNFC Store
       </h1>
       <p style="color:var(--muted); margin-top:0.4rem;">Smart cards, bracelets &amp; accessories</p>
     </div>
     <a href="{{ url_for('store.cart') }}" class="cart-icon-btn" title="Shopping Cart">
-      <i data-lucide="shopping-cart"></i>
+      <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       {% if cart_count > 0 %}
         <span class="cart-badge-bubble">{{ cart_count }}</span>
       {% endif %}
@@ -57,7 +57,7 @@
                 <form method="POST" action="{{ url_for('store.cart_add', product_id=product.id) }}"
                       style="flex:1; display:flex;">
                   <button type="submit" class="btn-add-cart">
-                    <i class="fa fa-cart-plus fa-sm"></i> Add to Cart
+                    <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Add to Cart
                   </button>
                 </form>
                 <a href="{{ url_for('store.product_detail', product_id=product.id) }}" class="btn-view-product">
@@ -76,7 +76,7 @@
 
   {% else %}
     <div style="text-align:center; padding:5rem 0; color:var(--muted);">
-      <i class="fa fa-box-open" style="font-size:3rem; display:block; margin-bottom:1rem;"></i>
+      <i data-lucide="package-open" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <p>No products available yet. Check back soon!</p>
     </div>
   {% endif %}

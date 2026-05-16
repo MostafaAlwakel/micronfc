@@ -5,7 +5,7 @@
   <div class="cart-header">
     <div>
       <h1 style="font-family:'Inter',sans-serif; font-size:1.8rem; font-weight:800; margin:0;">
-        <i class="fa fa-shopping-cart" style="color:var(--accent);"></i> Shopping Cart
+        <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Shopping Cart
       </h1>
       {% if items %}
         <p style="color:var(--muted); margin:0.3rem 0 0; font-size:0.9rem;">
@@ -15,7 +15,7 @@
     </div>
     <a href="{{ url_for('store.index') }}"
        style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem;">
-      <i class="fa fa-arrow-left fa-sm"></i> Continue Shopping
+      <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Continue Shopping
     </a>
   </div>
 
@@ -58,7 +58,7 @@
             </form>
             <form method="POST" action="{{ url_for('store.cart_remove', product_id=item.product.id) }}">
               <button type="submit" class="remove-btn">
-                <i class="fa fa-trash fa-sm"></i> Remove
+                <i data-lucide="trash-2" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Remove
               </button>
             </form>
           </div>
@@ -88,12 +88,12 @@
       {% if current_user.is_authenticated %}
       <a href="{{ url_for('store.cart_checkout') }}"
          class="btn-nav" style="display:block; text-align:center; padding:0.85rem; font-size:1rem; margin-top:1rem;">
-        <i class="fa fa-lock fa-sm"></i> Proceed to Checkout
+        <i data-lucide="lock" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Proceed to Checkout
       </a>
       {% else %}
       <a href="/login?next=/store/cart/checkout"
          class="btn-nav" style="display:block; text-align:center; padding:0.85rem; font-size:1rem; margin-top:1rem;">
-        <i class="fa fa-sign-in-alt fa-sm"></i> Login to Checkout
+        <i data-lucide="log-in" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Login to Checkout
       </a>
       <a href="/register?next=/store/cart/checkout"
          style="display:block; text-align:center; font-size:0.82rem; color:var(--muted); margin-top:0.65rem; text-decoration:none;">
@@ -112,12 +112,12 @@
   <div style="text-align:center; padding:5rem 1rem;">
     <div style="width:80px; height:80px; background:var(--surface); border:1px solid var(--border); border-radius:50%;
                 display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem;">
-      <i class="fa fa-shopping-cart" style="font-size:2rem; color:var(--muted2);"></i>
+      <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
     </div>
     <h3 style="font-family:'Inter',sans-serif; font-weight:700; margin-bottom:0.5rem;">Your cart is empty</h3>
     <p style="color:var(--muted); margin-bottom:1.5rem;">Add some products to get started!</p>
     <a href="{{ url_for('store.index') }}" class="btn-nav" style="display:inline-block; padding:0.75rem 2rem;">
-      <i class="fa fa-store fa-sm"></i> Browse Store
+      <i data-lucide="store" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Browse Store
     </a>
   </div>
   {% endif %}

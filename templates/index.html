@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 
@@ -22,13 +22,13 @@
 
     <div class="hero-actions">
       <a href="{{ url_for('register') }}" class="btn-primary">
-        Get Started <i class="fa fa-arrow-right fa-sm"></i>
+        Get Started <i data-lucide="arrow-right" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       </a>
       <a href="{{ url_for('store.index') }}" class="btn-secondary">
-        <i class="fa fa-shopping-bag fa-sm"></i> Shop Now
+        <i data-lucide="shopping-bag" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Shop Now
       </a>
       <a href="#features" class="btn-secondary">
-        <i class="fa fa-play-circle fa-sm"></i> See Features
+        <i data-lucide="play-circle" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;" ></i> See Features
       </a>
     </div>
 
@@ -55,7 +55,7 @@
 
 <section class="features" id="features">
   <div class="container">
-    <p class="section-label"><i class="fa fa-bolt"></i> Features</p>
+    <p class="section-label"><i data-lucide="zap" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Features</p>
     <h2 class="section-title">Everything you need.</h2>
 
     <div class="features-grid">
@@ -103,10 +103,10 @@
     </p>
     <div class="hero-actions">
       <a href="{{ url_for('register') }}" class="btn-primary">
-        Create Free Account <i class="fa fa-arrow-right fa-sm"></i>
+        Create Free Account <i data-lucide="arrow-right" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       </a>
       <a href="{{ url_for('login') }}" class="btn-secondary">
-        <i class="fa fa-sign-in-alt fa-sm"></i> Sign In
+        <i data-lucide="log-in" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Sign In
       </a>
     </div>
   </div>

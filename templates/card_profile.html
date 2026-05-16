@@ -368,13 +368,13 @@
   <div style="display:flex; gap:0.5rem; padding:0.75rem 1.4rem;">
     {% if user.phone %}
     <a href="tel:{{ user.phone }}" class="action-btn">
-      <i class="fa fa-phone"></i>
+      <i data-lucide="phone" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <span>Call</span>
     </a>
     {% endif %}
     {% if user.whatsapp %}
     <a href="https://wa.me/{{ user.whatsapp }}" target="_blank" class="action-btn" style="color:#25d366; background:rgba(37,211,102,0.07); border-color:rgba(37,211,102,0.2);">
-      <i class="fab fa-whatsapp"></i>
+      <img src="https://cdn.simpleicons.org/whatsapp/25D366" width="20" height="20" alt="WhatsApp" style="vertical-align:middle;display:inline-block;">
       <span>WhatsApp</span>
     </a>
     {% endif %}
@@ -385,7 +385,7 @@
     </a>
     {% endif %}
     <button onclick="openQR()" class="action-btn">
-      <i data-lucide="qr-code"></i>
+      <i data-lucide="qr-code" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <span>QR Code</span>
     </button>
   </div>
@@ -395,25 +395,25 @@
   <!-- CONTACT INFO -->
   <div style="padding:0.75rem 1.4rem;">
     <div class="contact-row">
-      <div class="contact-icon"><i data-lucide="mail"></i></div>
+      <div class="contact-icon"><i data-lucide="mail" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i></div>
       <span style="font-size:0.88rem; color:{{ t.text }};">{{ user.email }}</span>
     </div>
     {% if user.phone %}
     <div class="contact-row">
-      <div class="contact-icon"><i class="fa fa-phone"></i></div>
+      <div class="contact-icon"><i data-lucide="phone" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i></div>
       <span style="font-size:0.88rem; color:{{ t.text }};">{{ user.phone }}</span>
     </div>
     {% endif %}
     {% if user.website %}
     <div class="contact-row">
-      <div class="contact-icon"><i data-lucide="globe"></i></div>
+      <div class="contact-icon"><i data-lucide="globe" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i></div>
       <a href="{{ user.website }}" target="_blank" style="font-size:0.88rem; color:{{ t.accent }}; text-decoration:none;">{{ user.website }}</a>
     </div>
     {% endif %}
     {% if user.location_url %}
     <div class="contact-row">
       <div class="contact-icon" style="color:#34a853; background:rgba(52,168,83,0.1); border-color:rgba(52,168,83,0.2);">
-        <i data-lucide="map-pin"></i>
+        <i data-lucide="map-pin" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       </div>
       <a href="{{ user.location_url }}" target="_blank" style="font-size:0.88rem; color:#34a853; text-decoration:none;">Get Directions</a>
     </div>
@@ -430,42 +430,42 @@
   <div class="social-grid">
     {% if user.instagram %}
     <a href="{{ user.instagram }}" target="_blank" class="social-btn" style="color:#e1306c; border-color:rgba(225,48,108,0.2); background:rgba(225,48,108,0.06);">
-      <i class="fab fa-instagram"></i> Instagram
+      <img src="https://cdn.simpleicons.org/instagram/E4405F" width="20" height="20" alt="Instagram" style="vertical-align:middle;display:inline-block;"> Instagram
     </a>
     {% endif %}
     {% if user.snapchat %}
     <a href="{{ user.snapchat }}" target="_blank" class="social-btn" style="color:#FFFC00; border-color:rgba(255,252,0,0.25); background:rgba(255,252,0,0.06); text-shadow:0 0 8px rgba(0,0,0,0.5);">
-      <i class="fab fa-snapchat"></i> Snapchat
+      <img src="https://cdn.simpleicons.org/snapchat/FFFC00" width="20" height="20" alt="Snapchat" style="vertical-align:middle;display:inline-block;"> Snapchat
     </a>
     {% endif %}
     {% if user.facebook %}
     <a href="{{ user.facebook }}" target="_blank" class="social-btn" style="color:#1877f2; border-color:rgba(24,119,242,0.2); background:rgba(24,119,242,0.06);">
-      <i class="fab fa-facebook"></i> Facebook
+      <img src="https://cdn.simpleicons.org/facebook/1877F2" width="20" height="20" alt="Facebook" style="vertical-align:middle;display:inline-block;"> Facebook
     </a>
     {% endif %}
     {% if user.tiktok %}
     <a href="{{ user.tiktok }}" target="_blank" class="social-btn">
-      <i class="fab fa-tiktok"></i> TikTok
+      <img src="https://cdn.simpleicons.org/tiktok/000000" width="20" height="20" alt="TikTok" style="vertical-align:middle;display:inline-block;"> TikTok
     </a>
     {% endif %}
     {% if user.youtube %}
     <a href="{{ user.youtube }}" target="_blank" class="social-btn" style="color:#ff0000; border-color:rgba(255,0,0,0.2); background:rgba(255,0,0,0.06);">
-      <i class="fab fa-youtube"></i> YouTube
+      <img src="https://cdn.simpleicons.org/youtube/FF0000" width="20" height="20" alt="YouTube" style="vertical-align:middle;display:inline-block;"> YouTube
     </a>
     {% endif %}
     {% if user.twitter %}
     <a href="{{ user.twitter }}" target="_blank" class="social-btn" style="color:#1d9bf0; border-color:rgba(29,155,240,0.2); background:rgba(29,155,240,0.06);">
-      <i class="fab fa-twitter"></i> Twitter
+      <img src="https://cdn.simpleicons.org/x/000000" width="20" height="20" alt="X" style="vertical-align:middle;display:inline-block;"> Twitter
     </a>
     {% endif %}
     {% if user.linkedin %}
     <a href="{{ user.linkedin }}" target="_blank" class="social-btn" style="color:#0077b5; border-color:rgba(0,119,181,0.2); background:rgba(0,119,181,0.06);">
-      <i class="fab fa-linkedin"></i> LinkedIn
+      <img src="https://cdn.simpleicons.org/linkedin/0A66C2" width="20" height="20" alt="LinkedIn" style="vertical-align:middle;display:inline-block;"> LinkedIn
     </a>
     {% endif %}
     {% if user.github %}
     <a href="{{ user.github }}" target="_blank" class="social-btn">
-      <i class="fab fa-github"></i> GitHub
+      <img src="https://cdn.simpleicons.org/github/181717" width="20" height="20" alt="GitHub" style="vertical-align:middle;display:inline-block;"> GitHub
     </a>
     {% endif %}
   </div>
@@ -480,9 +480,9 @@
     <p style="font-size:0.7rem; color:{{ t.muted }}; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; font-family:'Inter',sans-serif;">Links</p>
     {% for link in extra_list %}
     <a href="{{ link.url }}" target="_blank" class="extra-link-btn">
-      <i class="fa fa-link" style="color:{{ t.accent }}; font-size:0.8rem;"></i>
+      <i data-lucide="link" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       <span>{{ link.title }}</span>
-      <i class="fa fa-arrow-right" style="margin-left:auto; font-size:0.75rem; color:{{ t.muted }};"></i>
+      <i data-lucide="arrow-right" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
     </a>
     {% endfor %}
   </div>
@@ -512,7 +512,7 @@
   <div style="padding:1rem 1.4rem;">
     <button onclick="togglePubChat()"
       style="width:100%; padding:0.75rem; background:rgba({{ t.accentRgb }},0.08); border:1px solid rgba({{ t.accentRgb }},0.25); border-radius:14px; color:{{ t.accent }}; font-family:'Inter',sans-serif; font-weight:600; font-size:0.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-      <i data-lucide="bot"></i> Chat with {{ user.name }}'s AI
+      <i data-lucide="bot" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Chat with {{ user.name }}'s AI
     </button>
   </div>
 
@@ -528,7 +528,7 @@
 <div class="qr-modal" id="qr-modal" onclick="closeQR(event)">
   <div class="qr-box" onclick="event.stopPropagation()">
     <h3 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; margin-bottom:1rem; color:{{ t.text }};">
-      <i class="fa fa-qrcode" style="color:{{ t.accent }};"></i> Scan to View Profile
+      <i data-lucide="qr-code" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Scan to View Profile
     </h3>
     <div id="qrcode" style="display:flex; justify-content:center; margin-bottom:1rem;"></div>
     <p style="font-size:0.78rem; color:{{ t.muted }}; word-break:break-all; margin-bottom:1rem;" id="qr-url-label"></p>
@@ -538,7 +538,7 @@
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()"><i data-lucide="x"></i></button>
+  <button class="lightbox-close" onclick="closeLightbox()"><i data-lucide="x" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i></button>
   <img id="lightbox-img" src="">
 </div>
 
@@ -549,8 +549,8 @@
     <i data-lucide="bot" style="color:{{ t.accent }};"></i>
     <span style="font-family:'Inter',sans-serif; font-size:0.9rem; font-weight:600; flex:1; color:{{ t.text }};">{{ user.name }}'s Assistant</span>
     <span style="font-size:0.72rem; color:{{ t.accent }};">● Online</span>
-    <button onclick="clearPubChat()" style="background:none; border:none; color:{{ t.muted }}; cursor:pointer; font-size:0.85rem; margin-left:4px;"><i data-lucide="trash-2"></i></button>
-    <button onclick="togglePubChat()" style="background:none; border:none; color:{{ t.muted }}; cursor:pointer; font-size:1.1rem;"><i data-lucide="x"></i></button>
+    <button onclick="clearPubChat()" style="background:none; border:none; color:{{ t.muted }}; cursor:pointer; font-size:0.85rem; margin-left:4px;"><i data-lucide="trash-2" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i></button>
+    <button onclick="togglePubChat()" style="background:none; border:none; color:{{ t.muted }}; cursor:pointer; font-size:1.1rem;"><i data-lucide="x" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i></button>
   </div>
   <div class="pub-chat-messages" id="pub-chat-box">
     <div class="msg bot">
@@ -559,7 +559,7 @@
   </div>
   <div class="pub-chat-input-row">
     <input type="text" id="pub-input" placeholder="Ask about {{ user.name }}...">
-    <button class="pub-chat-send" onclick="sendPubMessage()"><i data-lucide="send"></i></button>
+    <button class="pub-chat-send" onclick="sendPubMessage()"><i data-lucide="send" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i></button>
   </div>
 </div>
 

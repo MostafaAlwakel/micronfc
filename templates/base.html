@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons@9/icons/index.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=13">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=14">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     .chat-fab {
@@ -94,13 +94,13 @@
 
     <nav class="sidebar-nav">
       {% if current_user.is_admin %}
-        <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link {{ 'active' if request.path == '/admin' }}" title="Admin"><i data-lucide="crown"></i><span>Admin</span></a>
+        <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link {{ 'active' if request.path == '/admin' }}" title="Admin"><i data-lucide="shield-check"></i><span>Admin</span></a>
         <a href="{{ url_for('admin_cards') }}" class="sidebar-link {{ 'active' if request.path.startswith('/admin/cards') }}" title="NFC Cards"><i data-lucide="credit-card"></i><span>NFC Cards</span></a>
-        <a href="{{ url_for('store.store_dashboard') }}" class="sidebar-link {{ 'active' if request.path.startswith('/store/dashboard') }}" title="Store Admin"><i data-lucide="store"></i><span>Store Admin</span></a>
+        <a href="{{ url_for('store.store_dashboard') }}" class="sidebar-link {{ 'active' if request.path.startswith('/store/dashboard') }}" title="Store Admin"><i data-lucide="package"></i><span>Store Admin</span></a>
         <div class="sidebar-divider"></div>
       {% endif %}
       <a href="{{ url_for('dashboard') }}" class="sidebar-link {{ 'active' if request.path == '/dashboard' }}" title="Dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>
-      <a href="{{ url_for('edit_personal') }}" class="sidebar-link {{ 'active' if request.path == '/edit/personal' }}" title="Profile"><i data-lucide="user"></i><span>Profile</span></a>
+      <a href="{{ url_for('edit_personal') }}" class="sidebar-link {{ 'active' if request.path == '/edit/personal' }}" title="Profile"><i data-lucide="user-circle"></i><span>Profile</span></a>
       <a href="{{ url_for('edit_social') }}" class="sidebar-link {{ 'active' if request.path == '/edit/social' }}" title="Social Links"><i data-lucide="share-2"></i><span>Social Links</span></a>
       <a href="{{ url_for('edit_medical') }}" class="sidebar-link {{ 'active' if request.path == '/edit/medical' }}" title="Medical"><i data-lucide="heart-pulse"></i><span>Medical</span></a>
       <a href="{{ url_for('edit_bot') }}" class="sidebar-link {{ 'active' if request.path == '/edit/bot' }}" title="Train Bot"><i data-lucide="bot"></i><span>Train Bot</span></a>

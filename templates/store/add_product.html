@@ -4,7 +4,7 @@
 
   <a href="{{ url_for('store.dashboard_products') }}"
      style="color:var(--muted); font-size:0.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; margin-bottom:1.5rem;">
-    <i class="fa fa-arrow-left fa-sm"></i> Products
+    <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Products
   </a>
 
   <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin-bottom:1.5rem;">Add Product</h2>
@@ -40,12 +40,12 @@
       <!-- Multi-image upload -->
       <div>
         <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.5rem;">
-          <i class="fa fa-images fa-sm"></i> Product Images
+          <i data-lucide="images" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Product Images
         </label>
         <div onclick="document.getElementById('imageInput').click()"
              style="cursor:pointer; border:2px dashed var(--border2); border-radius:var(--radius); padding:1.75rem; text-align:center; transition:border-color 0.2s;"
              onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor='var(--border2)'">
-          <i class="fa fa-cloud-upload-alt" style="font-size:2rem; color:var(--muted);"></i>
+          <i data-lucide="cloud-upload" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;" ></i>
           <p style="color:var(--muted); margin-top:0.5rem; font-size:0.88rem;">Click to upload images (multiple allowed)</p>
           <p style="color:var(--muted2); font-size:0.78rem; margin-top:0.25rem;">First image = main product image</p>
         </div>
@@ -59,7 +59,7 @@
       </label>
 
       <button type="submit" class="btn-nav" style="padding:0.75rem; font-size:1rem;">
-        <i class="fa fa-plus fa-sm"></i> Add Product
+        <i data-lucide="plus" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Add Product
       </button>
 
     </div>

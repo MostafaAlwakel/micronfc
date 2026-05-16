@@ -60,7 +60,7 @@
             {% if is_active %}
             <div style="position:absolute; top:8px; right:8px; width:20px; height:20px; border-radius:50%;
                         background:{{ accent }}; display:flex; align-items:center; justify-content:center;">
-              <i class="fa fa-check" style="font-size:0.6rem; color:#000;"></i>
+              <i data-lucide="check" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
             </div>
             {% endif %}
           </div>
@@ -71,13 +71,13 @@
 
       <div style="margin-top:1.25rem;">
         <button type="submit" class="btn-primary w-100">
-          <i class="fa fa-palette fa-sm"></i> Apply Theme
+          <i data-lucide="palette" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Apply Theme
         </button>
       </div>
     </form>
 
     <p class="auth-footer" style="margin-top:1.2rem;">
-      <a href="{{ url_for('dashboard') }}"><i class="fa fa-arrow-left fa-sm"></i> Back to Dashboard</a>
+      <a href="{{ url_for('dashboard') }}"><i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Back to Dashboard</a>
     </p>
   </div>
 </div>

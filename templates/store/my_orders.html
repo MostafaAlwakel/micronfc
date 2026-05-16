@@ -5,7 +5,7 @@
   <div style="margin-bottom:1.75rem;">
     <a href="{{ url_for('store.index') }}"
        style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
-      <i class="fa fa-arrow-left fa-sm"></i> Store
+      <i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Store
     </a>
     <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin:0.3rem 0 0;">My Orders</h2>
     <p style="color:var(--muted); font-size:0.85rem; margin:0.2rem 0 0;">{{ current_user.email }}</p>
@@ -55,7 +55,7 @@
           <span style="font-size:0.68rem; padding:0.1rem 0.45rem; border-radius:99px;
                        background:rgba(167,139,250,0.15); color:#a78bfa;
                        border:1px solid rgba(167,139,250,0.3);">
-            <i class="fa fa-cart-shopping fa-xs"></i> Cart
+            <i data-lucide="shopping-cart" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;" ></i> Cart
           </span>
           {% endif %}
           {% if order.status == 'cancelled' %}
@@ -87,7 +87,7 @@
           </div>
           <div style="font-size:0.78rem; color:var(--muted); margin-top:3px;">
             {% if pm == 'cash' %}
-              <i class="fa fa-money-bill-wave" style="color:#fbbf24;"></i> Cash on Delivery
+              <i data-lucide="wallet" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Cash on Delivery
             {% else %}
               <i data-lucide="credit-card" style="color:#60a5fa;"></i> Card
             {% endif %}
@@ -103,7 +103,7 @@
       <div style="padding:1rem 1.1rem 1.1rem;">
         {% if order.status == 'cancelled' %}
         <div style="text-align:center; color:#f87171; font-size:0.85rem; padding:0.25rem 0;">
-          <i class="fa fa-times-circle"></i> This order was cancelled.
+          <i data-lucide="x-circle" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> This order was cancelled.
         </div>
         {% else %}
         <div style="display:flex; align-items:center;">
@@ -118,7 +118,7 @@
                         {% else %}
                           background:var(--surface2); border:2px solid var(--border2); color:var(--muted2);
                         {% endif %}">
-              {% if i < cur %}<i class="fa fa-check"></i>{% endif %}
+              {% if i < cur %}<i data-lucide="check" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>{% endif %}
             </div>
             <div style="font-size:0.68rem; white-space:nowrap;
                         font-weight:{{ '700' if i <= cur else '400' }};
@@ -146,11 +146,11 @@
 
   {% else %}
   <div style="text-align:center; padding:4rem 1rem; color:var(--muted);">
-    <i class="fa fa-box-open" style="font-size:3rem; display:block; margin-bottom:1rem; color:var(--muted2);"></i>
+    <i data-lucide="package-open" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
     <p style="margin-bottom:1.25rem;">No orders yet.</p>
     <a href="{{ url_for('store.index') }}" class="btn-nav"
        style="display:inline-block; padding:0.6rem 1.5rem; text-decoration:none;">
-      <i class="fa fa-shopping-bag fa-sm"></i> Shop Now
+      <i data-lucide="shopping-bag" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Shop Now
     </a>
   </div>
   {% endif %}

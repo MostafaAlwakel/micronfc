@@ -15,7 +15,7 @@
     {% if images|length < 12 %}
     <form method="POST" enctype="multipart/form-data" style="margin-bottom:1.5rem;">
       <div class="form-group">
-        <label><i class="fa fa-plus-circle fa-sm"></i> Add Image</label>
+        <label><i data-lucide="plus-circle" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Add Image</label>
         <input type="file" name="image" class="form-control" accept="image/*" required
                onchange="previewNew(this)">
         <div id="new-preview-wrap" style="display:none; margin-top:0.75rem;">
@@ -23,12 +23,12 @@
         </div>
       </div>
       <button type="submit" class="btn-primary w-100">
-        <i class="fa fa-upload fa-sm"></i> Upload Image
+        <i data-lucide="upload" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Upload Image
       </button>
     </form>
     {% else %}
     <div style="background:rgba(255,180,0,0.08); border:1px solid rgba(255,180,0,0.2); border-radius:10px; padding:0.75rem 1rem; margin-bottom:1.5rem; font-size:0.85rem; color:#f0b429;">
-      <i data-lucide="alert-triangle"></i> Maximum 12 images reached. Delete one to add more.
+      <i data-lucide="alert-triangle" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Maximum 12 images reached. Delete one to add more.
     </div>
     {% endif %}
 
@@ -46,7 +46,7 @@
           <button type="submit"
             style="background:rgba(0,0,0,0.7); border:none; color:#ff6b7a; width:28px; height:28px;
                    border-radius:50%; cursor:pointer; font-size:0.75rem; display:flex; align-items:center; justify-content:center;">
-            <i data-lucide="x"></i>
+            <i data-lucide="x" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
           </button>
         </form>
       </div>
@@ -54,13 +54,13 @@
     </div>
     {% else %}
     <div style="text-align:center; padding:2rem; color:var(--muted); border:2px dashed var(--border); border-radius:12px;">
-      <i class="fa fa-images" style="font-size:2rem; margin-bottom:0.75rem; display:block;"></i>
+      <i data-lucide="images" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
       No images yet. Upload your first portfolio image!
     </div>
     {% endif %}
 
     <p class="auth-footer" style="margin-top:1.5rem;">
-      <a href="{{ url_for('dashboard') }}"><i class="fa fa-arrow-left fa-sm"></i> Back to Dashboard</a>
+      <a href="{{ url_for('dashboard') }}"><i data-lucide="arrow-left" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Back to Dashboard</a>
     </p>
   </div>
 </div>

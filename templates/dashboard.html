@@ -489,17 +489,17 @@
     </div>
     <div class="dash-header-actions">
       <a href="{{ url_for('edit_bot') }}" class="btn-secondary">
-        <i data-lucide="brain"></i> Train Bot
+        <i data-lucide="brain" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Train Bot
       </a>
       <a href="{{ url_for('chat') }}" class="btn-secondary">
-        <i data-lucide="bot"></i> AI Chat
+        <i data-lucide="bot" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> AI Chat
       </a>
       <button onclick="document.getElementById('preview-modal').classList.add('open')" class="btn-primary">
-        <i data-lucide="eye"></i> Preview Card
+        <i data-lucide="eye" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Preview Card
       </button>
       <button onclick="document.getElementById('preview-medical-modal').classList.add('open')"
          class="btn-secondary" style="border-color:rgba(239,68,68,0.4); color:#ef4444;">
-        <i data-lucide="heart-pulse"></i> Medical
+        <i data-lucide="heart-pulse" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Medical
       </button>
     </div>
   </div>
@@ -523,37 +523,37 @@
        ════════════════════════════════ -->
   <div class="profile-tabs">
     <button class="tab-btn active" onclick="showTab('personal', event)">
-      <i data-lucide="user"></i><span>Personal</span>
+      <i data-lucide="user" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i><span>Personal</span>
     </button>
     <button class="tab-btn" onclick="showTab('social', event)">
-      <i data-lucide="share-2"></i><span>Social</span>
+      <i data-lucide="share-2" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i><span>Social</span>
     </button>
     <button class="tab-btn" onclick="showTab('extras', event)">
-      <i data-lucide="map-pin"></i><span>Extras</span>
+      <i data-lucide="map-pin" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i><span>Extras</span>
     </button>
     <button class="tab-btn" onclick="showTab('links', event)">
-      <i data-lucide="link"></i><span>Links</span>
+      <i data-lucide="link" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i><span>Links</span>
     </button>
     <button class="tab-btn" onclick="showTab('portfolio', event)">
-      <i data-lucide="images"></i><span>Portfolio</span>
+      <i data-lucide="images" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i><span>Portfolio</span>
     </button>
     <button class="tab-btn" onclick="showTab('theme', event)">
-      <i data-lucide="palette"></i><span>Theme</span>
+      <i data-lucide="palette" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i><span>Theme</span>
     </button>
     <button class="tab-btn" onclick="showTab('medical', event)">
-      <i data-lucide="heart-pulse"></i><span>Medical</span>
+      <i data-lucide="heart-pulse" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i><span>Medical</span>
     </button>
     <button class="tab-btn" onclick="showTab('bot', event)">
-      <i data-lucide="bot"></i><span>AI Bot</span>
+      <i data-lucide="bot" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i><span>AI Bot</span>
     </button>
   </div>
 
   <!-- ── Personal ── -->
   <div id="tab-personal" class="tab-content active">
     <div class="tab-inner">
-      <h3 class="tab-title"><i data-lucide="user"></i> Personal Info</h3>
+      <h3 class="tab-title"><i data-lucide="user" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Personal Info</h3>
       <a href="{{ url_for('edit_personal') }}" class="btn-edit-full">
-        <i data-lucide="pencil"></i> Edit Personal Info
+        <i data-lucide="pencil" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Edit Personal Info
       </a>
       <div class="info-summary">
         <div class="info-row">
@@ -583,9 +583,9 @@
   <!-- ── Social ── -->
   <div id="tab-social" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i data-lucide="share-2"></i> Social Links</h3>
+      <h3 class="tab-title"><i data-lucide="share-2" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Social Links</h3>
       <a href="{{ url_for('edit_social') }}" class="btn-edit-full">
-        <i data-lucide="pencil"></i> Edit Social Links
+        <i data-lucide="pencil" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Edit Social Links
       </a>
       <div class="info-summary">
         {% for label, val in [('Instagram', user.instagram), ('Snapchat', user.snapchat),
@@ -607,9 +607,9 @@
   <!-- ── Extras ── -->
   <div id="tab-extras" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i data-lucide="map-pin"></i> Location & Payment</h3>
+      <h3 class="tab-title"><i data-lucide="map-pin" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Location & Payment</h3>
       <a href="{{ url_for('edit_extras') }}" class="btn-edit-full">
-        <i data-lucide="pencil"></i> Edit Extras
+        <i data-lucide="pencil" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Edit Extras
       </a>
       <div class="info-summary">
         <div class="info-row">
@@ -631,9 +631,9 @@
   <!-- ── Custom Links ── -->
   <div id="tab-links" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i data-lucide="link"></i> Custom Links</h3>
+      <h3 class="tab-title"><i data-lucide="link" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Custom Links</h3>
       <a href="{{ url_for('edit_links') }}" class="btn-edit-full">
-        <i data-lucide="pencil"></i> Manage Links
+        <i data-lucide="pencil" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Manage Links
       </a>
       {% if links_count > 0 %}
       <div class="info-summary">
@@ -653,9 +653,9 @@
   <!-- ── Portfolio ── -->
   <div id="tab-portfolio" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i data-lucide="images"></i> Portfolio Gallery</h3>
+      <h3 class="tab-title"><i data-lucide="images" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Portfolio Gallery</h3>
       <a href="{{ url_for('edit_portfolio') }}" class="btn-edit-full">
-        <i data-lucide="upload"></i> Manage Portfolio
+        <i data-lucide="upload" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Manage Portfolio
       </a>
       {% if portfolio_count > 0 %}
       <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.75rem;">{{ portfolio_count }} / 12 images</p>
@@ -673,9 +673,9 @@
   <!-- ── Theme ── -->
   <div id="tab-theme" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i data-lucide="palette"></i> Card Theme</h3>
+      <h3 class="tab-title"><i data-lucide="palette" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Card Theme</h3>
       <a href="{{ url_for('edit_theme') }}" class="btn-edit-full">
-        <i data-lucide="palette"></i> Change Theme
+        <i data-lucide="palette" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Change Theme
       </a>
       {% set theme_colors = {'dark':'#00e5a0','light':'#0070f3','purple':'#a855f7','ocean':'#38bdf8','sunset':'#f97316','pink':'#ec4899'} %}
       {% set ct = user.card_theme or 'dark' %}
@@ -695,9 +695,9 @@
   <!-- ── Medical ── -->
   <div id="tab-medical" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i data-lucide="heart-pulse"></i> Medical Info</h3>
+      <h3 class="tab-title"><i data-lucide="heart-pulse" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Medical Info</h3>
       <a href="{{ url_for('edit_medical') }}" class="btn-edit-full" style="background:rgba(239,68,68,0.85);">
-        <i data-lucide="pencil"></i> Edit Medical Info
+        <i data-lucide="pencil" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Edit Medical Info
       </a>
       <div class="info-summary">
         <div class="info-row">
@@ -739,7 +739,7 @@
   <!-- ── AI Bot ── -->
   <div id="tab-bot" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i data-lucide="bot"></i> AI Bot</h3>
+      <h3 class="tab-title"><i data-lucide="bot" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> AI Bot</h3>
 
       <!-- Subscription badge -->
       <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
@@ -783,10 +783,10 @@
       </div>
 
       <a href="{{ url_for('edit_bot') }}" class="btn-edit-full">
-        <i data-lucide="brain"></i> Train Bot
+        <i data-lucide="brain" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Train Bot
       </a>
       <a href="{{ url_for('chat') }}" class="btn-edit-full" style="background:var(--surface2); color:var(--text);">
-        <i data-lucide="message-circle"></i> Open AI Chat
+        <i data-lucide="message-circle" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Open AI Chat
       </a>
 
       {% if current_user.plan == 'free' %}
@@ -838,7 +838,7 @@
     navigator.clipboard.writeText(link).then(() => {
       const btn = document.getElementById(btnId);
       const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fa fa-check fa-sm"></i> Copied!';
+      btn.innerHTML = '<i data-lucide="check" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Copied!';
       btn.style.color = 'var(--accent)';
       btn.style.borderColor = 'var(--accent)';
       setTimeout(() => {
