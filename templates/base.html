@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons@9/icons/index.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=12">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=13">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     .chat-fab {
       position:fixed; bottom:2rem; right:2rem; width:58px; height:58px; border-radius:50%;
@@ -22,7 +23,7 @@
       position:fixed; bottom:6.5rem; right:2rem; width:370px; height:510px;
       background:var(--surface); border:1px solid var(--border2); border-radius:20px;
       display:none; flex-direction:column; z-index:998;
-      box-shadow:0 24px 64px rgba(0,0,0,0.55); overflow:hidden;
+      box-shadow:0 24px 64px rgba(0,0,0,0.15); overflow:hidden;
     }
     .chat-popup.open { display:flex; animation:fadeInUp 0.25s ease; }
     .chat-popup-header { padding:1rem 1.2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; background:var(--surface2); }
@@ -34,7 +35,7 @@
     .chat-input-row input { flex:1; background:var(--bg); border:1px solid var(--border2); color:var(--text); padding:0.6rem 0.85rem; border-radius:10px; font-size:0.85rem; font-family:'Inter',sans-serif; transition:border-color 0.2s; }
     .chat-input-row input:focus { outline:none; border-color:rgba(27,79,216,0.4); }
     .chat-input-row input::placeholder { color:var(--muted2); }
-    .chat-send-btn { background:var(--accent); color:#fff; border:none; padding:0.6rem 1rem; border-radius:10px; font-weight:600; cursor:pointer; font-size:0.85rem; transition:transform 0.15s; }
+    .chat-send-btn { background:var(--accent); color:#fff; border:none; padding:0.6rem 1rem; border-radius:10px; font-weight:600; cursor:pointer; font-size:0.85rem; transition:transform 0.15s; display:flex; align-items:center; }
     .chat-send-btn:hover { transform:scale(1.05); }
     @media (max-width:768px) {
       .chat-fab { bottom:5rem !important; right:1.2rem !important; }
@@ -49,13 +50,15 @@
     .profile-tabs { display:flex; gap:.25rem; overflow-x:auto; padding-bottom:.5rem; margin-bottom:1.5rem; scrollbar-width:none; -ms-overflow-style:none; }
     .profile-tabs::-webkit-scrollbar { display:none; }
     .tab-btn { display:flex; flex-direction:column; align-items:center; gap:.3rem; padding:.6rem 1rem; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; font-size:.75rem; font-family:'Inter',sans-serif; white-space:nowrap; transition:all .2s; flex-shrink:0; }
-    .tab-btn i { font-size:1rem; }
+    .tab-btn [data-lucide] { width:18px; height:18px; stroke:currentColor; }
     .tab-btn:hover { background:var(--surface2); color:var(--text); }
     .tab-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .tab-btn.active [data-lucide] { stroke:#fff; }
     .tab-content { display:none; }
     .tab-content.active { display:block; }
     .tab-inner { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem; }
     .tab-title { font-family:'Inter',sans-serif; font-weight:700; font-size:1.1rem; margin-bottom:1.25rem; display:flex; align-items:center; gap:.5rem; color:var(--text); }
+    .tab-title [data-lucide] { stroke:var(--accent); }
     .btn-edit-full { display:flex; align-items:center; gap:.5rem; padding:.75rem 1.25rem; background:var(--accent); color:#fff; border-radius:var(--radius); text-decoration:none; font-weight:600; font-size:.9rem; margin-bottom:1rem; transition:background .2s; }
     .btn-edit-full:hover { background:#1640B0; color:#fff; }
     .info-summary { display:flex; flex-direction:column; gap:0; }
@@ -66,7 +69,7 @@
     @media (max-width:768px) {
       .tab-btn span { display:block !important; font-size:.6rem !important; }
       .tab-btn { padding:.5rem .6rem !important; gap:.2rem !important; }
-      .tab-btn i { font-size:.95rem !important; }
+      .tab-btn [data-lucide] { width:16px !important; height:16px !important; }
       .info-val { max-width:55% !important; }
     }
   </style>
@@ -91,27 +94,27 @@
 
     <nav class="sidebar-nav">
       {% if current_user.is_admin %}
-        <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link {{ 'active' if request.path == '/admin' }}" title="Admin"><i class="fa fa-crown"></i><span>Admin</span></a>
-        <a href="{{ url_for('admin_cards') }}" class="sidebar-link {{ 'active' if request.path.startswith('/admin/cards') }}" title="NFC Cards"><i class="fa fa-credit-card"></i><span>NFC Cards</span></a>
-        <a href="{{ url_for('store.store_dashboard') }}" class="sidebar-link {{ 'active' if request.path.startswith('/store/dashboard') }}" title="Store Admin"><i class="fa fa-store"></i><span>Store Admin</span></a>
+        <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link {{ 'active' if request.path == '/admin' }}" title="Admin"><i data-lucide="crown"></i><span>Admin</span></a>
+        <a href="{{ url_for('admin_cards') }}" class="sidebar-link {{ 'active' if request.path.startswith('/admin/cards') }}" title="NFC Cards"><i data-lucide="credit-card"></i><span>NFC Cards</span></a>
+        <a href="{{ url_for('store.store_dashboard') }}" class="sidebar-link {{ 'active' if request.path.startswith('/store/dashboard') }}" title="Store Admin"><i data-lucide="store"></i><span>Store Admin</span></a>
         <div class="sidebar-divider"></div>
       {% endif %}
-      <a href="{{ url_for('dashboard') }}" class="sidebar-link {{ 'active' if request.path == '/dashboard' }}" title="Dashboard"><i class="fa fa-th-large"></i><span>Dashboard</span></a>
-      <a href="{{ url_for('edit_personal') }}" class="sidebar-link {{ 'active' if request.path == '/edit/personal' }}" title="Profile"><i class="fa fa-user"></i><span>Profile</span></a>
-      <a href="{{ url_for('edit_social') }}" class="sidebar-link {{ 'active' if request.path == '/edit/social' }}" title="Social Links"><i class="fa fa-share-nodes"></i><span>Social Links</span></a>
-      <a href="{{ url_for('edit_medical') }}" class="sidebar-link {{ 'active' if request.path == '/edit/medical' }}" title="Medical"><i class="fa fa-heartbeat"></i><span>Medical</span></a>
-      <a href="{{ url_for('edit_bot') }}" class="sidebar-link {{ 'active' if request.path == '/edit/bot' }}" title="Train Bot"><i class="fa fa-robot"></i><span>Train Bot</span></a>
+      <a href="{{ url_for('dashboard') }}" class="sidebar-link {{ 'active' if request.path == '/dashboard' }}" title="Dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>
+      <a href="{{ url_for('edit_personal') }}" class="sidebar-link {{ 'active' if request.path == '/edit/personal' }}" title="Profile"><i data-lucide="user"></i><span>Profile</span></a>
+      <a href="{{ url_for('edit_social') }}" class="sidebar-link {{ 'active' if request.path == '/edit/social' }}" title="Social Links"><i data-lucide="share-2"></i><span>Social Links</span></a>
+      <a href="{{ url_for('edit_medical') }}" class="sidebar-link {{ 'active' if request.path == '/edit/medical' }}" title="Medical"><i data-lucide="heart-pulse"></i><span>Medical</span></a>
+      <a href="{{ url_for('edit_bot') }}" class="sidebar-link {{ 'active' if request.path == '/edit/bot' }}" title="Train Bot"><i data-lucide="bot"></i><span>Train Bot</span></a>
       <div class="sidebar-divider"></div>
-      <a href="{{ url_for('store.index') }}" class="sidebar-link {{ 'active' if request.path.startswith('/store') and not request.path.startswith('/store/cart') and not request.path.startswith('/store/dashboard') }}" title="Store"><i class="fa fa-shopping-bag"></i><span>Store</span></a>
+      <a href="{{ url_for('store.index') }}" class="sidebar-link {{ 'active' if request.path.startswith('/store') and not request.path.startswith('/store/cart') and not request.path.startswith('/store/dashboard') }}" title="Store"><i data-lucide="shopping-bag"></i><span>Store</span></a>
       <a href="{{ url_for('store.cart') }}" class="sidebar-link {{ 'active' if request.path.startswith('/store/cart') }}" title="Cart">
-        <i class="fa fa-shopping-cart"></i>
+        <i data-lucide="shopping-cart"></i>
         <span>Cart{% if session.get('cart') and session['cart'].values()|sum > 0 %}&nbsp;<span class="cart-sidebar-badge">{{ session['cart'].values()|sum }}</span>{% endif %}</span>
       </a>
       <a href="{{ url_for('store.my_orders') }}" class="sidebar-link {{ 'active' if request.path == '/store/my-orders' }}" title="My Orders">
-        <i class="fa fa-box"></i><span>My Orders</span>
+        <i data-lucide="package"></i><span>My Orders</span>
       </a>
       <a href="{{ url_for('logout') }}" class="sidebar-link sidebar-link-logout" title="Logout">
-        <i class="fa fa-sign-out-alt"></i><span>Logout</span>
+        <i data-lucide="log-out"></i><span>Logout</span>
       </a>
     </nav>
 
@@ -121,7 +124,7 @@
         {% else %}<div class="sidebar-avatar-text">{{ current_user.name[0]|upper }}</div>{% endif %}
         <div style="min-width:0;" class="sidebar-user-info">
           <div class="sidebar-username">{{ current_user.name }}</div>
-          <a href="{{ url_for('logout') }}" class="sidebar-logout"><i class="fa fa-sign-out-alt fa-xs"></i> Logout</a>
+          <a href="{{ url_for('logout') }}" class="sidebar-logout"><i data-lucide="log-out"></i> Logout</a>
         </div>
       </div>
     </div>
@@ -139,8 +142,8 @@
         <span style="font-family:'Inter',sans-serif;font-weight:800;font-size:1.15rem;color:var(--text);">MicroNFC</span>
       </a>
       <div style="display:flex;gap:0.75rem;align-items:center;">
-        <a href="{{ url_for('store.index') }}" class="btn-secondary" style="padding:0.45rem 1rem;font-size:0.85rem;"><i class="fa fa-shopping-bag fa-sm"></i> Store</a>
-        <a href="{{ url_for('login') }}" class="btn-secondary" style="padding:0.45rem 1rem;font-size:0.85rem;"><i class="fa fa-sign-in-alt fa-sm"></i> Login</a>
+        <a href="{{ url_for('store.index') }}" class="btn-secondary" style="padding:0.45rem 1rem;font-size:0.85rem;"><i data-lucide="shopping-bag"></i> Store</a>
+        <a href="{{ url_for('login') }}" class="btn-secondary" style="padding:0.45rem 1rem;font-size:0.85rem;"><i data-lucide="log-in"></i> Login</a>
         <a href="{{ url_for('register') }}" class="btn-primary" style="padding:0.45rem 1rem;font-size:0.85rem;">Get Started</a>
       </div>
     </header>
@@ -161,10 +164,10 @@
         <div style="padding:0.75rem 1.25rem 0;">
           {% for category, message in messages %}
             <div class="alert alert-{{ category }}">
-              {% if category == 'success' %}<i class="fa fa-check-circle"></i>
-              {% elif category == 'danger' %}<i class="fa fa-exclamation-circle"></i>
-              {% elif category == 'warning' %}<i class="fa fa-exclamation-triangle"></i>
-              {% else %}<i class="fa fa-info-circle"></i>{% endif %}
+              {% if category == 'success' %}<i data-lucide="check-circle-2"></i>
+              {% elif category == 'danger' %}<i data-lucide="circle-alert"></i>
+              {% elif category == 'warning' %}<i data-lucide="alert-triangle"></i>
+              {% else %}<i data-lucide="info"></i>{% endif %}
               <span>{{ message }}</span>
               <button class="alert-close" onclick="this.parentElement.remove()">×</button>
             </div>
@@ -180,21 +183,21 @@
 
 {# ── Chat FAB ── #}
 {% if current_user.is_authenticated and request.endpoint not in ['public_profile', 'medical_profile', 'preview_profile', 'preview_medical'] %}
-<button class="chat-fab" onclick="toggleChat()" title="AI Assistant"><i class="fa fa-robot"></i></button>
+<button class="chat-fab" onclick="toggleChat()" title="AI Assistant"><i data-lucide="bot"></i></button>
 <div class="chat-popup" id="chat-popup">
   <div class="chat-popup-header">
-    <i class="fa fa-robot" style="color:var(--accent);"></i>
+    <i data-lucide="bot" style="stroke:var(--accent);"></i>
     <h4>MicroNFC Support</h4>
     <span class="chat-status">Online</span>
-    <button onclick="clearChat()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;margin-left:4px;"><i class="fa fa-trash"></i></button>
-    <button onclick="toggleChat()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;"><i class="fa fa-times"></i></button>
+    <button onclick="clearChat()" style="background:none;border:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;margin-left:4px;"><i data-lucide="trash-2" style="width:16px;height:16px;stroke:currentColor;"></i></button>
+    <button onclick="toggleChat()" style="background:none;border:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;"><i data-lucide="x" style="width:18px;height:18px;stroke:currentColor;"></i></button>
   </div>
   <div class="chat-messages" id="chat-box">
-    <div class="msg bot"><div class="msg-bubble">مرحباً! كيف يمكنني مساعدتك؟ 👋</div></div>
+    <div class="msg bot"><div class="msg-bubble">مرحباً! كيف يمكنني مساعدتك؟</div></div>
   </div>
   <div class="chat-input-row">
     <input type="text" id="user-input" placeholder="اكتب سؤالك هنا...">
-    <button class="chat-send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+    <button class="chat-send-btn" onclick="sendMessage()"><i data-lucide="send"></i></button>
   </div>
 </div>
 
@@ -218,7 +221,7 @@
   function toggleChat(){ document.getElementById('chat-popup').classList.toggle('open'); if(document.getElementById('chat-popup').classList.contains('open')) input.focus(); }
   input.addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage();});
   function addMessage(text,sender){ const d=document.createElement('div'); d.className=`msg ${sender}`; d.innerHTML=`<div class="msg-bubble">${text}</div>`; chatBox.appendChild(d); chatBox.scrollTop=chatBox.scrollHeight; return d; }
-  async function clearChat(){ supportHistory=[]; chatBox.innerHTML=''; addMessage('مرحباً! كيف يمكنني مساعدتك؟ 👋','bot'); }
+  async function clearChat(){ supportHistory=[]; chatBox.innerHTML=''; addMessage('مرحباً! كيف يمكنني مساعدتك؟','bot'); }
   async function sendMessage(){
     const msg=input.value.trim(); if(!msg) return;
     addMessage(msg,'user'); input.value='';
@@ -235,5 +238,6 @@
 {% endif %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>lucide.createIcons();</script>
 </body>
 </html>

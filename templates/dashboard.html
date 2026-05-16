@@ -395,26 +395,28 @@
   <div style="background:{% if smart_card %}rgba(27,79,216,0.05){% else %}rgba(245,158,11,0.05){% endif %}; border:1px solid {% if smart_card %}rgba(27,79,216,0.2){% else %}rgba(245,158,11,0.2){% endif %}; border-radius:16px; padding:1.1rem 1.25rem; margin-bottom:0.75rem;">
     {% if smart_card %}
     <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-      <i class="fa fa-credit-card" style="color:var(--accent); font-size:1.2rem;"></i>
+      <i data-lucide="credit-card" style="width:22px;height:22px;stroke:var(--accent);flex-shrink:0;"></i>
       <div style="flex:1;">
-        <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
-          🪪 Smart Card Active ✅
+        <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem; display:flex; align-items:center; gap:6px;">
+          Smart Card Active <i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;"></i>
         </p>
         <p style="font-size:0.78rem; color:var(--muted); word-break:break-all;">
           Code: <code style="color:var(--accent);">{{ smart_card[0].code }}</code>
           &nbsp;·&nbsp;
           <code style="color:var(--muted); font-size:0.75rem;">micronfc.info/c/{{ smart_card[0].code }}</code>
           <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ smart_card[0].code }}')"
-            style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">📋</button>
+            style="background:none; border:none; color:var(--muted); cursor:pointer; display:inline-flex; align-items:center;">
+            <i data-lucide="clipboard" style="width:14px;height:14px;stroke:currentColor;"></i>
+          </button>
         </p>
       </div>
     </div>
     {% else %}
     <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem; flex-wrap:wrap;">
-      <i class="fa fa-credit-card" style="color:#ffc107; font-size:1.2rem;"></i>
+      <i data-lucide="credit-card" style="width:22px;height:22px;stroke:#f59e0b;flex-shrink:0;"></i>
       <div>
         <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
-          Activate Your 🪪 Smart Card
+          Activate Your Smart Card
         </p>
         <p style="font-size:0.78rem; color:var(--muted);">Enter the code on the back of your Smart Card</p>
       </div>
@@ -422,12 +424,12 @@
     <form method="POST" action="{{ url_for('activate_card') }}"
           style="display:flex; gap:0.6rem; flex-wrap:wrap;">
       <input type="text" name="code" placeholder="e.g. A1B2C3D4"
-        style="flex:1; min-width:160px; background:var(--surface2); border:1px solid rgba(255,193,7,0.3);
+        style="flex:1; min-width:160px; background:var(--surface2); border:1px solid rgba(245,158,11,0.3);
                color:var(--text); padding:0.6rem 0.85rem; border-radius:8px; font-size:0.9rem;
                text-transform:uppercase; letter-spacing:2px; font-family:monospace;"
         required maxlength="8">
-      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem; background:#ffc107; color:#000;">
-        <i class="fa fa-bolt fa-sm"></i> Activate
+      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem; background:#f59e0b; color:#fff;">
+        <i data-lucide="zap" style="width:15px;height:15px;stroke:#fff;"></i> Activate
       </button>
     </form>
     {% endif %}
@@ -437,26 +439,28 @@
   <div style="background:{% if medical_card %}rgba(220,53,69,0.05){% else %}rgba(255,193,7,0.05){% endif %}; border:1px solid {% if medical_card %}rgba(220,53,69,0.2){% else %}rgba(255,193,7,0.2){% endif %}; border-radius:16px; padding:1.1rem 1.25rem; margin-bottom:1.25rem;">
     {% if medical_card %}
     <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-      <i class="fa fa-heart-pulse" style="color:#ff6b7a; font-size:1.2rem;"></i>
+      <i data-lucide="watch" style="width:22px;height:22px;stroke:#ef4444;flex-shrink:0;"></i>
       <div style="flex:1;">
-        <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
-          ⌚ Medical Bracelet Active ✅
+        <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem; display:flex; align-items:center; gap:6px;">
+          Medical Bracelet Active <i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;"></i>
         </p>
         <p style="font-size:0.78rem; color:var(--muted); word-break:break-all;">
-          Code: <code style="color:#ff6b7a;">{{ medical_card[0].code }}</code>
+          Code: <code style="color:#ef4444;">{{ medical_card[0].code }}</code>
           &nbsp;·&nbsp;
           <code style="color:var(--muted); font-size:0.75rem;">micronfc.info/c/{{ medical_card[0].code }}</code>
           <button onclick="navigator.clipboard.writeText('{{ request.host_url }}c/{{ medical_card[0].code }}')"
-            style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">📋</button>
+            style="background:none; border:none; color:var(--muted); cursor:pointer; display:inline-flex; align-items:center;">
+            <i data-lucide="clipboard" style="width:14px;height:14px;stroke:currentColor;"></i>
+          </button>
         </p>
       </div>
     </div>
     {% else %}
     <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem; flex-wrap:wrap;">
-      <i class="fa fa-heart-pulse" style="color:#ffc107; font-size:1.2rem;"></i>
+      <i data-lucide="watch" style="width:22px;height:22px;stroke:#f59e0b;flex-shrink:0;"></i>
       <div>
         <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
-          Activate Your ⌚ Medical Bracelet
+          Activate Your Medical Bracelet
         </p>
         <p style="font-size:0.78rem; color:var(--muted);">Enter the code on the back of your Medical Bracelet</p>
       </div>
@@ -464,12 +468,12 @@
     <form method="POST" action="{{ url_for('activate_card') }}"
           style="display:flex; gap:0.6rem; flex-wrap:wrap;">
       <input type="text" name="code" placeholder="e.g. B3C4D5E6"
-        style="flex:1; min-width:160px; background:var(--surface2); border:1px solid rgba(255,193,7,0.3);
+        style="flex:1; min-width:160px; background:var(--surface2); border:1px solid rgba(245,158,11,0.3);
                color:var(--text); padding:0.6rem 0.85rem; border-radius:8px; font-size:0.9rem;
                text-transform:uppercase; letter-spacing:2px; font-family:monospace;"
         required maxlength="8">
-      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem; background:#ff6b7a; color:#000;">
-        <i class="fa fa-bolt fa-sm"></i> Activate
+      <button type="submit" class="btn-primary" style="padding:0.6rem 1.5rem; background:#ef4444; color:#fff;">
+        <i data-lucide="zap" style="width:15px;height:15px;stroke:#fff;"></i> Activate
       </button>
     </form>
     {% endif %}
@@ -479,23 +483,23 @@
   <div class="dash-header">
     <div>
       <h1 style="font-family:'Inter',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:0.2rem;">
-        Welcome, {{ user.name }} 👋
+        Welcome, {{ user.name }}
       </h1>
       <p style="color:var(--muted); font-size:0.875rem;">Manage your smart profile</p>
     </div>
     <div class="dash-header-actions">
       <a href="{{ url_for('edit_bot') }}" class="btn-secondary">
-        <i class="fa fa-brain fa-sm"></i> Train Bot
+        <i data-lucide="brain"></i> Train Bot
       </a>
       <a href="{{ url_for('chat') }}" class="btn-secondary">
-        <i class="fa fa-robot fa-sm"></i> AI Chat
+        <i data-lucide="bot"></i> AI Chat
       </a>
       <button onclick="document.getElementById('preview-modal').classList.add('open')" class="btn-primary">
-        <i class="fa fa-eye fa-sm"></i> Preview Card
+        <i data-lucide="eye"></i> Preview Card
       </button>
       <button onclick="document.getElementById('preview-medical-modal').classList.add('open')"
-         class="btn-secondary" style="border-color:rgba(220,53,69,0.4); color:#ff6b7a;">
-        <i class="fa fa-heart-pulse fa-sm"></i> Medical
+         class="btn-secondary" style="border-color:rgba(239,68,68,0.4); color:#ef4444;">
+        <i data-lucide="heart-pulse"></i> Medical
       </button>
     </div>
   </div>
@@ -505,7 +509,7 @@
   <div class="completion-card">
     <div style="display:flex; align-items:center; justify-content:space-between;">
       <div style="display:flex; align-items:center; gap:8px;">
-        <i class="fa fa-chart-line" style="color:var(--accent); font-size:0.9rem;"></i>
+        <i data-lucide="trending-up" style="width:18px;height:18px;stroke:var(--accent);"></i>
         <span style="font-family:'Inter',sans-serif; font-weight:600; font-size:0.9rem;">Profile Completion</span>
       </div>
       <span id="pct-label" style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:800; color:var(--accent);"></span>
@@ -519,37 +523,37 @@
        ════════════════════════════════ -->
   <div class="profile-tabs">
     <button class="tab-btn active" onclick="showTab('personal', event)">
-      <i class="fa fa-user"></i><span>Personal</span>
+      <i data-lucide="user"></i><span>Personal</span>
     </button>
     <button class="tab-btn" onclick="showTab('social', event)">
-      <i class="fa fa-share-alt"></i><span>Social</span>
+      <i data-lucide="share-2"></i><span>Social</span>
     </button>
     <button class="tab-btn" onclick="showTab('extras', event)">
-      <i class="fa fa-location-dot"></i><span>Extras</span>
+      <i data-lucide="map-pin"></i><span>Extras</span>
     </button>
     <button class="tab-btn" onclick="showTab('links', event)">
-      <i class="fa fa-link"></i><span>Links</span>
+      <i data-lucide="link"></i><span>Links</span>
     </button>
     <button class="tab-btn" onclick="showTab('portfolio', event)">
-      <i class="fa fa-images"></i><span>Portfolio</span>
+      <i data-lucide="images"></i><span>Portfolio</span>
     </button>
     <button class="tab-btn" onclick="showTab('theme', event)">
-      <i class="fa fa-palette"></i><span>Theme</span>
+      <i data-lucide="palette"></i><span>Theme</span>
     </button>
     <button class="tab-btn" onclick="showTab('medical', event)">
-      <i class="fa fa-heartbeat"></i><span>Medical</span>
+      <i data-lucide="heart-pulse"></i><span>Medical</span>
     </button>
     <button class="tab-btn" onclick="showTab('bot', event)">
-      <i class="fa fa-robot"></i><span>AI Bot</span>
+      <i data-lucide="bot"></i><span>AI Bot</span>
     </button>
   </div>
 
   <!-- ── Personal ── -->
   <div id="tab-personal" class="tab-content active">
     <div class="tab-inner">
-      <h3 class="tab-title"><i class="fa fa-user"></i> Personal Info</h3>
+      <h3 class="tab-title"><i data-lucide="user"></i> Personal Info</h3>
       <a href="{{ url_for('edit_personal') }}" class="btn-edit-full">
-        <i class="fa fa-pencil"></i> Edit Personal Info
+        <i data-lucide="pencil"></i> Edit Personal Info
       </a>
       <div class="info-summary">
         <div class="info-row">
@@ -570,7 +574,7 @@
         </div>
         <div class="info-row">
           <span class="info-label">Profile Photo</span>
-          <span class="info-val">{% if user.profile_photo %}<span style="color:var(--accent);">✓ Uploaded</span>{% else %}—{% endif %}</span>
+          <span class="info-val">{% if user.profile_photo %}<span style="color:var(--accent); display:inline-flex; align-items:center; gap:4px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--accent);"></i> Uploaded</span>{% else %}—{% endif %}</span>
         </div>
       </div>
     </div>
@@ -579,9 +583,9 @@
   <!-- ── Social ── -->
   <div id="tab-social" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i class="fa fa-share-alt"></i> Social Links</h3>
+      <h3 class="tab-title"><i data-lucide="share-2"></i> Social Links</h3>
       <a href="{{ url_for('edit_social') }}" class="btn-edit-full">
-        <i class="fa fa-pencil"></i> Edit Social Links
+        <i data-lucide="pencil"></i> Edit Social Links
       </a>
       <div class="info-summary">
         {% for label, val in [('Instagram', user.instagram), ('Snapchat', user.snapchat),
@@ -592,7 +596,7 @@
         <div class="info-row">
           <span class="info-label">{{ label }}</span>
           <span class="info-val">
-            {% if val %}<span style="color:var(--accent);">✓ Set</span>{% else %}—{% endif %}
+            {% if val %}<span style="color:var(--accent); display:inline-flex; align-items:center; gap:4px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--accent);"></i> Set</span>{% else %}—{% endif %}
           </span>
         </div>
         {% endfor %}
@@ -603,20 +607,20 @@
   <!-- ── Extras ── -->
   <div id="tab-extras" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i class="fa fa-location-dot"></i> Location & Payment</h3>
+      <h3 class="tab-title"><i data-lucide="map-pin"></i> Location & Payment</h3>
       <a href="{{ url_for('edit_extras') }}" class="btn-edit-full">
-        <i class="fa fa-pencil"></i> Edit Extras
+        <i data-lucide="pencil"></i> Edit Extras
       </a>
       <div class="info-summary">
         <div class="info-row">
           <span class="info-label">Google Maps</span>
-          <span class="info-val">{% if user.location_url %}<span style="color:var(--accent);">✓ Linked</span>{% else %}—{% endif %}</span>
+          <span class="info-val">{% if user.location_url %}<span style="color:var(--accent); display:inline-flex; align-items:center; gap:4px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--accent);"></i> Linked</span>{% else %}—{% endif %}</span>
         </div>
         <div class="info-row">
           <span class="info-label">InstaPay</span>
           <span class="info-val">
             {% if user.instapay %}
-              <a href="{{ user.instapay }}" target="_blank" style="color:var(--accent); text-decoration:none;">✓ Set</a>
+              <a href="{{ user.instapay }}" target="_blank" style="color:var(--accent); text-decoration:none; display:inline-flex; align-items:center; gap:4px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--accent);"></i> Set</a>
             {% else %}—{% endif %}
           </span>
         </div>
@@ -627,15 +631,15 @@
   <!-- ── Custom Links ── -->
   <div id="tab-links" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i class="fa fa-link"></i> Custom Links</h3>
+      <h3 class="tab-title"><i data-lucide="link"></i> Custom Links</h3>
       <a href="{{ url_for('edit_links') }}" class="btn-edit-full">
-        <i class="fa fa-pencil"></i> Manage Links
+        <i data-lucide="pencil"></i> Manage Links
       </a>
       {% if links_count > 0 %}
       <div class="info-summary">
         {% for lnk in (user.extra_links | from_json) %}
         <div class="info-row">
-          <span class="info-label"><i class="fa fa-link fa-xs" style="color:var(--accent);"></i> {{ lnk.title }}</span>
+          <span class="info-label" style="display:flex; align-items:center; gap:5px;"><i data-lucide="link" style="width:13px;height:13px;stroke:var(--accent);"></i> {{ lnk.title }}</span>
           <span class="info-val" style="font-size:0.78rem; color:var(--muted);">{{ lnk.url[:30] }}{% if lnk.url|length > 30 %}…{% endif %}</span>
         </div>
         {% endfor %}
@@ -649,9 +653,9 @@
   <!-- ── Portfolio ── -->
   <div id="tab-portfolio" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i class="fa fa-images"></i> Portfolio Gallery</h3>
+      <h3 class="tab-title"><i data-lucide="images"></i> Portfolio Gallery</h3>
       <a href="{{ url_for('edit_portfolio') }}" class="btn-edit-full">
-        <i class="fa fa-upload"></i> Manage Portfolio
+        <i data-lucide="upload"></i> Manage Portfolio
       </a>
       {% if portfolio_count > 0 %}
       <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.75rem;">{{ portfolio_count }} / 12 images</p>
@@ -669,9 +673,9 @@
   <!-- ── Theme ── -->
   <div id="tab-theme" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i class="fa fa-palette"></i> Card Theme</h3>
+      <h3 class="tab-title"><i data-lucide="palette"></i> Card Theme</h3>
       <a href="{{ url_for('edit_theme') }}" class="btn-edit-full">
-        <i class="fa fa-palette"></i> Change Theme
+        <i data-lucide="palette"></i> Change Theme
       </a>
       {% set theme_colors = {'dark':'#00e5a0','light':'#0070f3','purple':'#a855f7','ocean':'#38bdf8','sunset':'#f97316','pink':'#ec4899'} %}
       {% set ct = user.card_theme or 'dark' %}
@@ -691,9 +695,9 @@
   <!-- ── Medical ── -->
   <div id="tab-medical" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i class="fa fa-heartbeat"></i> Medical Info</h3>
-      <a href="{{ url_for('edit_medical') }}" class="btn-edit-full" style="background:rgba(220,53,69,0.8);">
-        <i class="fa fa-pencil"></i> Edit Medical Info
+      <h3 class="tab-title"><i data-lucide="heart-pulse"></i> Medical Info</h3>
+      <a href="{{ url_for('edit_medical') }}" class="btn-edit-full" style="background:rgba(239,68,68,0.85);">
+        <i data-lucide="pencil"></i> Edit Medical Info
       </a>
       <div class="info-summary">
         <div class="info-row">
@@ -735,7 +739,7 @@
   <!-- ── AI Bot ── -->
   <div id="tab-bot" class="tab-content">
     <div class="tab-inner">
-      <h3 class="tab-title"><i class="fa fa-robot"></i> AI Bot</h3>
+      <h3 class="tab-title"><i data-lucide="bot"></i> AI Bot</h3>
 
       <!-- Subscription badge -->
       <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
@@ -762,7 +766,7 @@
                       transition:width 0.3s;"></div>
         </div>
         {% if percent >= 90 %}
-        <p style="color:#f87171; font-size:0.75rem; margin-top:0.3rem;">⚠️ اقتربت من الحد الشهري</p>
+        <p style="color:#f87171; font-size:0.75rem; margin-top:0.3rem; display:flex; align-items:center; gap:4px;"><i data-lucide="alert-triangle" style="width:14px;height:14px;stroke:#f87171;"></i> اقتربت من الحد الشهري</p>
         {% endif %}
       </div>
 
@@ -779,22 +783,22 @@
       </div>
 
       <a href="{{ url_for('edit_bot') }}" class="btn-edit-full">
-        <i class="fa fa-brain"></i> Train Bot
+        <i data-lucide="brain"></i> Train Bot
       </a>
       <a href="{{ url_for('chat') }}" class="btn-edit-full" style="background:var(--surface2); color:var(--text);">
-        <i class="fa fa-comments"></i> Open AI Chat
+        <i data-lucide="message-circle"></i> Open AI Chat
       </a>
 
       {% if current_user.plan == 'free' %}
       <a href="/upgrade" style="display:block; text-align:center; margin-top:0.5rem;
          background:linear-gradient(135deg,var(--accent),#7c3aed);
          color:#fff; padding:0.75rem; border-radius:var(--radius);
-         text-decoration:none; font-weight:600; font-size:0.9rem;">
-        ⚡ Upgrade إلى Pro — 100 EGP/شهر
-        <span style="display:block; font-size:0.75rem; opacity:0.8; margin-top:0.2rem;">1000 رسالة شهرياً</span>
+         text-decoration:none; font-weight:600; font-size:0.9rem; display:flex; align-items:center; justify-content:center; gap:6px;">
+        <i data-lucide="zap" style="width:18px;height:18px;stroke:#fff;"></i> Upgrade إلى Pro — 100 EGP/شهر
+        <span style="display:block; font-size:0.75rem; opacity:0.8; margin-top:0.2rem; width:100%; text-align:center;">1000 رسالة شهرياً</span>
       </a>
       {% else %}
-      <div style="text-align:center; color:#7c3aed; font-size:0.85rem; font-weight:600; margin-top:0.5rem;">✨ أنت على خطة Pro</div>
+      <div style="text-align:center; color:#7c3aed; font-size:0.85rem; font-weight:600; margin-top:0.5rem; display:flex; align-items:center; justify-content:center; gap:5px;"><i data-lucide="sparkles" style="width:16px;height:16px;stroke:#7c3aed;"></i> أنت على خطة Pro</div>
       {% endif %}
     </div>
   </div>
@@ -825,7 +829,7 @@
   document.getElementById('pct-bar').style.width = pct + '%';
   document.getElementById('pct-label').textContent = pct + '%';
   const msg = document.getElementById('pct-msg');
-  if (pct === 100) { msg.textContent = '✅ Profile complete!'; msg.style.color = 'var(--accent)'; }
+  if (pct === 100) { msg.innerHTML = '<svg data-lucide="check-circle-2" style="width:14px;height:14px;stroke:var(--accent);display:inline;vertical-align:middle;margin-right:4px;"></svg> Profile complete!'; msg.style.color = 'var(--accent)'; lucide.createIcons(); }
   else { msg.textContent = 'Fill in more info to get the most out of MicroNFC'; }
 
   // Copy link

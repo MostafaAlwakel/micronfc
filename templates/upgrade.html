@@ -1,9 +1,11 @@
-﻿{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% block title %}Upgrade to Pro — MicroNFC{% endblock %}
 {% block content %}
 <div class="container" style="max-width:500px; padding:3rem 1rem;">
   <div style="text-align:center; margin-bottom:2rem;">
-    <div style="font-size:3rem; margin-bottom:0.5rem;">⚡</div>
+    <div style="margin-bottom:0.75rem;">
+      <i data-lucide="zap" style="width:48px;height:48px;stroke:#1B4FD8;"></i>
+    </div>
     <h1 style="font-family:'Inter',sans-serif; font-size:1.8rem; font-weight:800;">
       Upgrade to Pro
     </h1>
@@ -18,17 +20,18 @@
       <div style="color:var(--muted); font-size:0.85rem;">شهرياً</div>
     </div>
     <ul style="list-style:none; padding:0; margin-bottom:1.5rem;">
-      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border);">✅ 1000 رسالة/شهر للبوت</li>
-      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border);">✅ إحصائيات تفصيلية</li>
-      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border);">✅ أولوية في الدعم</li>
-      <li style="padding:0.5rem 0;">✅ تجديد تلقائي كل شهر</li>
+      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;flex-shrink:0;"></i> 1000 رسالة/شهر للبوت</li>
+      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;flex-shrink:0;"></i> إحصائيات تفصيلية</li>
+      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;flex-shrink:0;"></i> أولوية في الدعم</li>
+      <li style="padding:0.5rem 0; display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;flex-shrink:0;"></i> تجديد تلقائي كل شهر</li>
     </ul>
     <form action="/upgrade" method="POST">
       <button type="submit"
               style="width:100%; padding:1rem; border:none; border-radius:var(--radius);
                      background:linear-gradient(135deg,var(--accent),#7c3aed);
-                     color:#fff; font-size:1rem; font-weight:700; cursor:pointer;">
-        ⚡ اشترك الآن - 100 EGP/شهر
+                     color:#fff; font-size:1rem; font-weight:700; cursor:pointer;
+                     display:flex; align-items:center; justify-content:center; gap:8px;">
+        <i data-lucide="zap" style="width:20px;height:20px;stroke:#fff;"></i> اشترك الآن - 100 EGP/شهر
       </button>
     </form>
   </div>
@@ -36,9 +39,9 @@
   <p style="text-align:center; color:var(--muted); font-size:0.8rem;">
     يمكن إلغاء الاشتراك في أي وقت
   </p>
-  <a href="/dashboard" style="display:block; text-align:center;
+  <a href="/dashboard" style="display:flex; align-items:center; justify-content:center; gap:5px;
      color:var(--muted); font-size:0.85rem; margin-top:1rem; text-decoration:none;">
-    ← العودة للداشبورد
+    <i data-lucide="arrow-left" style="width:16px;height:16px;stroke:currentColor;"></i> العودة للداشبورد
   </a>
 </div>
 {% endblock %}

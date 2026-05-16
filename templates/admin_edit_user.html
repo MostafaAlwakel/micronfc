@@ -175,7 +175,7 @@
   <div class="admin-edit-header page-header-row" style="margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
     <div>
       <h1 style="font-family:'Inter',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:0.2rem;">
-        <i class="fa fa-pencil" style="color:var(--accent);"></i> Edit User
+        <i data-lucide="pencil" style="color:var(--accent);"></i> Edit User
       </h1>
       <p style="color:var(--muted); font-size:0.85rem;">
         Editing: <strong style="color:var(--text);">{{ user.name }}</strong>
@@ -200,7 +200,7 @@
     <!-- ── 1. Personal Info ── -->
     <div class="form-section">
       <div class="form-section-header">
-        <div class="section-icon si-green"><i class="fa fa-user"></i></div>
+        <div class="section-icon si-green"><i data-lucide="user"></i></div>
         <h3>Personal Info</h3>
       </div>
       <div class="form-grid-2">
@@ -287,7 +287,7 @@
     <!-- ── 4. Location & Payment ── -->
     <div class="form-section">
       <div class="form-section-header">
-        <div class="section-icon si-orange"><i class="fa fa-location-dot"></i></div>
+        <div class="section-icon si-orange"><i data-lucide="map-pin"></i></div>
         <h3>Location & Payment</h3>
       </div>
       <div class="form-grid-2">
@@ -313,7 +313,7 @@
     <!-- ── 5. Card Theme ── -->
     <div class="form-section">
       <div class="form-section-header">
-        <div class="section-icon si-purple"><i class="fa fa-palette"></i></div>
+        <div class="section-icon si-purple"><i data-lucide="palette"></i></div>
         <h3>Card Theme</h3>
       </div>
 
@@ -348,7 +348,7 @@
     <!-- ── 6. Custom Links ── -->
     <div class="form-section">
       <div class="form-section-header">
-        <div class="section-icon si-blue"><i class="fa fa-link"></i></div>
+        <div class="section-icon si-blue"><i data-lucide="link"></i></div>
         <h3>Custom Links</h3>
         <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">
           {{ links|length }} link{{ 's' if links|length != 1 }}
@@ -363,7 +363,7 @@
           <input type="url" name="link_url[]" value="{{ lnk.url }}"
                  placeholder="https://..." class="form-control">
           <button type="button" onclick="this.closest('.link-row').remove()" class="del-btn">
-            <i class="fa fa-times"></i>
+            <i data-lucide="x"></i>
           </button>
         </div>
         {% endfor %}
@@ -427,7 +427,7 @@
     <!-- ── 8. Bot Context ── -->
     <div class="form-section">
       <div class="form-section-header">
-        <div class="section-icon si-green"><i class="fa fa-robot"></i></div>
+        <div class="section-icon si-green"><i data-lucide="bot"></i></div>
         <h3>Bot Context</h3>
       </div>
       <div class="form-group">
@@ -452,7 +452,7 @@
   <!-- ── 9. Portfolio Management (separate section) ── -->
   <div class="form-section" id="portfolio" style="margin-top:1.1rem;">
     <div class="form-section-header">
-      <div class="section-icon si-green"><i class="fa fa-images"></i></div>
+      <div class="section-icon si-green"><i data-lucide="images"></i></div>
       <h3>Portfolio Gallery</h3>
       <span style="font-size:0.75rem; color:var(--muted); margin-left:auto;">
         {{ images|length }} / 12 images
@@ -476,7 +476,7 @@
     </form>
     {% else %}
     <p style="font-size:0.82rem; color:#f0b429; margin-bottom:0.75rem;">
-      <i class="fa fa-exclamation-triangle"></i> Maximum 12 images reached.
+      <i data-lucide="alert-triangle"></i> Maximum 12 images reached.
     </p>
     {% endif %}
 
@@ -489,7 +489,7 @@
         <form method="POST" action="{{ url_for('admin_delete_portfolio', user_id=user.id) }}"
               onsubmit="return confirm('Remove this image?')">
           <input type="hidden" name="filename" value="{{ img }}">
-          <button type="submit" class="port-del"><i class="fa fa-times"></i></button>
+          <button type="submit" class="port-del"><i data-lucide="x"></i></button>
         </form>
       </div>
       {% endfor %}
@@ -526,7 +526,7 @@
       <input type="text"  name="link_title[]" placeholder="Label" class="form-control">
       <input type="url"   name="link_url[]"   placeholder="https://..." class="form-control">
       <button type="button" onclick="this.closest('.link-row').remove()" class="del-btn">
-        <i class="fa fa-times"></i>
+        <i data-lucide="x"></i>
       </button>`;
     document.getElementById('admin-links-container').appendChild(row);
   }

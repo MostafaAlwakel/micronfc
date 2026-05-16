@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 
@@ -106,7 +106,7 @@
       <div class="form-group">
         <label style="font-size:0.8rem; color:var(--muted); font-weight:600; margin-bottom:0.4rem; display:block;">Website</label>
         <div class="social-input-row">
-          <div class="social-icon-circle si-website"><i class="fa fa-globe"></i></div>
+          <div class="social-icon-circle si-website"><i data-lucide="globe"></i></div>
           <input type="url" name="website" class="form-control"
                  value="{{ user.website or '' }}"
                  placeholder="https://yourwebsite.com">

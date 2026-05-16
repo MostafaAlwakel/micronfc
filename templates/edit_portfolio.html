@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 
@@ -28,7 +28,7 @@
     </form>
     {% else %}
     <div style="background:rgba(255,180,0,0.08); border:1px solid rgba(255,180,0,0.2); border-radius:10px; padding:0.75rem 1rem; margin-bottom:1.5rem; font-size:0.85rem; color:#f0b429;">
-      <i class="fa fa-exclamation-triangle"></i> Maximum 12 images reached. Delete one to add more.
+      <i data-lucide="alert-triangle"></i> Maximum 12 images reached. Delete one to add more.
     </div>
     {% endif %}
 
@@ -46,7 +46,7 @@
           <button type="submit"
             style="background:rgba(0,0,0,0.7); border:none; color:#ff6b7a; width:28px; height:28px;
                    border-radius:50%; cursor:pointer; font-size:0.75rem; display:flex; align-items:center; justify-content:center;">
-            <i class="fa fa-times"></i>
+            <i data-lucide="x"></i>
           </button>
         </form>
       </div>

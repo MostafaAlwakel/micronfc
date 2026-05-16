@@ -2039,3 +2039,95 @@ body { overflow-x: clip; max-width: 100vw; }
   .tab-btn i { font-size: 0.95rem; }
   .info-val { max-width: 55%; }
 }
+
+/* ===================== LUCIDE ICONS ===================== */
+[data-lucide] {
+  width: 24px;
+  height: 24px;
+  stroke: #1B4FD8;
+  stroke-width: 2;
+  fill: none;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Sidebar: follow parent color for active/inactive states */
+.sidebar-link [data-lucide] {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+/* Tab buttons */
+.tab-btn [data-lucide] {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+.tab-btn.active [data-lucide] { stroke: #fff; }
+
+/* Alert icons */
+.alert [data-lucide] {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+/* Buttons: inherit from parent color */
+.btn-primary [data-lucide],
+.btn-secondary [data-lucide],
+.btn-edit-full [data-lucide],
+.btn-danger [data-lucide],
+.act-btn [data-lucide] {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+/* Guest header small icons */
+.guest-header [data-lucide] {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+/* Chat popup */
+.chat-fab [data-lucide] {
+  width: 22px;
+  height: 22px;
+  stroke: #fff;
+}
+.chat-popup-header [data-lucide] {
+  width: 20px;
+  height: 20px;
+}
+.chat-send-btn [data-lucide] {
+  width: 18px;
+  height: 18px;
+  stroke: #fff;
+}
+
+/* Sidebar bottom logout icon */
+.sidebar-logout [data-lucide] {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+}
+
+/* Feature section icons */
+.feature-icon [data-lucide] {
+  width: 22px;
+  height: 22px;
+  stroke: #1B4FD8;
+}
+
+/* Status/badge inline icons */
+.icon-inline [data-lucide] {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  display: inline;
+  vertical-align: middle;
+}
