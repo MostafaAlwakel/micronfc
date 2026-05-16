@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 
 <style>
@@ -11,7 +11,7 @@
   }
 
   .admin-stat-number {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(1.2rem, 4vw, 2.5rem);
     font-weight: 800;
     word-break: break-word;
@@ -58,9 +58,9 @@
   .badge-user { background: rgba(255,255,255,0.05); color: #8b949e; border: 1px solid var(--border); }
   .badge-subadmin { background: rgba(0,112,243,0.1); color: #378add; border: 1px solid rgba(0,112,243,0.2); }
   .badge-admin { background: rgba(255,193,7,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.2); }
-  .badge-card { background: rgba(0,229,160,0.1); color: #00e5a0; border: 1px solid rgba(0,229,160,0.2); }
+  .badge-card { background: rgba(27,79,216,0.1); color: var(--accent); border: 1px solid rgba(27,79,216,0.2); }
   .badge-bracelet { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
-  .badge-active { background: rgba(0,229,160,0.1); color: #00e5a0; border: 1px solid rgba(0,229,160,0.2); }
+  .badge-active { background: rgba(27,79,216,0.1); color: var(--accent); border: 1px solid rgba(27,79,216,0.2); }
   .badge-disabled { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
 
   .act-btn {
@@ -79,8 +79,8 @@
   .act-edit:hover { background: rgba(0,112,243,0.25); }
   .act-reset { background: rgba(255,193,7,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.2); }
   .act-reset:hover { background: rgba(255,193,7,0.25); }
-  .act-toggle { background: rgba(0,229,160,0.1); color: #00e5a0; border: 1px solid rgba(0,229,160,0.2); }
-  .act-toggle:hover { background: rgba(0,229,160,0.25); }
+  .act-toggle { background: rgba(27,79,216,0.1); color: var(--accent); border: 1px solid rgba(27,79,216,0.2); }
+  .act-toggle:hover { background: rgba(27,79,216,0.25); }
   .act-toggle-off { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
   .act-delete { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
   .act-delete:hover { background: rgba(220,53,69,0.25); }
@@ -110,7 +110,7 @@
   }
 
   .modal-box h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
@@ -135,11 +135,11 @@
 
   .avatar-sm-text {
     width: 36px; height: 36px; border-radius: 50%;
-    background: rgba(0,229,160,0.1);
-    border: 2px solid rgba(0,229,160,0.2);
+    background: rgba(27,79,216,0.1);
+    border: 2px solid rgba(27,79,216,0.2);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif; font-weight: 700;
-    font-size: 0.9rem; color: #00e5a0;
+    font-family: 'Inter', sans-serif; font-weight: 700;
+    font-size: 0.9rem; color: var(--accent);
   }
 
   .search-input {
@@ -152,7 +152,7 @@
     width: 260px;
   }
 
-  .search-input:focus { outline: none; border-color: rgba(0,229,160,0.4); }
+  .search-input:focus { outline: none; border-color: rgba(27,79,216,0.4); }
 </style>
 
 <div style="max-width: 1300px; margin: 2rem auto; padding: 0 1rem;">
@@ -160,7 +160,7 @@
   <!-- HEADER -->
   <div class="admin-page-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
     <div>
-      <h1 style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:0.2rem;">⚙️ Admin Dashboard</h1>
+      <h1 style="font-family:'Inter',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:0.2rem;">⚙️ Admin Dashboard</h1>
       <p style="color:var(--muted); font-size:0.85rem;">Full control over all users and settings</p>
     </div>
     <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
@@ -178,7 +178,7 @@
       <div class="admin-stat-label">Total Users</div>
     </div>
     <div class="admin-stat">
-      <div class="admin-stat-number" style="color:#00e5a0;">{{ active_users }}</div>
+      <div class="admin-stat-number" style="color:var(--accent);">{{ active_users }}</div>
       <div class="admin-stat-label">Active Users</div>
     </div>
     <div class="admin-stat">
@@ -203,19 +203,19 @@
     </div>
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; margin-bottom:1.5rem;">
       <div style="background:var(--surface2); border-radius:var(--radius); padding:1rem; text-align:center;">
-        <div style="font-size:1.8rem; font-weight:700; font-family:'Syne',sans-serif; color:#34d399;">
+        <div style="font-size:1.8rem; font-weight:700; font-family:'Inter',sans-serif; color:#34d399;">
           {{ pro_users_count or 0 }}
         </div>
         <div style="font-size:0.75rem; color:var(--muted);">مستخدمين Pro</div>
       </div>
       <div style="background:var(--surface2); border-radius:var(--radius); padding:1rem; text-align:center;">
-        <div style="font-size:1.8rem; font-weight:700; font-family:'Syne',sans-serif; color:#fbbf24;">
+        <div style="font-size:1.8rem; font-weight:700; font-family:'Inter',sans-serif; color:#fbbf24;">
           {{ free_users_count or 0 }}
         </div>
         <div style="font-size:0.75rem; color:var(--muted);">مستخدمين Free</div>
       </div>
       <div style="background:var(--surface2); border-radius:var(--radius); padding:1rem; text-align:center;">
-        <div style="font-size:1.8rem; font-weight:700; font-family:'Syne',sans-serif; color:#a78bfa;">
+        <div style="font-size:1.8rem; font-weight:700; font-family:'Inter',sans-serif; color:#a78bfa;">
           {{ (pro_users_count or 0) * 100 }} EGP
         </div>
         <div style="font-size:0.75rem; color:var(--muted);">إيراد الشهر</div>
@@ -283,7 +283,7 @@
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px;">
 
     <div style="padding:1.2rem 1.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-      <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700;">All Users ({{ total_users }})</h3>
+      <h3 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700;">All Users ({{ total_users }})</h3>
       <input type="text" class="search-input" placeholder="🔍 Search..." onkeyup="searchUsers(this.value)" style="width:260px;">
     </div>
 
@@ -348,7 +348,7 @@
             <!-- Bot -->
             <td>
               {% if user.bot_context %}
-                <span style="color:#00e5a0; font-size:0.8rem;">✅ Set</span>
+                <span style="color:var(--accent); font-size:0.8rem;">✅ Set</span>
               {% else %}
                 <span style="color:var(--muted); font-size:0.8rem;">❌ Empty</span>
               {% endif %}

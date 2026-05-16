@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 
 <style>
@@ -24,7 +24,7 @@
   }
 
   .form-section-header h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
     margin: 0;
@@ -41,7 +41,7 @@
     flex-shrink: 0;
   }
 
-  .si-green  { background: rgba(0,229,160,0.1);  color: var(--accent); }
+  .si-green  { background: rgba(27,79,216,0.1);  color: var(--accent); }
   .si-red    { background: rgba(220,53,69,0.1);  color: var(--red); }
   .si-blue   { background: rgba(55,138,221,0.1); color: var(--blue); }
   .si-orange { background: rgba(249,115,22,0.1); color: #f97316; }
@@ -71,12 +71,12 @@
     color: var(--text);
     padding: 0.55rem 0.8rem;
     font-size: 0.85rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     width: 100%;
     transition: border-color 0.2s;
   }
 
-  .form-control:focus { outline: none; border-color: rgba(0,229,160,0.4); }
+  .form-control:focus { outline: none; border-color: rgba(27,79,216,0.4); }
   .form-control::placeholder { color: var(--muted2); }
 
   textarea.form-control { resize: vertical; min-height: 80px; }
@@ -174,7 +174,7 @@
   <!-- Header -->
   <div class="admin-edit-header page-header-row" style="margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
     <div>
-      <h1 style="font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:0.2rem;">
+      <h1 style="font-family:'Inter',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:0.2rem;">
         <i class="fa fa-pencil" style="color:var(--accent);"></i> Edit User
       </h1>
       <p style="color:var(--muted); font-size:0.85rem;">
@@ -337,7 +337,7 @@
                style="background:{{ bg }};" data-accent="{{ accent }}">
             <div style="width:26px; height:26px; border-radius:50%; background:{{ accent }};
                         margin:0 auto 0.4rem; box-shadow:0 0 10px {{ accent }}55;"></div>
-            <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.78rem;
+            <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.78rem;
                       color:{{ accent }};">{{ label }}</p>
           </div>
         </label>

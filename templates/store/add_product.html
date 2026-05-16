@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 <div class="container" style="max-width:600px; padding:2rem 1rem 5rem;">
 
@@ -7,7 +7,7 @@
     <i class="fa fa-arrow-left fa-sm"></i> Products
   </a>
 
-  <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin-bottom:1.5rem;">Add Product</h2>
+  <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin-bottom:1.5rem;">Add Product</h2>
 
   <form method="POST" enctype="multipart/form-data">
     <div style="display:flex; flex-direction:column; gap:1rem;">
@@ -15,25 +15,25 @@
       <div>
         <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Product Name *</label>
         <input type="text" name="name" required placeholder="e.g. MicroNFC Smart Card"
-               style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
+               style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'Inter',sans-serif;">
       </div>
 
       <div>
         <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Description</label>
         <textarea name="description" rows="4" placeholder="Describe the product…"
-                  style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif; resize:vertical;"></textarea>
+                  style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'Inter',sans-serif; resize:vertical;"></textarea>
       </div>
 
       <div style="display:flex; gap:1rem; flex-wrap:wrap;">
         <div style="flex:1; min-width:140px;">
           <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Price (EGP) *</label>
           <input type="number" name="price" required min="0" step="0.01" placeholder="199.99"
-                 style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
+                 style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'Inter',sans-serif;">
         </div>
         <div style="flex:1; min-width:140px;">
           <label style="font-size:0.85rem; color:var(--muted); display:block; margin-bottom:0.3rem;">Stock</label>
           <input type="number" name="stock" value="0" min="0"
-                 style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
+                 style="width:100%; background:var(--surface); border:1px solid var(--border2); color:var(--text); padding:0.65rem 1rem; border-radius:var(--radius); font-family:'Inter',sans-serif;">
         </div>
       </div>
 

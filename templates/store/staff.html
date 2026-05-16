@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 <div class="container" style="max-width:700px; padding:2rem 1rem 5rem;">
@@ -8,16 +8,16 @@
        style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
       <i class="fa fa-arrow-left fa-sm"></i> Dashboard
     </a>
-    <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.3rem 0 0;">Store Staff</h2>
+    <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin:0.3rem 0 0;">Store Staff</h2>
   </div>
 
   <!-- Add Staff -->
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.25rem; margin-bottom:1.5rem;">
-    <h6 style="font-family:'Syne',sans-serif; font-weight:600; margin:0 0 1rem;">Add Staff Member</h6>
+    <h6 style="font-family:'Inter',sans-serif; font-weight:600; margin:0 0 1rem;">Add Staff Member</h6>
     <form method="POST" action="{{ url_for('store.dashboard_add_staff') }}"
           style="display:flex; gap:0.75rem; flex-wrap:wrap;">
       <input type="email" name="email" required placeholder="User email"
-             style="flex:1; min-width:200px; background:var(--surface2); border:1px solid var(--border2); color:var(--text); padding:0.6rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;">
+             style="flex:1; min-width:200px; background:var(--surface2); border:1px solid var(--border2); color:var(--text); padding:0.6rem 1rem; border-radius:var(--radius); font-family:'Inter',sans-serif;">
       <select name="role"
               style="background:var(--surface2); border:1px solid var(--border2); color:var(--text); padding:0.6rem 1rem; border-radius:var(--radius);">
         <option value="staff">Staff</option>
@@ -38,7 +38,7 @@
             <div style="font-size:0.8rem; color:var(--muted);">{{ staff.user.email }}</div>
           </div>
           <div style="display:flex; align-items:center; gap:0.75rem;">
-            <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px; background:rgba(0,229,160,0.1); color:var(--accent); border:1px solid var(--accent);">
+            <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px; background:rgba(27,79,216,0.1); color:var(--accent); border:1px solid var(--accent);">
               {{ staff.role }}
             </span>
             <form method="POST" action="{{ url_for('store.dashboard_remove_staff', staff_id=staff.id) }}"

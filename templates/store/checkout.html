@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 <div class="container" style="max-width:1020px; padding:2rem 1rem 5rem;">
 
@@ -7,7 +7,7 @@
     <i class="fa fa-arrow-left fa-sm"></i> {{ 'Back to Cart' if cart_items else 'Back' }}
   </a>
 
-  <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin-bottom:1rem;">Checkout</h2>
+  <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin-bottom:1rem;">Checkout</h2>
 
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
               padding:0.75rem 1rem; margin-bottom:1.5rem; font-size:0.85rem; color:var(--muted);
@@ -99,7 +99,7 @@
 
     <!-- Order Summary -->
     <div class="checkout-summary">
-      <h3 style="font-family:'Syne',sans-serif; font-weight:700; margin:0 0 1rem; font-size:1rem; color:var(--text);">
+      <h3 style="font-family:'Inter',sans-serif; font-weight:700; margin:0 0 1rem; font-size:1rem; color:var(--text);">
         Order Summary
       </h3>
 
@@ -141,7 +141,7 @@
         </div>
       {% endif %}
 
-      <div style="margin-top:1rem; padding:0.75rem; background:rgba(0,229,160,0.05); border:1px solid rgba(0,229,160,0.15);
+      <div style="margin-top:1rem; padding:0.75rem; background:rgba(27,79,216,0.05); border:1px solid rgba(27,79,216,0.15);
                   border-radius:8px; font-size:0.78rem; color:var(--muted); display:flex; align-items:center; gap:0.5rem;">
         <i class="fa fa-shield-halved" style="color:var(--accent);"></i>
         Secure &amp; encrypted checkout
@@ -169,13 +169,13 @@
   color: var(--text);
   padding: 0.7rem 1rem;
   border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   min-height: 48px;
   transition: border-color 0.2s;
   box-sizing: border-box;
 }
-.form-input:focus { outline: none; border-color: rgba(0,229,160,0.5); }
+.form-input:focus { outline: none; border-color: rgba(27,79,216,0.5); }
 .payment-option {
   display: flex;
   align-items: center;
@@ -189,7 +189,7 @@
 }
 .payment-option.selected {
   border-color: var(--accent);
-  background: rgba(0,229,160,0.04);
+  background: rgba(27,79,216,0.04);
 }
 .payment-option input[type="radio"] { flex-shrink: 0; accent-color: var(--accent); }
 .checkout-summary {

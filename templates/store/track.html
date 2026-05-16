@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 <div class="container" style="max-width:640px; padding:2.5rem 1rem 5rem;">
 
@@ -7,7 +7,7 @@
        style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
       <i class="fa fa-arrow-left fa-sm"></i> My Orders
     </a>
-    <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.4rem 0 0;">Track Your Order</h2>
+    <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin:0.4rem 0 0;">Track Your Order</h2>
     <p style="color:var(--muted); font-size:0.88rem; margin:0.25rem 0 0;">Enter your tracking number to see the latest status.</p>
   </div>
 
@@ -18,9 +18,9 @@
            value="{{ tracking_number or '' }}"
            placeholder="e.g. NFC123456"
            style="flex:1; background:var(--surface); border:1px solid var(--border2); color:var(--text);
-                  padding:0.75rem 1rem; border-radius:var(--radius); font-family:'DM Sans',sans-serif;
+                  padding:0.75rem 1rem; border-radius:var(--radius); font-family:'Inter',sans-serif;
                   font-size:0.95rem; min-height:48px; transition:border-color 0.2s; box-sizing:border-box;"
-           onfocus="this.style.borderColor='rgba(0,229,160,0.5)'"
+           onfocus="this.style.borderColor='rgba(27,79,216,0.5)'"
            onblur="this.style.borderColor=''"
            required>
     <button type="submit"
@@ -48,13 +48,13 @@
     <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.25rem;">
       <div>
         <div style="font-size:0.78rem; color:var(--muted); margin-bottom:2px;">Order</div>
-        <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem;">
+        <div style="font-family:'Inter',sans-serif; font-weight:800; font-size:1.1rem;">
           #{{ order.id }}
         </div>
       </div>
       <div style="text-align:right;">
         <div style="font-size:0.78rem; color:var(--muted); margin-bottom:2px;">Tracking</div>
-        <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; color:var(--accent);">
+        <div style="font-family:'Inter',sans-serif; font-weight:800; font-size:1.1rem; color:var(--accent);">
           {{ order.tracking_number }}
         </div>
       </div>

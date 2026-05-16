@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 <div class="container" style="max-width:680px; padding:2rem 1rem 5rem;">
 
@@ -7,7 +7,7 @@
        style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
       <i class="fa fa-arrow-left fa-sm"></i> Store
     </a>
-    <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.3rem 0 0;">My Orders</h2>
+    <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin:0.3rem 0 0;">My Orders</h2>
     <p style="color:var(--muted); font-size:0.85rem; margin:0.2rem 0 0;">{{ current_user.email }}</p>
   </div>
 
@@ -47,7 +47,7 @@
                   padding:0.85rem 1.1rem; border-bottom:1px solid var(--border);
                   background:var(--surface2); flex-wrap:wrap; gap:0.5rem;">
         <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
-          <span style="font-family:'Syne',sans-serif; font-weight:800; color:var(--accent);
+          <span style="font-family:'Inter',sans-serif; font-weight:800; color:var(--accent);
                        font-size:0.95rem; letter-spacing:0.5px;">
             {{ order_label }}
           </span>
@@ -93,7 +93,7 @@
             {% endif %}
           </div>
         </div>
-        <div style="font-family:'Syne',sans-serif; font-weight:800;
+        <div style="font-family:'Inter',sans-serif; font-weight:800;
                     color:var(--accent); font-size:1rem; white-space:nowrap;">
           {{ '%.2f'|format(order.total_price) }} EGP
         </div>

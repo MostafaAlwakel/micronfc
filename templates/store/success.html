@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 <div class="container" style="max-width:560px; padding:4rem 1rem; text-align:center;">
 
-  <div style="width:80px; height:80px; background:rgba(0,229,160,0.15); border-radius:50%;
+  <div style="width:80px; height:80px; background:rgba(27,79,216,0.15); border-radius:50%;
               display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem;">
     <i class="fa fa-check" style="font-size:2.2rem; color:var(--accent);"></i>
   </div>
 
-  <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin-bottom:0.5rem;">Order Confirmed!</h2>
+  <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin-bottom:0.5rem;">Order Confirmed!</h2>
   <p style="color:var(--muted); margin-bottom:2rem;">
     Your order has been placed! We'll process and ship it soon.
   </p>
@@ -45,10 +45,10 @@
   </div>
 
   {% if order.tracking_number %}
-  <div style="background:rgba(0,229,160,0.08); border:1px solid rgba(0,229,160,0.25); border-radius:var(--radius);
+  <div style="background:rgba(27,79,216,0.08); border:1px solid rgba(27,79,216,0.25); border-radius:var(--radius);
               padding:1.25rem; text-align:center; margin-bottom:1.5rem;">
     <div style="font-size:0.8rem; color:var(--muted); margin-bottom:0.4rem;">Your tracking number</div>
-    <div style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--accent); letter-spacing:2px;">
+    <div style="font-family:'Inter',sans-serif; font-size:1.6rem; font-weight:800; color:var(--accent); letter-spacing:2px;">
       {{ order.tracking_number }}
     </div>
     <a href="{{ url_for('store.track_order', tracking_number=order.tracking_number) }}"

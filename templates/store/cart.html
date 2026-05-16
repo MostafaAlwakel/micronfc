@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 <div class="container" style="max-width:960px; padding:2rem 1rem 5rem;">
 
   <div class="cart-header">
     <div>
-      <h1 style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin:0;">
+      <h1 style="font-family:'Inter',sans-serif; font-size:1.8rem; font-weight:800; margin:0;">
         <i class="fa fa-shopping-cart" style="color:var(--accent);"></i> Shopping Cart
       </h1>
       {% if items %}
@@ -37,7 +37,7 @@
         <div class="cart-item-info">
           <a href="{{ url_for('store.product_detail', product_id=item.product.id) }}"
              style="text-decoration:none; color:inherit;">
-            <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; margin-bottom:0.2rem;">
+            <div style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.95rem; margin-bottom:0.2rem;">
               {{ item.product.name }}
             </div>
           </a>
@@ -73,7 +73,7 @@
 
     <!-- Summary column -->
     <div class="cart-summary">
-      <h3 style="font-family:'Syne',sans-serif; font-weight:700; margin:0 0 1rem; font-size:1rem;">Order Summary</h3>
+      <h3 style="font-family:'Inter',sans-serif; font-weight:700; margin:0 0 1rem; font-size:1rem;">Order Summary</h3>
       {% for item in items %}
       <div style="display:flex; justify-content:space-between; font-size:0.83rem; color:var(--muted); padding:0.3rem 0;">
         <span>{{ item.product.name }} × {{ item.quantity }}</span>
@@ -114,7 +114,7 @@
                 display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem;">
       <i class="fa fa-shopping-cart" style="font-size:2rem; color:var(--muted2);"></i>
     </div>
-    <h3 style="font-family:'Syne',sans-serif; font-weight:700; margin-bottom:0.5rem;">Your cart is empty</h3>
+    <h3 style="font-family:'Inter',sans-serif; font-weight:700; margin-bottom:0.5rem;">Your cart is empty</h3>
     <p style="color:var(--muted); margin-bottom:1.5rem;">Add some products to get started!</p>
     <a href="{{ url_for('store.index') }}" class="btn-nav" style="display:inline-block; padding:0.75rem 2rem;">
       <i class="fa fa-store fa-sm"></i> Browse Store

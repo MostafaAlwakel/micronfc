@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 <div class="container" style="max-width:960px; padding:2rem 1rem 5rem;">
@@ -9,7 +9,7 @@
          style="color:var(--muted); font-size:0.85rem; text-decoration:none;">
         <i class="fa fa-arrow-left fa-sm"></i> Dashboard
       </a>
-      <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0.3rem 0 0;">Products</h2>
+      <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin:0.3rem 0 0;">Products</h2>
     </div>
     <a href="{{ url_for('store.dashboard_add_product') }}" class="btn-nav" style="padding:0.6rem 1.25rem;">
       <i class="fa fa-plus fa-sm"></i> Add Product
@@ -50,7 +50,7 @@
               <td style="padding:0.85rem 1rem; text-align:right; color:var(--muted);">{{ product.stock }}</td>
               <td style="padding:0.85rem 1rem; text-align:center;">
                 <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:99px;
-                  {% if product.is_active %}background:rgba(0,229,160,0.15); color:var(--accent);
+                  {% if product.is_active %}background:rgba(27,79,216,0.15); color:var(--accent);
                   {% else %}background:rgba(248,113,113,0.15); color:#f87171;{% endif %}">
                   {{ 'Active' if product.is_active else 'Inactive' }}
                 </span>

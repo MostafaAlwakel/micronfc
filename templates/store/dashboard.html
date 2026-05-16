@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 <div class="container" style="max-width:960px; padding:2rem 1rem 5rem;">
 
   <div style="margin-bottom:2rem;">
-    <h2 style="font-family:'Syne',sans-serif; font-weight:800; margin:0;">
+    <h2 style="font-family:'Inter',sans-serif; font-weight:800; margin:0;">
       <i class="fa fa-store" style="color:var(--accent);"></i> Store Dashboard
     </h2>
     <p style="color:var(--muted); margin-top:0.3rem;">Overview &amp; management</p>
@@ -45,7 +45,7 @@
   <!-- Revenue -->
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.25rem; margin-bottom:2rem;">
     <div style="font-size:0.8rem; color:var(--muted); margin-bottom:0.3rem;">Total Revenue (paid orders)</div>
-    <div class="revenue-val" style="font-size:clamp(1.2rem,5vw,2.2rem); font-weight:800; font-family:'Syne',sans-serif; color:var(--accent); word-break:break-all;">
+    <div class="revenue-val" style="font-size:clamp(1.2rem,5vw,2.2rem); font-weight:800; font-family:'Inter',sans-serif; color:var(--accent); word-break:break-all;">
       {{ '%.2f'|format(revenue) }} EGP
     </div>
   </div>
@@ -69,7 +69,7 @@
 
   <!-- Recent Orders -->
   {% if recent_orders %}
-    <h5 style="font-family:'Syne',sans-serif; font-weight:700; margin-bottom:1rem;">Recent Orders</h5>
+    <h5 style="font-family:'Inter',sans-serif; font-weight:700; margin-bottom:1rem;">Recent Orders</h5>
     <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;">
       <table style="width:100%; border-collapse:collapse; font-size:0.88rem;">
         <thead>
@@ -113,7 +113,7 @@
     padding: 1.25rem;
   }
   .stat-card i { font-size: 1.3rem; margin-bottom: 0.5rem; display: block; }
-  .stat-val { font-size: 1.8rem; font-weight: 700; font-family: 'Syne', sans-serif; }
+  .stat-val { font-size: 1.8rem; font-weight: 700; font-family: 'Inter', sans-serif; }
   .stat-lbl { color: var(--muted); font-size: 0.8rem; }
 </style>
 {% endblock %}

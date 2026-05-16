@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 
@@ -99,7 +99,7 @@
 
   .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), #00b37e);
+    background: linear-gradient(90deg, var(--accent), #1640B0);
     border-radius: 99px;
     transition: width 1s cubic-bezier(.4,0,.2,1);
   }
@@ -124,11 +124,11 @@
     flex-shrink: 0;
   }
 
-  .section-icon.green  { background: rgba(0,229,160,0.1);  color: var(--accent); border: 1px solid rgba(0,229,160,0.2); }
-  .section-icon.red    { background: rgba(220,53,69,0.1);  color: var(--red);    border: 1px solid rgba(220,53,69,0.2); }
+  .section-icon.green  { background: rgba(27,79,216,0.1);  color: var(--accent); border: 1px solid rgba(27,79,216,0.2); }
+  .section-icon.red    { background: rgba(239,68,68,0.1);  color: var(--red);    border: 1px solid rgba(239,68,68,0.2); }
 
   .section-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
   }
@@ -147,8 +147,8 @@
     white-space: nowrap;
   }
 
-  .section-badge.green { background: rgba(0,229,160,0.1); color: var(--accent); }
-  .section-badge.red   { background: rgba(220,53,69,0.1); color: var(--red); }
+  .section-badge.green { background: rgba(27,79,216,0.1); color: var(--accent); }
+  .section-badge.red   { background: rgba(239,68,68,0.1); color: var(--red); }
 
   /* ── Cards grid ── */
   .cards-grid {
@@ -170,12 +170,12 @@
   }
 
   .dash-card:hover {
-    border-color: rgba(0,229,160,0.2);
+    border-color: rgba(27,79,216,0.2);
     transform: translateY(-1px);
   }
 
-  .dash-card.medical { border-color: rgba(220,53,69,0.12); }
-  .dash-card.medical:hover { border-color: rgba(220,53,69,0.3); }
+  .dash-card.medical { border-color: rgba(239,68,68,0.12); }
+  .dash-card.medical:hover { border-color: rgba(239,68,68,0.3); }
 
   .dash-card-header {
     display: flex;
@@ -185,7 +185,7 @@
   }
 
   .dash-card-header h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     font-weight: 700;
     margin: 0;
@@ -202,9 +202,9 @@
     flex-shrink: 0;
   }
 
-  .card-icon.green { background: rgba(0,229,160,0.1);  color: var(--accent); }
-  .card-icon.red   { background: rgba(220,53,69,0.1);  color: var(--red); }
-  .card-icon.blue  { background: rgba(55,138,221,0.1); color: var(--blue); }
+  .card-icon.green { background: rgba(27,79,216,0.1);  color: var(--accent); }
+  .card-icon.red   { background: rgba(239,68,68,0.1);  color: var(--red); }
+  .card-icon.blue  { background: rgba(27,79,216,0.1); color: var(--blue); }
   .card-icon.purple{ background: rgba(168,85,247,0.1); color: #a855f7; }
   .card-icon.orange{ background: rgba(249,115,22,0.1); color: #f97316; }
 
@@ -262,9 +262,9 @@
     display: block;
   }
 
-  .product-option:hover { border-color: rgba(0,229,160,0.3); }
-  .product-option.active-card    { border-color: var(--accent);  background: rgba(0,229,160,0.05); }
-  .product-option.active-bracelet{ border-color: var(--red);     background: rgba(220,53,69,0.05); }
+  .product-option:hover { border-color: rgba(27,79,216,0.3); }
+  .product-option.active-card    { border-color: var(--accent);  background: rgba(27,79,216,0.05); }
+  .product-option.active-bracelet{ border-color: var(--red);     background: rgba(239,68,68,0.05); }
 
   /* ── Mobile responsive ── */
   @media (max-width: 600px) {
@@ -304,7 +304,7 @@
     color: var(--muted);
     cursor: pointer;
     font-size: .75rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     white-space: nowrap;
     transition: all .2s;
     flex-shrink: 0;
@@ -326,7 +326,7 @@
   }
 
   .tab-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
     margin-bottom: 1.25rem;
@@ -392,12 +392,12 @@
   {% set medical_card = current_user.cards | selectattr('card_type', 'equalto', 'medical') | list %}
 
   <!-- Smart Card Status -->
-  <div style="background:{% if smart_card %}rgba(0,229,160,0.05){% else %}rgba(255,193,7,0.05){% endif %}; border:1px solid {% if smart_card %}rgba(0,229,160,0.2){% else %}rgba(255,193,7,0.2){% endif %}; border-radius:16px; padding:1.1rem 1.25rem; margin-bottom:0.75rem;">
+  <div style="background:{% if smart_card %}rgba(27,79,216,0.05){% else %}rgba(245,158,11,0.05){% endif %}; border:1px solid {% if smart_card %}rgba(27,79,216,0.2){% else %}rgba(245,158,11,0.2){% endif %}; border-radius:16px; padding:1.1rem 1.25rem; margin-bottom:0.75rem;">
     {% if smart_card %}
     <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
       <i class="fa fa-credit-card" style="color:var(--accent); font-size:1.2rem;"></i>
       <div style="flex:1;">
-        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+        <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
           🪪 Smart Card Active ✅
         </p>
         <p style="font-size:0.78rem; color:var(--muted); word-break:break-all;">
@@ -413,7 +413,7 @@
     <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem; flex-wrap:wrap;">
       <i class="fa fa-credit-card" style="color:#ffc107; font-size:1.2rem;"></i>
       <div>
-        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+        <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
           Activate Your 🪪 Smart Card
         </p>
         <p style="font-size:0.78rem; color:var(--muted);">Enter the code on the back of your Smart Card</p>
@@ -439,7 +439,7 @@
     <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
       <i class="fa fa-heart-pulse" style="color:#ff6b7a; font-size:1.2rem;"></i>
       <div style="flex:1;">
-        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+        <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
           ⌚ Medical Bracelet Active ✅
         </p>
         <p style="font-size:0.78rem; color:var(--muted); word-break:break-all;">
@@ -455,7 +455,7 @@
     <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem; flex-wrap:wrap;">
       <i class="fa fa-heart-pulse" style="color:#ffc107; font-size:1.2rem;"></i>
       <div>
-        <p style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
+        <p style="font-family:'Inter',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:0.1rem;">
           Activate Your ⌚ Medical Bracelet
         </p>
         <p style="font-size:0.78rem; color:var(--muted);">Enter the code on the back of your Medical Bracelet</p>
@@ -478,7 +478,7 @@
   <!-- ── Header ── -->
   <div class="dash-header">
     <div>
-      <h1 style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:0.2rem;">
+      <h1 style="font-family:'Inter',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:0.2rem;">
         Welcome, {{ user.name }} 👋
       </h1>
       <p style="color:var(--muted); font-size:0.875rem;">Manage your smart profile</p>
@@ -506,9 +506,9 @@
     <div style="display:flex; align-items:center; justify-content:space-between;">
       <div style="display:flex; align-items:center; gap:8px;">
         <i class="fa fa-chart-line" style="color:var(--accent); font-size:0.9rem;"></i>
-        <span style="font-family:'Syne',sans-serif; font-weight:600; font-size:0.9rem;">Profile Completion</span>
+        <span style="font-family:'Inter',sans-serif; font-weight:600; font-size:0.9rem;">Profile Completion</span>
       </div>
-      <span id="pct-label" style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:800; color:var(--accent);"></span>
+      <span id="pct-label" style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:800; color:var(--accent);"></span>
     </div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pct-bar"></div></div>
     <p id="pct-msg" style="font-size:0.76rem; color:var(--muted);"></p>
@@ -769,11 +769,11 @@
       <!-- Stats -->
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
         <div style="background:var(--surface2); border-radius:var(--radius); padding:0.75rem; text-align:center;">
-          <div style="font-size:1.3rem; font-weight:700; font-family:'Syne',sans-serif; color:var(--accent);">{{ current_user.total_messages_ever or 0 }}</div>
+          <div style="font-size:1.3rem; font-weight:700; font-family:'Inter',sans-serif; color:var(--accent);">{{ current_user.total_messages_ever or 0 }}</div>
           <div style="font-size:0.75rem; color:var(--muted);">إجمالي الرسائل</div>
         </div>
         <div style="background:var(--surface2); border-radius:var(--radius); padding:0.75rem; text-align:center;">
-          <div style="font-size:1.3rem; font-weight:700; font-family:'Syne',sans-serif; color:var(--accent);">{{ limit - used }}</div>
+          <div style="font-size:1.3rem; font-weight:700; font-family:'Inter',sans-serif; color:var(--accent);">{{ limit - used }}</div>
           <div style="font-size:0.75rem; color:var(--muted);">رسائل متبقية</div>
         </div>
       </div>

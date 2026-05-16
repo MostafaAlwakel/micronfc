@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 
 {% block content %}
 
 {% set themes = {
-  'dark':   {'bg': '#0d1117', 'bg2': '#1a2332', 'card': '#111827', 'accent': '#00e5a0', 'accentRgb': '0,229,160',  'text': '#f0f6fc', 'muted': '#8b949e', 'border': 'rgba(0,229,160,0.12)', 'border2': 'rgba(255,255,255,0.06)'},
+  'dark':   {'bg': '#0d1117', 'bg2': '#1a2332', 'card': '#111827', 'accent': '#00e5a0', 'accentRgb': '0,229,160',  'text': '#f0f6fc', 'muted': '#8b949e', 'border': 'rgba(27,79,216,0.12)', 'border2': 'rgba(255,255,255,0.06)'},
   'light':  {'bg': '#f1f5f9', 'bg2': '#ffffff', 'card': '#ffffff',  'accent': '#0070f3', 'accentRgb': '0,112,243',  'text': '#0f172a', 'muted': '#64748b', 'border': 'rgba(0,112,243,0.18)', 'border2': 'rgba(0,0,0,0.08)'},
   'purple': {'bg': '#0f0a1e', 'bg2': '#1a1235', 'card': '#130d2a',  'accent': '#a855f7', 'accentRgb': '168,85,247',  'text': '#f0f6fc', 'muted': '#9ca3af', 'border': 'rgba(168,85,247,0.18)', 'border2': 'rgba(255,255,255,0.06)'},
   'ocean':  {'bg': '#0a1628', 'bg2': '#0f2040', 'card': '#0d1e3a',  'accent': '#38bdf8', 'accentRgb': '56,189,248',  'text': '#f0f6fc', 'muted': '#94a3b8', 'border': 'rgba(56,189,248,0.18)', 'border2': 'rgba(255,255,255,0.06)'},
@@ -105,7 +105,7 @@
     cursor: pointer;
     color: {{ t.accent }};
     font-size: 0.72rem;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s;
@@ -335,7 +335,7 @@
     {% else %}
       <div style="height:100%; background:linear-gradient(135deg, rgba({{ t.accentRgb }},0.18), rgba({{ t.accentRgb }},0.05));"></div>
     {% endif %}
-    <div style="position:absolute; top:1rem; right:1rem; font-family:'Syne',sans-serif; font-weight:800; font-size:0.82rem; color:rgba(255,255,255,0.65); display:flex; align-items:center; gap:5px;">
+    <div style="position:absolute; top:1rem; right:1rem; font-family:'Inter',sans-serif; font-weight:800; font-size:0.82rem; color:rgba(255,255,255,0.65); display:flex; align-items:center; gap:5px;">
       <span style="width:5px; height:5px; background:{{ t.accent }}; border-radius:50%; display:inline-block;"></span>
       MicroNFC
     </div>
@@ -347,7 +347,7 @@
       <img src="{{ user.profile_photo }}"
            style="width:84px; height:84px; border-radius:50%; object-fit:cover; border:4px solid {{ t.card }};">
     {% else %}
-      <div style="width:84px; height:84px; border-radius:50%; background:rgba({{ t.accentRgb }},0.15); border:4px solid {{ t.card }}; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:700; font-size:2rem; color:{{ t.accent }};">
+      <div style="width:84px; height:84px; border-radius:50%; background:rgba({{ t.accentRgb }},0.15); border:4px solid {{ t.card }}; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif; font-weight:700; font-size:2rem; color:{{ t.accent }};">
         {{ user.name[0].upper() }}
       </div>
     {% endif %}
@@ -355,7 +355,7 @@
 
   <!-- NAME & TITLE -->
   <div style="text-align:center; padding:0.85rem 1.4rem 0.5rem;">
-    <h1 style="font-family:'Syne',sans-serif; font-size:1.35rem; font-weight:700; margin-bottom:0.2rem; color:{{ t.text }};">{{ user.name }}</h1>
+    <h1 style="font-family:'Inter',sans-serif; font-size:1.35rem; font-weight:700; margin-bottom:0.2rem; color:{{ t.text }};">{{ user.name }}</h1>
     {% if user.job_title %}
       <p style="color:{{ t.accent }}; font-size:0.85rem; font-weight:600; margin-bottom:0.2rem;">{{ user.job_title }}</p>
     {% endif %}
@@ -425,7 +425,7 @@
   {% if has_social %}
   <div class="section-divider"></div>
   <div style="padding:0.85rem 1.4rem 0.5rem;">
-    <p style="font-size:0.7rem; color:{{ t.muted }}; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; font-family:'Syne',sans-serif;">Social</p>
+    <p style="font-size:0.7rem; color:{{ t.muted }}; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; font-family:'Inter',sans-serif;">Social</p>
   </div>
   <div class="social-grid">
     {% if user.instagram %}
@@ -477,7 +477,7 @@
   {% if extra_list %}
   <div class="section-divider"></div>
   <div style="padding:0.85rem 1.4rem 0.25rem;">
-    <p style="font-size:0.7rem; color:{{ t.muted }}; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; font-family:'Syne',sans-serif;">Links</p>
+    <p style="font-size:0.7rem; color:{{ t.muted }}; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; font-family:'Inter',sans-serif;">Links</p>
     {% for link in extra_list %}
     <a href="{{ link.url }}" target="_blank" class="extra-link-btn">
       <i class="fa fa-link" style="color:{{ t.accent }}; font-size:0.8rem;"></i>
@@ -495,7 +495,7 @@
   {% if portfolio_list %}
   <div class="section-divider" style="margin-top:0.5rem;"></div>
   <div style="padding:0.85rem 1.4rem 0.5rem;">
-    <p style="font-size:0.7rem; color:{{ t.muted }}; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; font-family:'Syne',sans-serif;">Portfolio</p>
+    <p style="font-size:0.7rem; color:{{ t.muted }}; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:0.6rem; font-family:'Inter',sans-serif;">Portfolio</p>
   </div>
   <div class="portfolio-grid">
     {% for img in portfolio_list %}
@@ -511,7 +511,7 @@
   <div class="section-divider"></div>
   <div style="padding:1rem 1.4rem;">
     <button onclick="togglePubChat()"
-      style="width:100%; padding:0.75rem; background:rgba({{ t.accentRgb }},0.08); border:1px solid rgba({{ t.accentRgb }},0.25); border-radius:14px; color:{{ t.accent }}; font-family:'Syne',sans-serif; font-weight:600; font-size:0.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+      style="width:100%; padding:0.75rem; background:rgba({{ t.accentRgb }},0.08); border:1px solid rgba({{ t.accentRgb }},0.25); border-radius:14px; color:{{ t.accent }}; font-family:'Inter',sans-serif; font-weight:600; font-size:0.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
       <i class="fa fa-robot"></i> Chat with {{ user.name }}'s AI
     </button>
   </div>
@@ -527,7 +527,7 @@
 <!-- QR Modal -->
 <div class="qr-modal" id="qr-modal" onclick="closeQR(event)">
   <div class="qr-box" onclick="event.stopPropagation()">
-    <h3 style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:1rem; color:{{ t.text }};">
+    <h3 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; margin-bottom:1rem; color:{{ t.text }};">
       <i class="fa fa-qrcode" style="color:{{ t.accent }};"></i> Scan to View Profile
     </h3>
     <div id="qrcode" style="display:flex; justify-content:center; margin-bottom:1rem;"></div>
@@ -547,7 +547,7 @@
 <div class="pub-chat-popup" id="pub-chat-popup">
   <div class="pub-chat-header">
     <i class="fa fa-robot" style="color:{{ t.accent }};"></i>
-    <span style="font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:600; flex:1; color:{{ t.text }};">{{ user.name }}'s Assistant</span>
+    <span style="font-family:'Inter',sans-serif; font-size:0.9rem; font-weight:600; flex:1; color:{{ t.text }};">{{ user.name }}'s Assistant</span>
     <span style="font-size:0.72rem; color:{{ t.accent }};">● Online</span>
     <button onclick="clearPubChat()" style="background:none; border:none; color:{{ t.muted }}; cursor:pointer; font-size:0.85rem; margin-left:4px;"><i class="fa fa-trash"></i></button>
     <button onclick="togglePubChat()" style="background:none; border:none; color:{{ t.muted }}; cursor:pointer; font-size:1.1rem;"><i class="fa fa-times"></i></button>
