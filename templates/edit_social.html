@@ -86,7 +86,7 @@
       <div class="form-group">
         <label style="font-size:0.8rem; color:var(--muted); font-weight:600; margin-bottom:0.4rem; display:block;">LinkedIn</label>
         <div class="social-input-row">
-          <div class="social-icon-circle si-linkedin"><img src="https://cdn.simpleicons.org/linkedin/ffffff" width="20" height="20" alt="LinkedIn" style="vertical-align:middle;display:inline-block;"></div>
+          <div class="social-icon-circle si-linkedin"><img src="{{ url_for('static', filename='images/linkedin-icon.svg') }}" width="24" height="24" alt="LinkedIn"></div>
           <input type="url" name="linkedin" class="form-control"
                  value="{{ user.linkedin or '' }}"
                  placeholder="https://linkedin.com/in/username">

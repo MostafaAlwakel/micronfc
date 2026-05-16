@@ -72,7 +72,7 @@
       {% endif %}
       {% if user.linkedin %}
         <a href="{{ user.linkedin }}" target="_blank" class="social-btn social-linkedin">
-          <img src="https://cdn.simpleicons.org/linkedin/ffffff" width="20" height="20" alt="LinkedIn" style="vertical-align:middle;display:inline-block;"> LinkedIn
+          <img src="{{ url_for('static', filename='images/linkedin-icon.svg') }}" width="24" height="24" alt="LinkedIn"> LinkedIn
         </a>
       {% endif %}
       {% if user.github %}
