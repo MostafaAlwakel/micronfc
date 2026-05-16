@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container" style="max-width:760px; padding:3rem 1.5rem 5rem;">
+
+  <div style="margin-bottom:2.5rem;">
+    <div class="badge" style="margin-bottom:1.25rem;">
+      <span class="badge-dot"></span> Legal
+    </div>
+    <h1 style="font-family:'Inter',sans-serif; font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; letter-spacing:-0.02em; color:var(--text); margin-bottom:0.5rem;">
+      Terms of Service
+    </h1>
+    <p style="font-size:0.88rem; color:var(--muted);">Last updated: May 2025</p>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:1.25rem;">
+
+    {% set terms = [
+      ('1. Acceptance', 'file-check-2',
+       'By creating an account or using MicroNFC, you agree to these Terms of Service. If you do not agree, please do not use our platform.'),
+      ('2. Our Service', 'nfc',
+       'MicroNFC provides NFC-enabled digital profile cards and medical bracelets. We offer a platform to create, manage, and share your digital identity — accessible to anyone via a smartphone tap, no app required.'),
+    ] %}
+
+    <!-- 1 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.85rem;">
+        <i data-lucide="file-check-2" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">1. Acceptance</h2>
+      </div>
+      <p style="color:var(--muted); font-size:0.9rem; line-height:1.75;">By creating an account or using MicroNFC, you agree to these Terms of Service. If you do not agree, please do not use our platform.</p>
+    </div>
+
+    <!-- 2 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.85rem;">
+        <i data-lucide="nfc" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">2. Our Service</h2>
+      </div>
+      <p style="color:var(--muted); font-size:0.9rem; line-height:1.75;">MicroNFC provides NFC-enabled digital profile cards and medical bracelets. We offer a platform to create, manage, and share your digital identity — accessible to anyone via a smartphone tap, no app required.</p>
+    </div>
+
+    <!-- 3 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="user" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">3. Your Account</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in ['You must provide accurate information', 'You are responsible for your account security', 'You must be 13 years or older to use the service', 'One person per account'] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="check" style="width:16px;height:16px;stroke:#22c55e;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i> {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 4 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="ban" style="width:20px;height:20px;stroke:#ef4444;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">4. Acceptable Use — You may not:</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in [
+          'Use the platform for illegal activities',
+          'Upload false medical information that could endanger others',
+          'Impersonate another person',
+          'Attempt to hack or disrupt the service'
+        ] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="x" style="width:16px;height:16px;stroke:#ef4444;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i> {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 5 -->
+    <div style="background:rgba(239,68,68,0.04); border:1px solid rgba(239,68,68,0.15); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.85rem;">
+        <i data-lucide="heart-pulse" style="width:20px;height:20px;stroke:#ef4444;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">5. Medical Data Disclaimer</h2>
+      </div>
+      <p style="color:var(--muted); font-size:0.9rem; line-height:1.75;">MicroNFC is not a medical service provider. Medical data on your profile is for emergency reference only. We are not responsible for medical decisions made based on this data.</p>
+    </div>
+
+    <!-- 6 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.85rem;">
+        <i data-lucide="bot" style="width:20px;height:20px;stroke:#7c3aed;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">6. AI Chatbot</h2>
+      </div>
+      <p style="color:var(--muted); font-size:0.9rem; line-height:1.75;">The AI chatbot responds based on information you provide. We are not responsible for AI responses. You can disable it anytime from your dashboard.</p>
+    </div>
+
+    <!-- 7 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.85rem;">
+        <i data-lucide="package" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">7. Physical Products</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in ['NFC cards and bracelets are physical products shipped to you', 'Refer to our Refund Policy for returns', 'We are not responsible for damage after delivery'] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="circle" style="width:8px;height:8px;stroke:#1B4FD8;fill:#1B4FD8;flex-shrink:0;margin-top:6px;"></i> {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 8, 9 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
+          <i data-lucide="alert-triangle" style="width:18px;height:18px;stroke:#f59e0b;stroke-width:2;fill:none;"></i>
+          <h2 style="font-family:'Inter',sans-serif; font-size:0.95rem; font-weight:700; color:var(--text); margin:0;">8. Termination</h2>
+        </div>
+        <p style="color:var(--muted); font-size:0.85rem; line-height:1.7;">We reserve the right to suspend accounts that violate these terms.</p>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.75rem;">
+          <i data-lucide="refresh-cw" style="width:18px;height:18px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
+          <h2 style="font-family:'Inter',sans-serif; font-size:0.95rem; font-weight:700; color:var(--text); margin:0;">9. Changes</h2>
+        </div>
+        <p style="color:var(--muted); font-size:0.85rem; line-height:1.7;">We may update these terms. Continued use means you accept the new terms.</p>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div style="background:var(--accent-dim); border:1px solid rgba(27,79,216,0.15); border-radius:16px; padding:1.5rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.5rem;">
+        <i data-lucide="mail" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">10. Contact</h2>
+      </div>
+      <p style="color:var(--muted); font-size:0.875rem;">
+        <a href="mailto:support@micronfc.info" style="color:var(--accent); font-weight:600; text-decoration:none;">support@micronfc.info</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

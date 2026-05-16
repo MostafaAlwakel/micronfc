@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container" style="max-width:760px; padding:3rem 1.5rem 5rem;">
+
+  <div style="margin-bottom:2.5rem;">
+    <div class="badge" style="margin-bottom:1.25rem;">
+      <span class="badge-dot"></span> FAQ
+    </div>
+    <h1 style="font-family:'Inter',sans-serif; font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; letter-spacing:-0.02em; color:var(--text); margin-bottom:0.5rem;">
+      Frequently Asked <span style="color:var(--accent);">Questions</span>
+    </h1>
+    <p style="color:var(--muted); font-size:0.95rem;">كل اللي محتاج تعرفه عن MicroNFC</p>
+  </div>
+
+  {% set faqs = [
+    ('ما هي MicroNFC؟',
+     'MicroNFC منصة مصرية بتوفر بطاقات NFC ذكية وأساور طبية مرتبطة بملف شخصي رقمي. بتاب واحد على أي تليفون بيفتح ملفك الشخصي كامل بدون أي تطبيق.',
+     'info'),
+    ('إزاي بيشتغل الكارت؟',
+     'الكارت أو السوار بيحتوي على شريحة NFC. لما حد يقرب تليفونه منه بيفتح ملفك الشخصي مباشرة في المتصفح. مفيش أي تطبيق مطلوب من الزائر.',
+     'nfc'),
+    ('هل أحتاج تطبيق عشان أستخدم الكارت؟',
+     'الزائر اللي بيسكان الكارت لا يحتاج أي تطبيق. إنت كصاحب الكارت بتدير ملفك من خلال موقعنا على أي متصفح.',
+     'smartphone'),
+    ('ما هو الكارت الطبي؟',
+     'السوار الطبي بيحتوي على بياناتك الطبية الحرجة (فصيلة الدم، الحساسية، الأدوية، جهات الطوارئ). في حالة الطوارئ، أي حد يقرب تليفونه من السوار يشوف بياناتك الطبية فوراً.',
+     'heart-pulse'),
+    ('هل بياناتي آمنة؟',
+     'نعم. كل البيانات مشفرة. إنت بتتحكم في إيه اللي بيظهر للعموم وإيه اللي بيفضل خاص. كلمة السر مش بتتخزن أبداً بشكل واضح.',
+     'shield-check'),
+    ('هل الـ AI Chatbot إجباري؟',
+     'لا، ممكن تشغله أو تقفله من الـ dashboard متى تشاء.',
+     'bot'),
+    ('إيه الفرق بين Smart Card والـ Medical Bracelet؟',
+     'Smart Card للتواصل المهني ومشاركة معلومات التواصل والسوشيال ميديا. Medical Bracelet للطوارئ الطبية وبيظهر بيانات صحية للمسعفين.',
+     'credit-card'),
+    ('ممكن أغير بياناتي بعد ما اشتريت الكارت؟',
+     'أيوه، البيانات على الملف الرقمي وتقدر تغيرها في أي وقت من الـ dashboard والكارت الفيزيائي هيظهر التحديثات فوراً.',
+     'pencil'),
+    ('كيف أشتري؟',
+     'من صفحة Store على موقعنا. بنوصل لكل أنحاء مصر.',
+     'shopping-bag'),
+    ('للتواصل أو الاستفسار؟',
+     'راسلنا على support@micronfc.info',
+     'mail')
+  ] %}
+
+  <div style="display:flex; flex-direction:column; gap:0.75rem;">
+    {% for q, a, icon in faqs %}
+    <details style="background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden;" class="faq-item">
+      <summary style="display:flex; align-items:center; gap:12px; padding:1.1rem 1.4rem; cursor:pointer; user-select:none; list-style:none; font-family:'Inter',sans-serif; font-weight:600; font-size:0.92rem; color:var(--text);">
+        <div style="width:34px;height:34px;background:var(--accent-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i data-lucide="{{ icon }}" style="width:18px;height:18px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
+        </div>
+        <span style="flex:1;">{{ q }}</span>
+        <i data-lucide="chevron-down" style="width:18px;height:18px;stroke:var(--muted);stroke-width:2;fill:none;flex-shrink:0;transition:transform 0.2s;" class="faq-chevron"></i>
+      </summary>
+      <div style="padding:0 1.4rem 1.2rem 4.1rem; color:var(--muted); font-size:0.88rem; line-height:1.75; direction:{% if q|first in 'ماهإإيكهمل' %}rtl{% else %}ltr{% endif %};">
+        {% if 'support@micronfc.info' in a %}
+          {{ a.replace('support@micronfc.info', '<a href="mailto:support@micronfc.info" style="color:var(--accent);font-weight:600;text-decoration:none;">support@micronfc.info</a>')|safe }}
+        {% else %}
+          {{ a }}
+        {% endif %}
+      </div>
+    </details>
+    {% endfor %}
+  </div>
+
+  <!-- Still have questions? -->
+  <div style="margin-top:2.5rem; text-align:center; background:var(--accent-dim); border:1px solid rgba(27,79,216,0.15); border-radius:16px; padding:2rem;">
+    <i data-lucide="help-circle" style="width:32px;height:32px;stroke:#1B4FD8;stroke-width:2;fill:none;margin-bottom:0.75rem;"></i>
+    <h3 style="font-family:'Inter',sans-serif; font-weight:700; color:var(--text); margin-bottom:0.4rem;">Still have questions?</h3>
+    <p style="color:var(--muted); font-size:0.88rem; margin-bottom:1.25rem;">راسلنا مباشرة وهنرد عليك في أقرب وقت.</p>
+    <a href="mailto:support@micronfc.info" class="btn-primary" style="display:inline-flex;">
+      <i data-lucide="mail" style="width:18px;height:18px;stroke:#fff;stroke-width:2;fill:none;"></i> Contact Support
+    </a>
+  </div>
+
+</div>
+
+<style>
+  .faq-item[open] summary { border-bottom:1px solid var(--border); }
+  .faq-item[open] .faq-chevron { transform: rotate(180deg); }
+  .faq-item summary::-webkit-details-marker { display:none; }
+</style>
+
+{% endblock %}

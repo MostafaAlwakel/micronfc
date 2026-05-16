@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container" style="max-width:820px; padding:3rem 1.5rem 5rem;">
+
+  <!-- Header -->
+  <div style="margin-bottom:3rem;">
+    <div class="badge" style="margin-bottom:1.25rem;">
+      <span class="badge-dot"></span> About Us
+    </div>
+    <h1 style="font-family:'Inter',sans-serif; font-size:clamp(2rem,5vw,3rem); font-weight:900; letter-spacing:-0.03em; color:var(--text); margin-bottom:0.75rem; line-height:1.1;">
+      About <span style="color:var(--accent);">MicroNFC</span>
+    </h1>
+    <p style="font-size:1.1rem; color:var(--muted); line-height:1.7; max-width:580px;">
+      Redefining How You Share Your Identity
+    </p>
+  </div>
+
+  <!-- Mission Card -->
+  <div style="background:var(--accent-dim); border:1px solid rgba(27,79,216,0.15); border-radius:20px; padding:2rem; margin-bottom:1.5rem;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:1rem;">
+      <i data-lucide="nfc" style="width:28px;height:28px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+      <h2 style="font-family:'Inter',sans-serif; font-size:1.2rem; font-weight:700; color:var(--text); margin:0;">ما هي MicroNFC؟</h2>
+    </div>
+    <p style="color:var(--muted); line-height:1.75; font-size:0.95rem;">
+      MicroNFC منصة مصرية متخصصة في بطاقات NFC الذكية والأساور الطبية. بتخلي صاحب الكارت يشارك ملفه الشخصي الرقمي بـ تاب واحد بدون أي تطبيق — الزائر بيفتح الملف مباشرة في المتصفح فوراً.
+    </p>
+  </div>
+
+  <!-- Features Grid -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem; margin-bottom:2.5rem;">
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+      <div style="width:42px;height:42px;background:var(--accent-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:0.9rem;">
+        <i data-lucide="user-circle" style="width:22px;height:22px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
+      </div>
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;">الملف الشخصي الرقمي</h3>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.65;">شارك معلوماتك المهنية، السوشيال ميديا، وطرق التواصل بتاب واحد من الكارت.</p>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+      <div style="width:42px;height:42px;background:rgba(239,68,68,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:0.9rem;">
+        <i data-lucide="heart-pulse" style="width:22px;height:22px;stroke:#ef4444;stroke-width:2;fill:none;"></i>
+      </div>
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;">الطوارئ الطبية</h3>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.65;">فصيلة الدم، الحساسية، الأدوية، وجهات الطوارئ — متاحة للمسعفين فوراً عند الحاجة.</p>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+      <div style="width:42px;height:42px;background:rgba(124,58,237,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:0.9rem;">
+        <i data-lucide="bot" style="width:22px;height:22px;stroke:#7c3aed;stroke-width:2;fill:none;"></i>
+      </div>
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;">AI Chatbot 24/7</h3>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.65;">روبوت ذكي بيرد على الزوار نيابةً عنك على مدار الساعة بناءً على المعلومات اللي بتحددها.</p>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+      <div style="width:42px;height:42px;background:var(--accent-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:0.9rem;">
+        <i data-lucide="cloud" style="width:22px;height:22px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
+      </div>
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;">Cloud Sync فوري</h3>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.65;">حدّث ملفك من أي جهاز في أي وقت والكارت الفيزيائي هيظهر التحديثات فوراً.</p>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+      <div style="width:42px;height:42px;background:var(--accent-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:0.9rem;">
+        <i data-lucide="shield-check" style="width:22px;height:22px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
+      </div>
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;">خصوصية كاملة</h3>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.65;">إنت بتتحكم في كل حاجة — إيه اللي بيظهر للعموم وإيه اللي بيفضل خاص.</p>
+    </div>
+
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+      <div style="width:42px;height:42px;background:rgba(249,115,22,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:0.9rem;">
+        <i data-lucide="building-2" style="width:22px;height:22px;stroke:#f97316;stroke-width:2;fill:none;"></i>
+      </div>
+      <h3 style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:0.4rem;">للأفراد والمؤسسات</h3>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.65;">متاحة للأفراد، الشركات، العيادات، والصيدليات — حلول مخصصة لكل احتياج.</p>
+    </div>
+
+  </div>
+
+  <!-- Products -->
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:2rem; margin-bottom:2rem;">
+    <h2 style="font-family:'Inter',sans-serif; font-size:1.1rem; font-weight:700; color:var(--text); margin-bottom:1.25rem; display:flex; align-items:center; gap:8px;">
+      <i data-lucide="credit-card" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> منتجاتنا
+    </h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <div style="background:var(--accent-dim); border:1px solid rgba(27,79,216,0.15); border-radius:12px; padding:1.25rem; text-align:center;">
+        <i data-lucide="credit-card" style="width:32px;height:32px;stroke:#1B4FD8;stroke-width:2;fill:none;margin-bottom:0.75rem;"></i>
+        <div style="font-weight:700; color:var(--text); margin-bottom:0.3rem;">Smart Card</div>
+        <div style="font-size:0.82rem; color:var(--muted);">ملف شخصي رقمي احترافي</div>
+      </div>
+      <div style="background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.15); border-radius:12px; padding:1.25rem; text-align:center;">
+        <i data-lucide="watch" style="width:32px;height:32px;stroke:#ef4444;stroke-width:2;fill:none;margin-bottom:0.75rem;"></i>
+        <div style="font-weight:700; color:var(--text); margin-bottom:0.3rem;">Medical Bracelet</div>
+        <div style="font-size:0.82rem; color:var(--muted);">بيانات طبية للطوارئ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center; padding:1.5rem 0;">
+    <a href="{{ url_for('register') }}" class="btn-primary" style="margin-left:0.75rem;">
+      <i data-lucide="arrow-right" style="width:18px;height:18px;stroke:#fff;stroke-width:2;fill:none;"></i> ابدأ الآن مجاناً
+    </a>
+    <a href="{{ url_for('store.index') }}" class="btn-secondary">
+      <i data-lucide="shopping-bag" style="width:18px;height:18px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> تصفح المنتجات
+    </a>
+  </div>
+
+</div>
+
+{% endblock %}

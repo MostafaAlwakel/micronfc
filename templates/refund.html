@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container" style="max-width:760px; padding:3rem 1.5rem 5rem;">
+
+  <div style="margin-bottom:2.5rem;">
+    <div class="badge" style="margin-bottom:1.25rem;">
+      <span class="badge-dot"></span> Policy
+    </div>
+    <h1 style="font-family:'Inter',sans-serif; font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; letter-spacing:-0.02em; color:var(--text); margin-bottom:0.5rem;">
+      Refund & Return Policy
+    </h1>
+    <p style="font-size:0.88rem; color:var(--muted);">Last updated: May 2025</p>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:1.25rem;">
+
+    <!-- Section 1: Physical Products -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1.25rem;">
+        <i data-lucide="package" style="width:22px;height:22px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1.05rem; font-weight:700; color:var(--text); margin:0;">1. المنتجات المادية (الكروت والأساور)</h2>
+      </div>
+
+      <!-- Returns -->
+      <div style="margin-bottom:1.25rem;">
+        <h3 style="font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:0.7rem; display:flex; align-items:center; gap:6px;">
+          <i data-lucide="rotate-ccw" style="width:16px;height:16px;stroke:#22c55e;stroke-width:2;fill:none;"></i> الاسترجاع
+        </h3>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+          {% for item in [
+            'مقبول خلال 7 أيام من الاستلام',
+            'المنتج لازم يكون في حالته الأصلية غير مستخدم',
+            'التواصل على support@micronfc.info مع ذكر سبب الاسترجاع ورقم الطلب'
+          ] %}
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.875rem; color:var(--muted); line-height:1.65;">
+            <i data-lucide="check-circle-2" style="width:15px;height:15px;stroke:#22c55e;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i>
+            {{ item }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Exchange -->
+      <div style="margin-bottom:1.25rem; padding-top:1rem; border-top:1px solid var(--border);">
+        <h3 style="font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:0.7rem; display:flex; align-items:center; gap:6px;">
+          <i data-lucide="refresh-cw" style="width:16px;height:16px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> الاستبدال
+        </h3>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+          {% for item in [
+            'مقبول خلال 14 يوم في حالة عيب مصنعي',
+            'بنتحمل تكلفة الشحن في حالة العيب المصنعي فقط'
+          ] %}
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.875rem; color:var(--muted); line-height:1.65;">
+            <i data-lucide="check-circle-2" style="width:15px;height:15px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i>
+            {{ item }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Not accepted -->
+      <div style="background:rgba(239,68,68,0.04); border:1px solid rgba(239,68,68,0.12); border-radius:10px; padding:1rem; padding-top:1rem;">
+        <h3 style="font-size:0.88rem; font-weight:700; color:var(--red); margin-bottom:0.7rem; display:flex; align-items:center; gap:6px;">
+          <i data-lucide="x-circle" style="width:16px;height:16px;stroke:#ef4444;stroke-width:2;fill:none;"></i> غير مقبول الاسترجاع في حالة:
+        </h3>
+        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+          {% for item in ['المنتج المستخدم أو المكسور من العميل', 'بعد 7 أيام من الاستلام بدون سبب'] %}
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.875rem; color:var(--muted); line-height:1.65;">
+            <i data-lucide="x" style="width:15px;height:15px;stroke:#ef4444;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i>
+            {{ item }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Section 2: Subscription -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="wallet" style="width:22px;height:22px;stroke:#7c3aed;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1.05rem; font-weight:700; color:var(--text); margin:0;">2. الاشتراك الرقمي</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in [
+          'الاشتراك الشهري غير قابل للاسترداد بعد بدء الفترة',
+          'ممكن تلغي الاشتراك في أي وقت وهيفضل شغال لآخر الفترة المدفوعة'
+        ] %}
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.875rem; color:var(--muted); line-height:1.65;">
+          <i data-lucide="circle" style="width:8px;height:8px;stroke:#7c3aed;fill:#7c3aed;flex-shrink:0;margin-top:6px;"></i>
+          {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Section 3: Process -->
+    <div style="background:var(--accent-dim); border:1px solid rgba(27,79,216,0.15); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="mail" style="width:22px;height:22px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1.05rem; font-weight:700; color:var(--text); margin:0;">3. إجراء الاسترجاع</h2>
+      </div>
+      <p style="color:var(--muted); font-size:0.875rem; line-height:1.7; margin-bottom:1rem;">
+        تواصل معنا على
+        <a href="mailto:support@micronfc.info" style="color:var(--accent);font-weight:600;text-decoration:none;">support@micronfc.info</a>
+        مع المعلومات التالية:
+      </p>
+      <ul style="list-style:none; padding:0; margin:0 0 1.25rem; display:flex; flex-direction:column; gap:0.5rem;">
+        {% for item in ['اسمك الكامل', 'رقم الطلب', 'سبب الاسترجاع', 'صورة للمنتج إن وجد عيب'] %}
+        <li style="display:flex; align-items:center; gap:8px; font-size:0.875rem; color:var(--muted);">
+          <i data-lucide="check" style="width:15px;height:15px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+          {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+      <div style="background:#fff; border-radius:10px; padding:0.85rem 1rem; display:flex; align-items:center; gap:8px;">
+        <i data-lucide="clock" style="width:18px;height:18px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <span style="font-size:0.875rem; color:var(--text); font-weight:500;">هنرد عليك خلال <strong>2-3 أيام عمل</strong></span>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:2rem; text-align:center;">
+    <a href="{{ url_for('contact') }}" class="btn-secondary">
+      <i data-lucide="mail" style="width:18px;height:18px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> تواصل معنا
+    </a>
+  </div>
+
+</div>
+
+{% endblock %}

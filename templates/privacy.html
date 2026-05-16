@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container" style="max-width:760px; padding:3rem 1.5rem 5rem;">
+
+  <div style="margin-bottom:2.5rem;">
+    <div class="badge" style="margin-bottom:1.25rem;">
+      <span class="badge-dot"></span> Legal
+    </div>
+    <h1 style="font-family:'Inter',sans-serif; font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; letter-spacing:-0.02em; color:var(--text); margin-bottom:0.5rem;">
+      Privacy Policy
+    </h1>
+    <p style="font-size:0.88rem; color:var(--muted);">Last updated: May 2025</p>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:1.25rem;">
+
+    {% set sections = [
+      ('1. Introduction', 'shield-check', 'MicroNFC ("we", "our", "us") is committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights as a user of our platform.'),
+      ('2. Data We Collect', 'database', None),
+      ('3. How We Use Your Data', 'settings', None),
+      ('4. Data Visibility', 'eye', None),
+      ('5. Data Security', 'lock', None),
+      ('6. Third-Party Services', 'link', None),
+      ('7. Your Rights', 'user-check', None),
+      ('8. Contact', 'mail', None)
+    ] %}
+
+    <!-- 1 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="shield-check" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">1. Introduction</h2>
+      </div>
+      <p style="color:var(--muted); font-size:0.9rem; line-height:1.75;">
+        MicroNFC ("we", "our", "us") is committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights as a user of our platform.
+      </p>
+    </div>
+
+    <!-- 2 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="database" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">2. Data We Collect</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in [
+          ('Personal info: name, email, phone number, profile photo', 'user'),
+          ('Medical data: blood type, allergies, medications, emergency contacts — stored only if you choose to add it', 'heart-pulse'),
+          ('Usage data: login times, profile views, card scans', 'activity'),
+          ('Payment info: InstaPay links — we do not store card numbers', 'wallet')
+        ] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="{{ item[1] }}" style="width:16px;height:16px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i>
+          {{ item[0] }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 3 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="settings" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">3. How We Use Your Data</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in [
+          'To provide and improve our services',
+          'To display your profile when your NFC card is scanned',
+          'To enable AI chatbot responses on your behalf',
+          'We never sell your data to third parties'
+        ] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="check" style="width:16px;height:16px;stroke:#22c55e;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i>
+          {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 4 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="eye" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">4. Data Visibility</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in [
+          'You control what appears on your public profile',
+          'Medical data is only shown on your public profile if you enable it',
+          'You can delete your account and all data at any time'
+        ] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="check" style="width:16px;height:16px;stroke:#22c55e;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i>
+          {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 5 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="lock" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">5. Data Security</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in [
+          'All data is encrypted in transit (HTTPS)',
+          'Passwords are hashed and never stored in plain text',
+          'Medical data is treated with extra care and access is restricted'
+        ] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="shield-check" style="width:16px;height:16px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i>
+          {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 6 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="link" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">6. Third-Party Services</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in [
+          'We use OpenRouter for AI functionality',
+          'We use Railway for hosting',
+          'We use Google OAuth for login (optional)'
+        ] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="circle" style="width:8px;height:8px;stroke:#1B4FD8;fill:#1B4FD8;flex-shrink:0;margin-top:6px;"></i>
+          {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 7 -->
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:1rem;">
+        <i data-lucide="user-check" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">7. Your Rights</h2>
+      </div>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.55rem;">
+        {% for item in [
+          'Access your data anytime from your dashboard',
+          'Request data deletion by emailing support@micronfc.info',
+          'Update or correct your information at any time'
+        ] %}
+        <li style="display:flex; align-items:flex-start; gap:10px; font-size:0.875rem; color:var(--muted); line-height:1.6;">
+          <i data-lucide="check" style="width:16px;height:16px;stroke:#22c55e;stroke-width:2;fill:none;flex-shrink:0;margin-top:2px;"></i>
+          {{ item }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- 8 -->
+    <div style="background:var(--accent-dim); border:1px solid rgba(27,79,216,0.15); border-radius:16px; padding:1.5rem;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.5rem;">
+        <i data-lucide="mail" style="width:20px;height:20px;stroke:#1B4FD8;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <h2 style="font-family:'Inter',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin:0;">8. Contact</h2>
+      </div>
+      <p style="color:var(--muted); font-size:0.875rem;">
+        For any privacy concerns:
+        <a href="mailto:support@micronfc.info" style="color:var(--accent); font-weight:600; text-decoration:none;">support@micronfc.info</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container" style="max-width:600px; padding:3rem 1.5rem 5rem;">
+
+  <div style="margin-bottom:2.5rem;">
+    <div class="badge" style="margin-bottom:1.25rem;">
+      <span class="badge-dot"></span> Contact
+    </div>
+    <h1 style="font-family:'Inter',sans-serif; font-size:clamp(2rem,5vw,3rem); font-weight:900; letter-spacing:-0.03em; color:var(--text); margin-bottom:0.75rem; line-height:1.1;">
+      Contact <span style="color:var(--accent);">Us</span>
+    </h1>
+    <p style="font-size:1.05rem; color:var(--muted); line-height:1.7;">
+      We're here to help — reach out anytime.
+    </p>
+  </div>
+
+  <!-- Email Card -->
+  <div style="background:var(--accent-dim); border:1px solid rgba(27,79,216,0.15); border-radius:20px; padding:2.5rem; text-align:center; margin-bottom:1.5rem;">
+    <div style="width:60px;height:60px;background:#fff;border-radius:16px;border:1px solid rgba(27,79,216,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+      <i data-lucide="mail" style="width:28px;height:28px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i>
+    </div>
+    <h2 style="font-family:'Inter',sans-serif; font-size:1.15rem; font-weight:700; color:var(--text); margin-bottom:0.5rem;">Email Support</h2>
+    <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1.5rem; line-height:1.6;">
+      للأسئلة والدعم الفني والاستفسارات التجارية، راسلنا على البريد الإلكتروني وهنرد عليك في أقرب وقت.
+    </p>
+    <a href="mailto:support@micronfc.info" class="btn-primary" style="display:inline-flex;">
+      <i data-lucide="send" style="width:18px;height:18px;stroke:#fff;stroke-width:2;fill:none;"></i>
+      Send us an Email
+    </a>
+    <p style="margin-top:1rem; font-size:0.82rem; color:var(--accent); font-weight:600;">support@micronfc.info</p>
+  </div>
+
+  <!-- Response Time -->
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem;">
+    <h3 style="font-family:'Inter',sans-serif; font-size:0.95rem; font-weight:700; color:var(--text); margin-bottom:1rem; display:flex; align-items:center; gap:8px;">
+      <i data-lucide="clock" style="width:18px;height:18px;stroke:#1B4FD8;stroke-width:2;fill:none;"></i> Response Time
+    </h3>
+    <div style="display:flex; flex-direction:column; gap:0.6rem;">
+      <div style="display:flex; align-items:center; gap:10px; font-size:0.875rem;">
+        <i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <span style="color:var(--muted);">Technical support — خلال 24 ساعة</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; font-size:0.875rem;">
+        <i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <span style="color:var(--muted);">Order inquiries — خلال 2-3 أيام عمل</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; font-size:0.875rem;">
+        <i data-lucide="check-circle-2" style="width:16px;height:16px;stroke:#22c55e;stroke-width:2;fill:none;flex-shrink:0;"></i>
+        <span style="color:var(--muted);">Business inquiries — خلال 48 ساعة</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
