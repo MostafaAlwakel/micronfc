@@ -652,6 +652,9 @@ def card_redirect(code):
     if not card.user_id:
         if not current_user.is_authenticated:
             return redirect(url_for('login', next=request.path))
+        already_has_type = Card.query.filter_by(user_id=current_user.id, card_type=card.card_type).first()
+        if already_has_type:
+            return render_template('card_not_activated.html'), 404
         from datetime import datetime, timezone
         card.user_id = current_user.id
         card.activated_at = datetime.now(timezone.utc)
