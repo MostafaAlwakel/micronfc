@@ -1,5 +1,6 @@
 # v2
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, session
+from urllib.parse import urlparse
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
@@ -160,11 +161,19 @@ def verify_email(token):
     flash('Email verified! You can now login. ✅', 'success')
     return redirect(url_for('login'))
 
+def is_safe_next_url(next_url):
+    if not next_url or not next_url.startswith('/') or next_url.startswith('//'):
+        return False
+    if '\\' in next_url:
+        return False
+    parsed = urlparse(next_url)
+    return not parsed.scheme and not parsed.netloc
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         next_page = request.args.get('next', '').strip()
-        if next_page and next_page.startswith('/'):
+        if is_safe_next_url(next_page):
             return redirect(next_page)
         return redirect(url_for('dashboard'))
 
@@ -185,7 +194,7 @@ def login():
             if next_url:
                 return redirect(next_url)
             next_page = request.args.get('next', '').strip()
-            if next_page and next_page.startswith('/'):
+            if is_safe_next_url(next_page):
                 return redirect(next_page)
             return redirect(url_for('dashboard'))
         else:
@@ -641,7 +650,12 @@ def card_redirect(code):
     if not card or not card.is_active:
         return render_template('card_invalid.html'), 404
     if not card.user_id:
-        return render_template('card_not_activated.html'), 404
+        if not current_user.is_authenticated:
+            return redirect(url_for('login', next=request.path))
+        from datetime import datetime, timezone
+        card.user_id = current_user.id
+        card.activated_at = datetime.now(timezone.utc)
+        db.session.commit()
     user = User.query.get(card.user_id)
     if not user or not user.is_active:
         return render_template('card_invalid.html'), 404
