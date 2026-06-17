@@ -98,7 +98,7 @@ def index():
 def register():
     if current_user.is_authenticated:
         next_page = request.args.get('next', '').strip()
-        if next_page and next_page.startswith('/'):
+        if is_safe_next_url(next_page):
             return redirect(next_page)
         return redirect(url_for('dashboard'))
 
@@ -143,7 +143,7 @@ def register():
         flash('Account created! Please check your email to verify your account.', 'success')
         next_page = request.args.get('next', '').strip()
         login_url = url_for('login')
-        if next_page and next_page.startswith('/'):
+        if is_safe_next_url(next_page):
             login_url = f'{login_url}?next={next_page}'
         return redirect(login_url)
 
@@ -697,6 +697,10 @@ def activate_card():
 
 @app.route('/auth/google')
 def google_login():
+    next_page = request.args.get('next', '').strip()
+    if is_safe_next_url(next_page):
+        session['redirect_after_login'] = next_page
+        session.modified = True
     redirect_uri = 'https://www.micronfc.info/auth/google/callback'
     return google.authorize_redirect(redirect_uri)
 
