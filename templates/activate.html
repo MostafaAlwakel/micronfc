@@ -12,7 +12,7 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://micronfc.info/activate" />
 
-  <!-- ═══ Open Graph (Facebook / WhatsApp / LinkedIn) ═══ -->
+  <!-- ═══ Open Graph ═══ -->
   <meta property="og:type"        content="website" />
   <meta property="og:url"         content="https://micronfc.info/activate" />
   <meta property="og:title"       content="طريقة تفعيل كرت MicroNFC | دليل خطوة بخطوة" />
@@ -43,34 +43,10 @@
       { "@type": "HowToSupply", "name": "موبايل يدعم NFC" }
     ],
     "step": [
-      {
-        "@type": "HowToStep",
-        "position": 1,
-        "name": "افتح الموقع وسجّل دخولك",
-        "text": "ادخل على micronfc.info وسجّل دخول أو أنشئ حساب جديد.",
-        "url": "https://micronfc.info/activate#step-1"
-      },
-      {
-        "@type": "HowToStep",
-        "position": 2,
-        "name": "اربط الكرت بحسابك",
-        "text": "قرّب الكرت من موبايلك بعد تسجيل الدخول — الموقع يكتشفه ويربطه تلقائياً.",
-        "url": "https://micronfc.info/activate#step-2"
-      },
-      {
-        "@type": "HowToStep",
-        "position": 3,
-        "name": "خصّص بروفايلك",
-        "text": "أضف اسمك وروابطك وصورتك وأي معلومات تحب الناس تشوفها.",
-        "url": "https://micronfc.info/activate#step-3"
-      },
-      {
-        "@type": "HowToStep",
-        "position": 4,
-        "name": "ابدأ المشاركة فوراً",
-        "text": "الكرت جاهز — أي حد يقرّب موبايله منه يشوف بروفايلك على طول.",
-        "url": "https://micronfc.info/activate#step-4"
-      }
+      { "@type": "HowToStep", "position": 1, "name": "افتح الموقع وسجّل دخولك", "text": "ادخل على micronfc.info وسجّل دخول أو أنشئ حساب جديد.", "url": "https://micronfc.info/activate#step-1" },
+      { "@type": "HowToStep", "position": 2, "name": "اربط الكرت بحسابك", "text": "قرّب الكرت من موبايلك بعد تسجيل الدخول.", "url": "https://micronfc.info/activate#step-2" },
+      { "@type": "HowToStep", "position": 3, "name": "خصّص بروفايلك", "text": "أضف اسمك وروابطك وصورتك.", "url": "https://micronfc.info/activate#step-3" },
+      { "@type": "HowToStep", "position": 4, "name": "ابدأ المشاركة فوراً", "text": "الكرت جاهز — أي حد يقرّب موبايله منه يشوف بروفايلك.", "url": "https://micronfc.info/activate#step-4" }
     ]
   }
   </script>
@@ -89,154 +65,664 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
   <style>
-    /* ── Design Tokens ── */
+    /* ══════════════════════════════════════════
+       DESIGN TOKENS
+    ══════════════════════════════════════════ */
     :root {
-      --blue:        #0057FF;
-      --blue-light:  #EEF3FF;
-      --blue-mid:    #C7D8FF;
-      --bg:          #F4F7FB;
-      --surface:     #FFFFFF;
-      --ink:         #0A0F1E;
-      --ink-2:       #3D4460;
-      --ink-3:       #7B82A0;
-      --border:      #E2E8F4;
-      --radius-card: 20px;
-      --radius-pill: 100px;
-      --shadow-card: 0 2px 16px 0 rgba(0,87,255,.07), 0 1px 3px 0 rgba(10,15,30,.06);
-      --shadow-hover: 0 8px 32px 0 rgba(0,87,255,.13), 0 2px 8px 0 rgba(10,15,30,.08);
-      --transition:  .22s cubic-bezier(.4,0,.2,1);
+      --bg:           #080B14;
+      --bg-2:         #0D1120;
+      --surface:      rgba(255,255,255,.04);
+      --surface-2:    rgba(255,255,255,.07);
+      --border:       rgba(255,255,255,.08);
+      --border-glow:  rgba(99,179,255,.25);
+
+      --accent:       #3B82F6;
+      --accent-2:     #60A5FA;
+      --accent-glow:  rgba(59,130,246,.4);
+      --cyan:         #06B6D4;
+      --purple:       #8B5CF6;
+      --green:        #10B981;
+
+      --ink:          #F0F4FF;
+      --ink-2:        #A8B4CF;
+      --ink-3:        #5A6585;
+
+      --radius-sm:    12px;
+      --radius-md:    20px;
+      --radius-lg:    28px;
+      --radius-pill:  100px;
+
+      --font-ar:      'Cairo', sans-serif;
+      --font-en:      'Space Grotesk', sans-serif;
+
+      --ease:         cubic-bezier(.4,0,.2,1);
+      --spring:       cubic-bezier(.34,1.56,.64,1);
     }
 
-    /* ── Reset ── */
+    /* ══════════════════════════════════════════
+       RESET & BASE
+    ══════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Cairo', 'DM Sans', sans-serif;
+      font-family: var(--font-ar);
       background: var(--bg);
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    /* ── Nav ── */
+    /* ══════════════════════════════════════════
+       ANIMATED BACKGROUND
+    ══════════════════════════════════════════ */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .15;
+      animation: orb-float 12s ease-in-out infinite;
+    }
+    .bg-orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #3B82F6, transparent 70%);
+      top: -150px; right: -100px;
+      animation-delay: 0s;
+    }
+    .bg-orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #8B5CF6, transparent 70%);
+      bottom: 200px; left: -100px;
+      animation-delay: -4s;
+    }
+    .bg-orb-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #06B6D4, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      animation-delay: -8s;
+    }
+
+    @keyframes orb-float {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(30px,-20px) scale(1.05); }
+      66% { transform: translate(-20px,30px) scale(.95); }
+    }
+
+    /* Grid lines */
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    /* ══════════════════════════════════════════
+       LAYOUT WRAPPER
+    ══════════════════════════════════════════ */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══════════════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════════════ */
     nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(244,247,251,.88);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 64px;
+      padding: 0 32px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      background: rgba(8,11,20,.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
     }
+
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-decoration: none;
     }
+
     .nav-logo-mark {
-      width: 36px;
-      height: 36px;
-      background: var(--blue);
-      border-radius: 10px;
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      border-radius: 12px;
       display: grid;
       place-items: center;
+      box-shadow: 0 0 20px var(--accent-glow);
+      position: relative;
     }
-    .nav-logo-mark svg { width: 20px; height: 20px; fill: #fff; }
+    .nav-logo-mark::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      z-index: -1;
+      opacity: .4;
+      filter: blur(8px);
+    }
+
+    .nav-logo-mark svg { width: 22px; height: 22px; fill: #fff; }
+
     .nav-logo-text {
-      font-family: 'DM Serif Display', serif;
-      font-size: 17px;
+      font-family: var(--font-en);
+      font-size: 18px;
+      font-weight: 700;
       color: var(--ink);
       letter-spacing: -.3px;
     }
+
     .nav-cta {
-      background: var(--blue);
+      background: linear-gradient(135deg, var(--accent), #2563EB);
       color: #fff;
       border: none;
-      padding: 9px 22px;
+      padding: 10px 24px;
       border-radius: var(--radius-pill);
-      font-family: 'Cairo', sans-serif;
+      font-family: var(--font-ar);
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       text-decoration: none;
-      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      transition: transform .2s var(--spring), box-shadow .2s var(--ease);
+      box-shadow: 0 4px 20px rgba(59,130,246,.4);
     }
     .nav-cta:hover {
-      background: #0044cc;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(0,87,255,.35);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(59,130,246,.6);
     }
 
-    /* ── Hero ── */
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
     .hero {
       text-align: center;
-      padding: 80px 24px 64px;
-      max-width: 720px;
+      padding: 100px 24px 80px;
+      max-width: 780px;
       margin: 0 auto;
     }
+
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      background: var(--blue-light);
-      color: var(--blue);
-      border: 1px solid var(--blue-mid);
+      gap: 8px;
+      background: rgba(59,130,246,.1);
+      border: 1px solid rgba(59,130,246,.3);
       border-radius: var(--radius-pill);
-      padding: 6px 16px;
+      padding: 8px 20px;
       font-size: 13px;
       font-weight: 600;
-      margin-bottom: 28px;
-      letter-spacing: .2px;
-    }
-    .hero-badge-dot {
-      width: 7px; height: 7px;
-      background: var(--blue);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .55; transform: scale(1.4); }
-    }
-    .hero h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(36px, 6vw, 56px);
-      line-height: 1.12;
-      letter-spacing: -.5px;
-      color: var(--ink);
-      margin-bottom: 20px;
-    }
-    .hero h1 span { color: var(--blue); }
-    .hero p {
-      font-size: 17px;
-      line-height: 1.7;
-      color: var(--ink-2);
-      max-width: 520px;
-      margin: 0 auto;
+      color: var(--accent-2);
+      margin-bottom: 32px;
+      letter-spacing: .3px;
+      backdrop-filter: blur(10px);
+      animation: badge-in .6s var(--spring) both;
     }
 
-    /* ── Video Section ── */
-    .video-section {
-      max-width: 820px;
-      margin: 0 auto 80px;
+    .hero-badge-dot {
+      width: 8px; height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes live-pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px #10B981; }
+      50% { opacity: .6; box-shadow: 0 0 16px #10B981, 0 0 30px rgba(16,185,129,.4); }
+    }
+
+    @keyframes badge-in {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 68px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -1px;
+      color: var(--ink);
+      margin-bottom: 24px;
+      animation: hero-text-in .8s var(--ease) .1s both;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--accent-2), var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradient-shift 4s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes hero-text-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--ink-2);
+      max-width: 540px;
+      margin: 0 auto 40px;
+      animation: hero-text-in .8s var(--ease) .2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: hero-text-in .8s var(--ease) .3s both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--accent), #2563EB);
+      color: #fff;
+      font-family: var(--font-ar);
+      font-size: 15px;
+      font-weight: 700;
+      padding: 15px 32px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: transform .2s var(--spring), box-shadow .2s var(--ease);
+      box-shadow: 0 4px 24px rgba(59,130,246,.45);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 12px 40px rgba(59,130,246,.65);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      color: var(--ink-2);
+      font-family: var(--font-ar);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 15px 32px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all .2s var(--ease);
+      backdrop-filter: blur(10px);
+    }
+    .btn-ghost:hover {
+      background: var(--surface-2);
+      border-color: rgba(255,255,255,.15);
+      color: var(--ink);
+      transform: translateY(-2px);
+    }
+
+    /* ══════════════════════════════════════════
+       NFC CARD VISUAL
+    ══════════════════════════════════════════ */
+    .card-visual-section {
+      max-width: 480px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+      animation: hero-text-in .8s var(--ease) .4s both;
+    }
+
+    .nfc-card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1.586;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1a1f35 0%, #0d1120 40%, #1a1035 100%);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow:
+        0 0 0 1px rgba(59,130,246,.1),
+        0 20px 60px rgba(0,0,0,.5),
+        0 0 80px rgba(59,130,246,.08);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .4s var(--spring);
+    }
+    .nfc-card:hover {
+      transform: perspective(800px) rotateY(-5deg) rotateX(3deg) scale(1.02);
+    }
+
+    .card-shimmer {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.05) 50%, transparent 60%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) rotate(10deg); }
+      100% { transform: translateX(200%) rotate(10deg); }
+    }
+
+    .card-glow-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 2px solid rgba(59,130,246,.4);
+      animation: ring-pulse 2.5s ease-in-out infinite;
+    }
+    .card-glow-ring:nth-child(2) {
+      width: 160px; height: 160px;
+      border-color: rgba(59,130,246,.2);
+      animation-delay: .5s;
+    }
+    .card-glow-ring:nth-child(3) {
+      width: 200px; height: 200px;
+      border-color: rgba(59,130,246,.1);
+      animation-delay: 1s;
+    }
+
+    @keyframes ring-pulse {
+      0%, 100% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+      50% { opacity: .5; transform: translate(-50%,-50%) scale(1.08); }
+    }
+
+    .card-nfc-icon {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 2;
+    }
+    .card-nfc-icon svg {
+      width: 48px; height: 48px;
+      fill: var(--accent-2);
+      filter: drop-shadow(0 0 12px rgba(59,130,246,.8));
+    }
+
+    .card-brand {
+      position: absolute;
+      bottom: 20px;
+      right: 24px;
+      font-family: var(--font-en);
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255,255,255,.9);
+      letter-spacing: .5px;
+    }
+    .card-dots {
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      display: flex;
+      gap: 8px;
+    }
+    .card-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.3);
+    }
+    .card-dot:first-child { background: rgba(59,130,246,.8); }
+
+    .card-scan-line {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--cyan), transparent);
+      animation: scan 2.5s ease-in-out infinite;
+      box-shadow: 0 0 12px var(--accent);
+    }
+    @keyframes scan {
+      0% { top: 0%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* ══════════════════════════════════════════
+       STATS BAR
+    ══════════════════════════════════════════ */
+    .stats-bar {
+      max-width: 900px;
+      margin: 0 auto 96px;
       padding: 0 24px;
     }
+    .stats-inner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .stat-item {
+      background: var(--surface);
+      padding: 32px 24px;
+      text-align: center;
+      transition: background .2s var(--ease);
+      backdrop-filter: blur(10px);
+    }
+    .stat-item:hover { background: var(--surface-2); }
+    .stat-number {
+      font-family: var(--font-en);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--ink), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--ink-3);
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════════════════
+       STEPS SECTION
+    ══════════════════════════════════════════ */
+    .steps-section {
+      max-width: 960px;
+      margin: 0 auto 96px;
+      padding: 0 24px;
+    }
+
+    .section-eyebrow {
+      display: block;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 14px;
+      opacity: .8;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 900;
+      text-align: center;
+      color: var(--ink);
+      margin-bottom: 16px;
+      letter-spacing: -.5px;
+      line-height: 1.15;
+    }
+
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--ink-3);
+      text-align: center;
+      margin-bottom: 60px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .steps-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+    }
+
+    .steps-timeline::before {
+      content: '';
+      position: absolute;
+      right: 35px;
+      top: 50px;
+      bottom: 50px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--purple), var(--cyan));
+      opacity: .3;
+      border-radius: 2px;
+    }
+
+    .step-card {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 24px;
+      align-items: start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      transition: all .3s var(--ease);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .step-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(59,130,246,.04), transparent);
+      opacity: 0;
+      transition: opacity .3s var(--ease);
+    }
+
+    .step-card:hover {
+      border-color: var(--border-glow);
+      box-shadow: 0 8px 40px rgba(59,130,246,.1), 0 0 0 1px rgba(59,130,246,.15);
+      transform: translateX(-4px);
+    }
+    .step-card:hover::before { opacity: 1; }
+
+    .step-card-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num-badge {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-en);
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .step-card:nth-child(1) .step-num-badge { background: linear-gradient(135deg, var(--accent), #2563EB); box-shadow: 0 4px 20px rgba(59,130,246,.4); }
+    .step-card:nth-child(2) .step-num-badge { background: linear-gradient(135deg, var(--purple), #6D28D9); box-shadow: 0 4px 20px rgba(139,92,246,.4); }
+    .step-card:nth-child(3) .step-num-badge { background: linear-gradient(135deg, var(--cyan), #0891B2); box-shadow: 0 4px 20px rgba(6,182,212,.4); }
+    .step-card:nth-child(4) .step-num-badge { background: linear-gradient(135deg, var(--green), #059669); box-shadow: 0 4px 20px rgba(16,185,129,.4); }
+
+    .step-emoji {
+      font-size: 22px;
+    }
+
+    .step-card-right {
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .step-card p {
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: var(--ink-2);
+      margin-bottom: 16px;
+    }
+
+    .step-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border: 1px solid;
+    }
+
+    .step-card:nth-child(1) .step-tag { background: rgba(59,130,246,.1); color: var(--accent-2); border-color: rgba(59,130,246,.25); }
+    .step-card:nth-child(2) .step-tag { background: rgba(139,92,246,.1); color: #A78BFA; border-color: rgba(139,92,246,.25); }
+    .step-card:nth-child(3) .step-tag { background: rgba(6,182,212,.1); color: #67E8F9; border-color: rgba(6,182,212,.25); }
+    .step-card:nth-child(4) .step-tag { background: rgba(16,185,129,.1); color: #6EE7B7; border-color: rgba(16,185,129,.25); }
+
+    /* ══════════════════════════════════════════
+       VIDEO SECTION
+    ══════════════════════════════════════════ */
+    .video-section {
+      max-width: 860px;
+      margin: 0 auto 96px;
+      padding: 0 24px;
+    }
+
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 */
-      border-radius: var(--radius-card);
+      padding-bottom: 56.25%;
+      border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: var(--shadow-hover);
-      background: var(--ink);
+      border: 1px solid var(--border);
+      box-shadow: 0 0 0 1px rgba(59,130,246,.1), 0 30px 80px rgba(0,0,0,.5);
+      background: var(--bg-2);
     }
     .video-wrapper iframe {
       position: absolute;
@@ -245,246 +731,210 @@
       height: 100%;
       border: none;
     }
+    .video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: linear-gradient(135deg, #0d1120, #151b30);
+    }
+    .play-btn {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #2563EB);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 30px rgba(59,130,246,.5);
+      animation: play-pulse 2s ease-in-out infinite;
+    }
+    @keyframes play-pulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(59,130,246,.5); }
+      50% { box-shadow: 0 0 50px rgba(59,130,246,.8), 0 0 80px rgba(59,130,246,.3); }
+    }
+    .play-btn svg { width: 28px; height: 28px; fill: #fff; margin-right: -4px; }
+    .video-placeholder-text {
+      font-size: 16px;
+      color: var(--ink-3);
+      font-weight: 500;
+    }
     .video-label {
       text-align: center;
       margin-top: 16px;
       font-size: 13px;
       color: var(--ink-3);
-      font-weight: 500;
     }
 
-    /* ── Steps Section ── */
-    .steps-section {
-      max-width: 900px;
+    /* ══════════════════════════════════════════
+       NOTES SECTION (Glassmorphism)
+    ══════════════════════════════════════════ */
+    .notes-section {
+      max-width: 760px;
       margin: 0 auto 96px;
       padding: 0 24px;
     }
-    .section-label {
-      display: block;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(26px, 4vw, 36px);
-      text-align: center;
-      color: var(--ink);
-      margin-bottom: 48px;
-      letter-spacing: -.3px;
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
 
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-    }
-    .step-card {
+    .note-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 32px 28px;
-      box-shadow: var(--shadow-card);
-      transition: transform var(--transition), box-shadow var(--transition);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: all .25s var(--ease);
+      backdrop-filter: blur(12px);
       position: relative;
       overflow: hidden;
     }
-    .step-card::before {
+    .note-card::before {
       content: '';
       position: absolute;
-      top: 0; right: 0;
-      width: 80px; height: 80px;
-      background: var(--blue-light);
-      border-radius: 0 var(--radius-card) 0 80px;
-      opacity: .7;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
     }
-    .step-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-hover);
+    .note-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent), var(--cyan)); }
+    .note-card:nth-child(2)::before { background: linear-gradient(90deg, var(--purple), var(--accent)); }
+    .note-card:nth-child(3)::before { background: linear-gradient(90deg, var(--cyan), var(--green)); }
+    .note-card:nth-child(4)::before { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+
+    .note-card:hover {
+      border-color: rgba(255,255,255,.14);
+      background: var(--surface-2);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,.3);
     }
-    .step-number {
-      font-family: 'DM Serif Display', serif;
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--blue);
-      background: var(--blue-light);
-      border: 1px solid var(--blue-mid);
-      width: 34px; height: 34px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    .step-icon {
+
+    .note-icon-wrap {
       font-size: 28px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: block;
     }
-    .step-card h3 {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-    .step-card p {
-      font-size: 14px;
-      line-height: 1.75;
-      color: var(--ink-2);
-    }
-    .step-card .step-tip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--blue-light);
-      color: var(--blue);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 12.5px;
-      font-weight: 600;
-      margin-top: 16px;
-    }
-
-    /* ── Divider ── */
-    .divider {
-      max-width: 900px;
-      margin: 0 auto 80px;
-      padding: 0 24px;
-    }
-    .divider-inner {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
-    }
-
-    /* ── FAQ / Notes ── */
-    .notes-section {
-      max-width: 720px;
-      margin: 0 auto 96px;
-      padding: 0 24px;
-    }
-    .notes-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      overflow: hidden;
-      box-shadow: var(--shadow-card);
-    }
-    .note-item {
-      padding: 22px 28px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      transition: background var(--transition);
-    }
-    .note-item:last-child { border-bottom: none; }
-    .note-item:hover { background: var(--bg); }
-    .note-icon {
-      font-size: 20px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .note-body h4 {
+    .note-card h4 {
       font-size: 15px;
       font-weight: 700;
       color: var(--ink);
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
-    .note-body p {
+    .note-card p {
       font-size: 13.5px;
       line-height: 1.7;
       color: var(--ink-2);
     }
 
-    /* ── CTA Banner ── */
+    /* ══════════════════════════════════════════
+       CTA BANNER
+    ══════════════════════════════════════════ */
     .cta-section {
       max-width: 900px;
       margin: 0 auto 96px;
       padding: 0 24px;
     }
+
     .cta-banner {
-      background: linear-gradient(135deg, var(--blue) 0%, #0044cc 100%);
-      border-radius: var(--radius-card);
-      padding: 56px 48px;
-      text-align: center;
       position: relative;
+      border-radius: var(--radius-lg);
       overflow: hidden;
+      padding: 72px 48px;
+      text-align: center;
+      background: linear-gradient(135deg, #0d1a40, #0a0f25, #1a0d35);
+      border: 1px solid rgba(59,130,246,.2);
+      box-shadow: 0 0 80px rgba(59,130,246,.1), inset 0 0 80px rgba(139,92,246,.05);
     }
-    .cta-banner::before {
-      content: '';
+
+    .cta-glow {
       position: absolute;
-      top: -40px; left: -40px;
-      width: 200px; height: 200px;
-      background: rgba(255,255,255,.06);
       border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
     }
-    .cta-banner::after {
-      content: '';
-      position: absolute;
-      bottom: -60px; right: -20px;
-      width: 260px; height: 260px;
-      background: rgba(255,255,255,.04);
-      border-radius: 50%;
+    .cta-glow-1 {
+      width: 300px; height: 300px;
+      background: rgba(59,130,246,.2);
+      top: -100px; right: -50px;
     }
+    .cta-glow-2 {
+      width: 300px; height: 300px;
+      background: rgba(139,92,246,.15);
+      bottom: -100px; left: -50px;
+    }
+
     .cta-banner h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(24px, 3.5vw, 34px);
-      color: #fff;
-      margin-bottom: 12px;
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 14px;
       position: relative;
       z-index: 1;
+      letter-spacing: -.5px;
     }
     .cta-banner p {
       font-size: 16px;
-      color: rgba(255,255,255,.8);
-      margin-bottom: 32px;
+      color: var(--ink-2);
+      margin-bottom: 36px;
       position: relative;
       z-index: 1;
-    }
-    .cta-btn {
-      display: inline-block;
-      background: #fff;
-      color: var(--blue);
-      font-family: 'Cairo', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      padding: 14px 36px;
-      border-radius: var(--radius-pill);
-      text-decoration: none;
-      transition: transform var(--transition), box-shadow var(--transition);
-      position: relative;
-      z-index: 1;
-    }
-    .cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(0,0,0,.25);
     }
 
-    /* ── Footer ── */
+    .cta-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
     footer {
       border-top: 1px solid var(--border);
-      padding: 28px 24px;
+      padding: 32px 24px;
       text-align: center;
       font-size: 13px;
       color: var(--ink-3);
     }
-    footer a { color: var(--blue); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    footer a { color: var(--accent-2); text-decoration: none; transition: color .2s; }
+    footer a:hover { color: var(--ink); }
 
-    /* ── Responsive ── */
-    @media (max-width: 600px) {
-      .hero { padding: 56px 20px 48px; }
-      .cta-banner { padding: 40px 24px; }
-      .steps-grid { grid-template-columns: 1fr; }
+    /* ══════════════════════════════════════════
+       SCROLL ANIMATIONS
+    ══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s var(--ease), transform .6s var(--ease);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════ */
+    @media (max-width: 680px) {
+      nav { padding: 0 20px; }
+      .hero { padding: 72px 20px 60px; }
+      .step-card { grid-template-columns: 1fr; }
+      .steps-timeline::before { display: none; }
+      .notes-grid { grid-template-columns: 1fr; }
+      .cta-banner { padding: 48px 24px; }
+      .stats-inner { grid-template-columns: 1fr; gap: 0; }
+      .hero-actions { flex-direction: column; align-items: center; }
     }
 
-    /* ── Reduced Motion ── */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition: none !important; animation: none !important; }
     }
@@ -492,153 +942,287 @@
 </head>
 <body>
 
-  <!-- Nav -->
-  <nav>
-    <a href="https://micronfc.info" class="nav-logo">
-      <div class="nav-logo-mark">
-        <!-- NFC wave icon -->
-        <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 3a7 7 0 1 1 0 14A7 7 0 0 1 10 3zm0 2a5 5 0 1 0 0 10A5 5 0 0 0 10 5zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-        </svg>
-      </div>
-      <span class="nav-logo-text">MicroNFC</span>
-    </a>
-    <a href="https://micronfc.info/register" class="nav-cta">إنشاء حساب مجاناً</a>
-  </nav>
+  <!-- ── Animated Background ── -->
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-badge">
-      <span class="hero-badge-dot"></span>
-      دليل التفعيل الرسمي
+  <div class="page-wrap">
+
+    <!-- ── Navigation ── -->
+    <nav>
+      <a href="https://micronfc.info" class="nav-logo">
+        <div class="nav-logo-mark">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 3a7 7 0 1 1 0 14A7 7 0 0 1 10 3zm0 2a5 5 0 1 0 0 10A5 5 0 0 0 10 5zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+          </svg>
+        </div>
+        <span class="nav-logo-text">MicroNFC</span>
+      </a>
+      <a href="https://micronfc.info/register" class="nav-cta">إنشاء حساب مجاناً</a>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        دليل التفعيل الرسمي
+      </div>
+      <h1>فعّل كرتك في<br><span class="gradient-text">أقل من دقيقتين</span></h1>
+      <p class="hero-sub">
+        خطوات بسيطة وواضحة تخليك تبدأ تشارك بروفايلك الرقمي على طول،
+        من غير تعقيد ومن غير مشكلة.
+      </p>
+      <div class="hero-actions">
+        <a href="https://micronfc.info/register" class="btn-primary">
+          ابدأ دلوقتي ←
+        </a>
+        <a href="#steps" class="btn-ghost">
+          شوف الخطوات ↓
+        </a>
+      </div>
+    </section>
+
+    <!-- ── NFC Card Visual ── -->
+    <div class="card-visual-section">
+      <div class="nfc-card" role="img" aria-label="كرت MicroNFC الذكي">
+        <div class="card-shimmer"></div>
+        <div class="card-scan-line"></div>
+        <div class="card-glow-ring"></div>
+        <div class="card-glow-ring"></div>
+        <div class="card-glow-ring"></div>
+        <div class="card-nfc-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2zm0 2a8 8 0 1 0 0 16A8 8 0 0 0 12 4zm0 2a6 6 0 1 1 0 12A6 6 0 0 1 12 6zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+          </svg>
+        </div>
+        <div class="card-dots">
+          <div class="card-dot"></div>
+          <div class="card-dot"></div>
+          <div class="card-dot"></div>
+        </div>
+        <div class="card-brand">MicroNFC</div>
+      </div>
     </div>
-    <h1>فعّل كرتك في<br/><span>أقل من دقيقتين</span></h1>
-    <p>
-      خطوات بسيطة وواضحة تخليك تبدأ تشارك بروفايلك الرقمي على طول،
-      من غير تعقيد ومن غير مشكلة.
-    </p>
-  </section>
 
-  <!-- Video -->
-  <section class="video-section">
-    <div class="video-wrapper">
-      <!--
-        ✏️  غيّر YOUR_VIDEO_ID بـ ID الفيديو على YouTube
-        مثال: لو الرابط https://youtu.be/dQw4w9WgXcQ → ضع dQw4w9WgXcQ
-      -->
-      <iframe
-        src="https://www.youtube.com/embed/YOUR_VIDEO_ID?rel=0&modestbranding=1&color=white"
-        title="طريقة تفعيل كرت MicroNFC"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
+    <!-- ── Stats Bar ── -->
+    <div class="stats-bar reveal">
+      <div class="stats-inner">
+        <div class="stat-item">
+          <span class="stat-number">+5000</span>
+          <span class="stat-label">كرت مفعّل</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">&lt; 2</span>
+          <span class="stat-label">دقيقة للتفعيل</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">بدون تطبيق</span>
+        </div>
+      </div>
     </div>
-    <p class="video-label">شاهد الشرح التفصيلي خطوة بخطوة 👆</p>
-  </section>
 
-  <!-- Steps -->
-  <section class="steps-section">
-    <span class="section-label">الخطوات</span>
-    <h2 class="section-title">كيف تفعّل كرتك؟</h2>
+    <!-- ── Steps ── -->
+    <section class="steps-section" id="steps">
+      <span class="section-eyebrow reveal">الخطوات</span>
+      <h2 class="section-title reveal">كيف تفعّل كرتك؟</h2>
+      <p class="section-subtitle reveal">أربع خطوات بسيطة وانت جاهز</p>
 
-    <div class="steps-grid">
+      <div class="steps-timeline">
 
-      <div class="step-card" id="step-1">
-        <p>
-          ادخل على <strong>micronfc.info</strong> من موبايلك أو الكمبيوتر،
-          وسجّل دخول بحسابك أو أنشئ حساب جديد مجاناً في ثوانٍ.
-        </p>
-        <span class="step-tip">💡 تقدر تسجّل بـ Google بضغطة واحدة</span>
+        <div class="step-card reveal" id="step-1">
+          <div class="step-card-left">
+            <div class="step-num-badge">١</div>
+            <span class="step-emoji">🌐</span>
+          </div>
+          <div class="step-card-right">
+            <h3>افتح الموقع وسجّل دخولك</h3>
+            <p>
+              ادخل على <strong>micronfc.info</strong> من موبايلك أو الكمبيوتر،
+              وسجّل دخول بحسابك أو أنشئ حساب جديد مجاناً في ثوانٍ.
+            </p>
+            <span class="step-tag">💡 تقدر تسجّل بـ Google بضغطة واحدة</span>
+          </div>
+        </div>
+
+        <div class="step-card reveal reveal-delay-1" id="step-2">
+          <div class="step-card-left">
+            <div class="step-num-badge">٢</div>
+            <span class="step-emoji">🔗</span>
+          </div>
+          <div class="step-card-right">
+            <h3>اربط الكرت بحسابك</h3>
+            <p>
+              بعد تسجيل الدخول، قرّب الكرت من موبايلك مباشرةً — الموقع هيكتشفه
+              تلقائياً ويربطه بحسابك في الحال.
+            </p>
+            <span class="step-tag">✅ ربط تلقائي بدون أي كود</span>
+          </div>
+        </div>
+
+        <div class="step-card reveal reveal-delay-2" id="step-3">
+          <div class="step-card-left">
+            <div class="step-num-badge">٣</div>
+            <span class="step-emoji">✏️</span>
+          </div>
+          <div class="step-card-right">
+            <h3>خصّص بروفايلك</h3>
+            <p>
+              أضف اسمك، وصفك، روابط السوشيال ميديا، رقم واتساب، وأي معلومة
+              تحب الناس تشوفها لما يسكنوا الكرت.
+            </p>
+            <span class="step-tag">🎨 صورة، روابط، وألوان كلها بإيدك</span>
+          </div>
+        </div>
+
+        <div class="step-card reveal reveal-delay-3" id="step-4">
+          <div class="step-card-left">
+            <div class="step-num-badge">٤</div>
+            <span class="step-emoji">🚀</span>
+          </div>
+          <div class="step-card-right">
+            <h3>ابدأ المشاركة فوراً</h3>
+            <p>
+              خلاص! كرتك جاهز. أي حد يقرّب موبايله من الكرت هيشوف بروفايلك
+              على طول من غير ما يحمّل أي تطبيق.
+            </p>
+            <span class="step-tag">🎉 جاهز خلال دقيقتين</span>
+          </div>
+        </div>
+
       </div>
+    </section>
 
-      <div class="step-card" id="step-2">
-        <div class="step-number">٢</div>
-        <span class="step-icon">🔗</span>
-        <h3>اربط الكرت بحسابك</h3>
-        <p>
-          بعد تسجيل الدخول، قرّب الكرت من موبايلك مباشرةً — الموقع هيكتشفه
-          تلقائياً ويربطه بحسابك في الحال.
-        </p>
-        <span class="step-tip">✅ ربط تلقائي بدون أي كود</span>
+    <!-- ── Video ── -->
+    <section class="video-section reveal">
+      <span class="section-eyebrow">شرح مرئي</span>
+      <h2 class="section-title" style="margin-bottom:40px;">شاهد الشرح كاملاً</h2>
+      <div class="video-wrapper">
+        <!--
+          ✏️ غيّر YOUR_VIDEO_ID بـ ID الفيديو على YouTube
+        -->
+        <div class="video-placeholder">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <p class="video-placeholder-text">فيديو الشرح التفصيلي قريباً</p>
+        </div>
       </div>
+      <p class="video-label">شاهد الشرح التفصيلي خطوة بخطوة 👆</p>
+    </section>
 
-      <div class="step-card" id="step-3">
-        <div class="step-number">٣</div>
-        <span class="step-icon">✏️</span>
-        <h3>خصّص بروفايلك</h3>
-        <p>
-          أضف اسمك، وصفك، روابط السوشيال ميديا، رقم واتساب، وأي معلومة
-          تحب الناس تشوفها لما يسكنوا الكرت.
-        </p>
-        <span class="step-tip">🎨 صورة، روابط، وألوان كلها بإيدك</span>
-      </div>
+    <!-- ── Notes ── -->
+    <section class="notes-section">
+      <span class="section-eyebrow reveal">ملاحظات مهمة</span>
+      <h2 class="section-title reveal">اعرف ده قبل ما تبدأ</h2>
+      <p class="section-subtitle reveal" style="margin-bottom:40px;">معلومات تساعدك تبدأ بشكل صح</p>
 
-      <div class="step-card" id="step-4">
-        <div class="step-number">٤</div>
-        <span class="step-icon">🚀</span>
-        <h3>ابدأ المشاركة فوراً</h3>
-        <p>
-          خلاص! كرتك جاهز. أي حد يقرّب موبايله من الكرت هيشوف بروفايلك
-          على طول من غير ما يحمّل أي تطبيق.
-        </p>
-        <span class="step-tip">🎉 جاهز خلال دقيقتين</span>
-      </div>
-
-    </div>
-  </section>
-
-  <div class="divider"><div class="divider-inner"></div></div>
-
-  <!-- Notes -->
-  <section class="notes-section">
-    <span class="section-label">ملاحظات مهمة</span>
-    <h2 class="section-title">اعرف دي قبل ما تبدأ</h2>
-
-    <div class="notes-card">
-      <div class="note-item">
-        <span class="note-icon">📶</span>
-        <div class="note-body">
+      <div class="notes-grid">
+        <div class="note-card reveal">
+          <span class="note-icon-wrap">📶</span>
           <h4>محتاج NFC شغّال في موبايلك</h4>
           <p>تأكد إن الـ NFC مفعّل من إعدادات موبايلك. معظم الموبايلات الحديثة بتدعمه تلقائياً.</p>
         </div>
-      </div>
-      <div class="note-item">
-        <span class="note-icon">🔒</span>
-        <div class="note-body">
+        <div class="note-card reveal reveal-delay-1">
+          <span class="note-icon-wrap">🔒</span>
           <h4>الكرت ده بيتربط بحسابك بس</h4>
           <p>بمجرد ما تربط الكرت، مش حد تاني يقدر يغيّر بياناته غيرك. أنت صاحب الكرت الوحيد.</p>
         </div>
-      </div>
-      <div class="note-item">
-        <span class="note-icon">🔄</span>
-        <div class="note-body">
+        <div class="note-card reveal reveal-delay-2">
+          <span class="note-icon-wrap">🔄</span>
           <h4>تقدر تغيّر بياناتك في أي وقت</h4>
-          <p>البروفايل بيتحدث فوراً. غيّر رقم تليفونك أو اي رابط ووووصله هيتحدث تلقائي لكل الناس اللي هيسكنوا الكرت بعدين.</p>
+          <p>البروفايل بيتحدث فوراً. غيّر أي معلومة وهتتحدث تلقائياً لكل من يسكن الكرت.</p>
         </div>
-      </div>
-      <div class="note-item">
-        <span class="note-icon">📞</span>
-        <div class="note-body">
+        <div class="note-card reveal reveal-delay-3">
+          <span class="note-icon-wrap">📞</span>
           <h4>في مشكلة؟ تواصل معانا</h4>
-          <p>فريق دعمنا متاح يساعدك في أي وقت. ابعتلنا رسالة من خلال الموقع أو على واتساب مباشرةً.</p>
+          <p>فريق دعمنا متاح يساعدك في أي وقت. ابعتلنا رسالة من خلال الموقع أو على واتساب.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA -->
-  <section class="cta-section">
-    <div class="cta-banner">
-      <h2>لسه ماعندكش حساب؟</h2>
-      <p>اشترك مجاناً وابدأ تبني بروفايلك الرقمي دلوقتي</p>
-      <a href="https://micronfc.info/register" class="cta-btn">أنشئ حسابك الآن ←</a>
-    </div>
-  </section>
+    <!-- ── CTA ── -->
+    <section class="cta-section reveal">
+      <div class="cta-banner">
+        <div class="cta-glow cta-glow-1" aria-hidden="true"></div>
+        <div class="cta-glow cta-glow-2" aria-hidden="true"></div>
+        <h2>لسه ماعندكش حساب؟</h2>
+        <p>اشترك مجاناً وابدأ تبني بروفايلك الرقمي دلوقتي</p>
+        <div class="cta-actions">
+          <a href="https://micronfc.info/register" class="btn-primary">أنشئ حسابك الآن ←</a>
+          <a href="https://micronfc.info/login" class="btn-ghost">تسجيل الدخول</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 MicroNFC · <a href="https://micronfc.info">micronfc.info</a> · جميع الحقوق محفوظة</p>
-  </footer>
+    <!-- ── Footer ── -->
+    <footer>
+      <p>© 2025 MicroNFC · <a href="https://micronfc.info">micronfc.info</a> · جميع الحقوق محفوظة</p>
+    </footer>
+
+  </div><!-- /page-wrap -->
+
+  <script>
+    // ── Scroll Reveal ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Counter Animation ──
+    function animateCounter(el, target, suffix, duration = 1800) {
+      let start = null;
+      const isFloat = target % 1 !== 0;
+      const step = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = isFloat ? (eased * target).toFixed(1) : Math.floor(eased * target);
+        el.textContent = (target > 1000 ? '+' : '') + current + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const nums = e.target.querySelectorAll('.stat-number');
+          nums[0] && animateCounter(nums[0], 5000, '', 2000);
+          nums[1] && setTimeout(() => { nums[1].textContent = '< 2'; }, 600);
+          nums[2] && animateCounter(nums[2], 100, '%', 1600);
+          statsObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const statsBar = document.querySelector('.stats-bar');
+    if (statsBar) statsObserver.observe(statsBar);
+
+    // ── NFC Card 3D tilt on mouse move ──
+    const card = document.querySelector('.nfc-card');
+    if (card) {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(800px) rotateY(${x * -14}deg) rotateX(${y * 8}deg) scale(1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    }
+  </script>
 
 </body>
 </html>
